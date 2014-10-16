@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AsciiToSvg", "AsciiToSvg\AsciiToSvg.fsproj", "{6643E7DB-DA18-43A5-8FAD-E8F5328F176E}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AsciiToSvg.Tests", "AsciiToSvg.Tests\AsciiToSvg.Tests.fsproj", "{06C93C65-8DB4-4BB2-91DE-548C461B3CCC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6E0BEDE9-9642-4C24-A9B9-C83C52708BA0}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6643E7DB-DA18-43A5-8FAD-E8F5328F176E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6643E7DB-DA18-43A5-8FAD-E8F5328F176E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6643E7DB-DA18-43A5-8FAD-E8F5328F176E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6643E7DB-DA18-43A5-8FAD-E8F5328F176E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06C93C65-8DB4-4BB2-91DE-548C461B3CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C93C65-8DB4-4BB2-91DE-548C461B3CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C93C65-8DB4-4BB2-91DE-548C461B3CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C93C65-8DB4-4BB2-91DE-548C461B3CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
