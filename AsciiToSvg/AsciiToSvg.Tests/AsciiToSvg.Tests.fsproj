@@ -85,6 +85,8 @@
     <Content Include="TestTxtFiles\TestMiniBox.txt" />
     <Content Include="TestTxtFiles\TestPolygonBox.txt" />
     <Content Include="TestTxtFiles\TestSimpleBox.txt" />
+    <Content Include="TestTxtFiles\Glyphs.txt" />
+    <Content Include="TestTxtFiles\ArrowGlyphs.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

@@ -1,5 +1,90 @@
 ﻿namespace AsciiToSvg
 
+type TxtGrid = char[][]
+
+type GridCoordinates = { row : int; col : int }
+type SvgCoordinates = { px : float; py : float }
+
+type SvgOption = Map<string, string>
+
+type SvgScale = { scx : float; scy : float }
+
+type GlyphKindProperties =
+  { letter : char
+    gridCoord : GridCoordinates
+    glyphOptions : SvgOption }
+
+type Glyph =
+  | ArrowUp of GlyphKindProperties
+  | ArrowDown of GlyphKindProperties
+  | ArrowLeftToRight of GlyphKindProperties
+  | ArrowRightToLeft of GlyphKindProperties
+  //
+  | UpperLeftCorner of GlyphKindProperties
+  | LowerLeftCorner of GlyphKindProperties
+  | UpperRightCorner of GlyphKindProperties
+  | LowerRightCorner of GlyphKindProperties
+  //
+  | UpperLeftRightCorner of GlyphKindProperties
+  | LowerLeftRightCorner of GlyphKindProperties
+  | UpperLowerRightCorner of GlyphKindProperties
+  | UpperLowerLeftCorner of GlyphKindProperties
+  | AllCorner of GlyphKindProperties
+  //
+  | RoundUpperLeftCorner of GlyphKindProperties
+  | RoundLowerLeftCorner of GlyphKindProperties
+  | RoundUpperRightCorner of GlyphKindProperties
+  | RoundLowerRightCorner of GlyphKindProperties
+  //
+  | RoundUpperLeftRightCorner of GlyphKindProperties
+  | RoundLowerLeftRightCorner of GlyphKindProperties
+  | RoundUpperLowerRightCorner of GlyphKindProperties
+  | RoundUpperLowerLeftCorner of GlyphKindProperties
+  | RoundAllCorner of GlyphKindProperties
+  //
+  | DiamondLeftCorner of GlyphKindProperties
+  | DiamondRightCorner of GlyphKindProperties
+  | DiamondUpperCorner of GlyphKindProperties
+  | DiamondLowerCorner of GlyphKindProperties
+  //
+  | DiamondUpperAndLeftCorner of GlyphKindProperties
+  | DiamondUpperAndRightCorner of GlyphKindProperties
+  | DiamondLowerAndLeftCorner of GlyphKindProperties
+  | DiamondLowerAndRightCorner of GlyphKindProperties
+  | DiamondAllCorner of GlyphKindProperties
+  //
+  | LargeUpperLeftCorner of GlyphKindProperties
+  | LargeLowerLeftCorner of GlyphKindProperties
+  | LargeUpperRightCorner of GlyphKindProperties
+  | LargeLowerRightCorner of GlyphKindProperties
+  //
+  | LargeUpperLeftRightCorner of GlyphKindProperties
+  | LargeLowerLeftRightCorner of GlyphKindProperties
+  | LargeUpperLowerRightCorner of GlyphKindProperties
+  | LargeUpperLowerLeftCorner of GlyphKindProperties
+  | LargeAllCorner of GlyphKindProperties
+  //
+  | Ellipse of GlyphKindProperties
+  | Circle of GlyphKindProperties
+
+type IGlyphScanner =
+  abstract Scan : TxtGrid -> Glyph[]
+
+type ScannerRepository  = Map<char, IGlyphScanner>
+
+type IGlyphRenderer =
+  abstract Render : SvgScale -> SvgOption -> Glyph -> string
+
+type RendererRepository = Map<Glyph, IGlyphRenderer>
+
+type SvgShape =
+  | Glyph
+  | Box
+  | Line
+
+type SvgComponent =
+  | SvgShape
+  | Text
 
 // Error handling
 

@@ -1,0 +1,47 @@
+
+ ArrowUp  ArrowDown  ArrowLeftToRight  ArrowRightToLeft
+ ^   ^      |   +          ->                <-
+ |   +      v   v          +>                <+
+  
+ UpperLeftCorner  LowerLeftCorner  UpperRightCorner  LowerRightCorner
+      +-               |                -+                 |
+      |                +-                |                -+
+       
+ UpperLeftRightCorner  LowerLeftRightCorner  UpperLowerRightCorner  UpperLowerLeftCorner
+         -+-                    |                      |                     |
+          |                    -+-                    -+                     +-
+                                                       |                     |
+          
+               |
+ AllCorner    -+-
+               |
+               
+ RoundUpperLeftCorner  RoundLowerLeftCorner  RoundUpperRightCorner  RoundLowerRightCorner
+      .-                         |                    -.                     |
+      |                          '-                    |                    -'
+       
+ RoundUpperLeftRightCorner  RoundLowerLeftRightCorner  RoundUpperLowerRightCorner  RoundUpperLowerLeftCorner
+         -.-                          |                          |    |                 |     |
+          |                          -'-                        -.   -'                 .-    '-
+                                                                 |    |                 |     |
+          
+                    |       |
+ RoundAllCorner    -.-     -'-
+                    |       |
+            
+        
+        
+ DiamondLeftCorner   DiamondRightCorner  DiamondUpperCorner   DiamondLowerCorner
+        /                   \                    
+       <                     >                   ^                  \ /
+        \                   /                   / \                  v
+                
+ DiamondUpperAndLeftCorner   DiamondUpperAndRightCorner  DiamondLowerAndRightCorner   DiamondLowerAndLeftCorner
+            /                          \                           \ /                         \ /
+           ^                            ^                           v                           v 
+          / \                          / \                         /                             \
+          
+  DiamondAllCorners
+         \ /
+          x
+         / \

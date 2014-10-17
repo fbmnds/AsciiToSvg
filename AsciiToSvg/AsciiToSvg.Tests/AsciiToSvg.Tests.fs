@@ -1,15 +1,20 @@
 ﻿module AsciiToSvg.Tests
 
+
+open System
+open System.IO
+
 // https://github.com/fsharp/FsCheck/blob/master/Docs/Documentation.md
 // https://github.com/fsharp/FsUnit
 // https://code.google.com/p/unquote/
 open NUnit.Framework
 
 open AsciiToSvg
+open AsciiToSvg.GlyphScanner
 
 
 [<Test>]
-let ``splitTxt TestLogo.txt``() =
+let ``TxtFile : TestLogo.txt``() =
   let splitTxtResultExpected =
     [|("Logo", "{\"fill\":\"#88d\",\"a2s:delref\":true}")|],
        [|" .-[Logo]------------------.   ";
@@ -80,3 +85,71 @@ let ``splitTxt TestLogo.txt``() =
             //    01234567890123456789012345
   Assert.AreEqual (matchPositionsExpected, matchPositions "Logo" input)
   Assert.AreEqual (replaceOptionResultExpected, replaceOption '-' "Logo" input)
+
+
+//--------------------------------------------------------------------------------------------------------------------
+
+
+[<Test>]
+let ``GlyphRenderer : ArrowGlyphs.txt``() =
+  let splitTxtResultExpected =
+    [||],
+    [|"  ";
+      "  ArrowUp  ArrowDown  ArrowLeftToRight  ArrowRightToLeft ";
+      "  ^   ^      |   +          ->                <- ";
+      "  |   +      v   v          +>                <+ ";
+      "   "|]
+  let splitTxtResult =
+    @"../../TestTxtFiles/ArrowGlyphs.txt"
+    |> readFile
+    |> splitTxt
+  splitTxtResult = splitTxtResultExpected
+  |>  Assert.True
+
+  let makeGridResultExpected =
+    [|[|' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+        ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+        ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+        ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+     [|' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+     [|' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'U'; 'p'; ' '; ' '; 'A'; 'r'; 'r'; 'o';
+       'w'; 'D'; 'o'; 'w'; 'n'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'L'; 'e'; 'f';
+       't'; 'T'; 'o'; 'R'; 'i'; 'g'; 'h'; 't'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w';
+       'R'; 'i'; 'g'; 'h'; 't'; 'T'; 'o'; 'L'; 'e'; 'f'; 't'; ' '; ' '|];
+     [|' '; ' '; '^'; ' '; ' '; ' '; '^'; ' '; ' '; ' '; ' '; ' '; ' '; '|'; ' ';
+       ' '; ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '-'; '>';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; '<'; '-'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+     [|' '; ' '; '|'; ' '; ' '; ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; 'v'; ' ';
+       ' '; ' '; 'v'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '+'; '>';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; '<'; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+     [|' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+     [|' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+       ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '|]|]
+  let makeGridResult = splitTxtResult |> fun (a, b) -> b |> makeGrid
+  Assert.AreEqual (makeGridResultExpected, makeGridResult)
+
+  let scanner = new ArrowUpScanner() :> IGlyphScanner
+  let scanResult = makeGridResult |> scanner.Scan
+  let scanResultExpected =
+    [| ArrowUp { letter = '^';
+         gridCoord = {row = 3; col = 2;};
+         glyphOptions = Map.empty };
+       ArrowUp { letter = '^';
+         gridCoord = {row = 3; col = 6;};
+         glyphOptions = Map.empty }|]
+  Assert.AreEqual (scanResultExpected, scanResult)
+
+//--------------------------------------------------------------------------------------------------------------------
+
+sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
+|> printfn "%s"
