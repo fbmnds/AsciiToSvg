@@ -67,13 +67,19 @@ type Glyph =
   | Ellipse of GlyphKindProperties
   | Circle of GlyphKindProperties
 
-type IGlyphScanner =
-  abstract Scan : TxtGrid -> Glyph[]
+type GlyphLetter =
+  | Letter of char
+  | Wildcard
 
-type ScannerRepository  = Map<char, IGlyphScanner>
+type GlyphPattern = (GridCoordinates * GlyphLetter)[]
+
+type IGlyphScanner =
+  abstract Scan :  TxtGrid -> Glyph[]
+
+type ScannerRepository = IGlyphScanner []
 
 type IGlyphRenderer =
-  abstract Render : SvgScale -> SvgOption -> Glyph -> string
+  abstract Render : SvgScale -> SvgOption -> Glyph -> string option
 
 type RendererRepository = Map<Glyph, IGlyphRenderer>
 

@@ -1,5 +1,5 @@
 ﻿
  ArrowUp  ArrowDown  ArrowLeftToRight  ArrowRightToLeft
- ^   ^      |   +          ->                <-
- |   +      v   v          +>                <+
+  ^   ^      |   +          ->                <-
+  |   +      v   v          +>                <+
  
