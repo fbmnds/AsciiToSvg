@@ -78,9 +78,9 @@ let ``TxtFile : TestLogo.txt``() =
   let makeGridResult = splitTxtResult |> fun (a, b) -> b |> makeFramedGrid
   Assert.AreEqual (makeGridResultExpected, makeGridResult)
 
-  let matchPositionsExpected = [25; 2]
+  let matchPositionsExpected = [2; 25]
   let replaceOptionResultExpected =
-    ([25; 2], "-----------------------------------------")
+    ([2; 25], "-----------------------------------------")
   let input = "--[Logo]-----------------[Logo]----------"
             //    01234567890123456789012345
   Assert.AreEqual (matchPositionsExpected, matchPositions "Logo" input)
@@ -144,25 +144,51 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
 
   let scanner = new ArrowUpScanner() :> IGlyphScanner
   let scanResult = makeGridResult |> scanner.Scan
-  printfn "%A" scanResult
   let scanResultExpected =
-    [| ArrowUp { letter = '^';
-         gridCoord = {row = 1; col = 1;};
-         glyphOptions = Map.empty };
-       ArrowUp { letter = '^';
-         gridCoord = {row = 1; col = 5;};
-         glyphOptions = Map.empty }|]
+    [|{ glyphKind = ArrowUp;
+        gridCoord = {row = 1; col = 1;};
+        glyphOptions = Map.empty };
+      { glyphKind = ArrowUp;
+        gridCoord = {row = 1; col = 5;};
+        glyphOptions = Map.empty }|]
   Assert.AreEqual (scanResultExpected, scanResult)
 
+  let gridCoord = [|{ col = 0; row = 2 }; { col = 2; row = 0 }|]
+  let svgCoord = gridCoord |> Array.map (ConvertCoordGridToSvg Scale)
+  let svgCoordExpected = [|{ colpx = 0.0; rowpx = 30.0 }; { colpx = 18.0; rowpx = 0.0 }|]
+  Assert.AreEqual(svgCoordExpected, svgCoord)
+  let rowdpx = 5.0
+  let coldpx = 3.0
+  let shiftedCoord = gridCoord |> Array.map (ShiftedCoordGridToSvg Scale coldpx rowdpx)
+  let shiftedCoordExpected = [|{ colpx = 3.0; rowpx = 35.0 }; { colpx = 21.0; rowpx = 5.0 }|]
+  Assert.AreEqual(shiftedCoordExpected, shiftedCoord)
+
+  let ax = 0.0
+  let ay = 7.0
+  let bx = 8.0
+  let by = 7.0
+  let cx = 4.0
+  let cy = 0.0
+  let dx = 4.0
+  let dy = 7.0
+  let ex = 4.0
+  let ey = 14.0
+  let cols = [|ax; bx; cx; dx; ex|] |> Array.map (fun x -> shiftColCoordGridToSvg Scale x { col = 5; row = 1 })
+  let rows = [|ay; by; cy; dy; ey|] |> Array.map (fun x -> shiftRowCoordGridToSvg Scale x { col = 5; row = 1 })
+  let colsExpected = [|45.0; 53.0; 49.0; 49.0; 49.0|]
+  let rowsExpected = [|22.0; 22.0; 15.0; 22.0; 29.0|]
+  Assert.AreEqual(colsExpected, cols)
+  Assert.AreEqual(rowsExpected, rows)
+
   let scanGridResultExpected =
-    [|ArrowUp { letter = '^'; gridCoord = { col = 1; row = 1 }; glyphOptions = Map.empty }
-      ArrowUp { letter = '^'; gridCoord = { col = 5; row = 1 }; glyphOptions = Map.empty }
-      ArrowDown { letter = 'v'; gridCoord = { col = 12; row = 2 }; glyphOptions = Map.empty }
-      ArrowDown { letter = 'v'; gridCoord = { col = 16; row = 2 }; glyphOptions = Map.empty }
-      ArrowLeftToRight { letter = '>'; gridCoord = { col = 28; row = 1 }; glyphOptions = Map.empty }
-      ArrowLeftToRight { letter = '>'; gridCoord = { col = 28; row = 2 }; glyphOptions = Map.empty }
-      ArrowRightToLeft { letter = '<'; gridCoord = { col = 45; row = 1 }; glyphOptions = Map.empty }
-      ArrowRightToLeft { letter = '<'; gridCoord = { col = 45; row = 2 }; glyphOptions = Map.empty }|]
+    [|{ glyphKind = ArrowUp; gridCoord = { col = 1; row = 1 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowUp; gridCoord = { col = 5; row = 1 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowDown; gridCoord = { col = 12; row = 2 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowDown; gridCoord = { col = 16; row = 2 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowLeftToRight; gridCoord = { col = 28; row = 1 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowLeftToRight; gridCoord = { col = 28; row = 2 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowRightToLeft; gridCoord = { col = 45; row = 1 }; glyphOptions = Map.empty }
+      { glyphKind = ArrowRightToLeft; gridCoord = { col = 45; row = 2 }; glyphOptions = Map.empty }|]
   let scanGridResult = makeGridResult |> ScanGrid
   let scanGridResultMapped =
     scanGridResult
@@ -171,32 +197,43 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
   Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], scanGridResultMapped)
 
   let renderResult =
-    [| (ArrowUpRenderer() :> IGlyphRenderer).Render { scx = 1.0; scy = 1.0 } Map.empty
-       (ArrowDownRenderer() :> IGlyphRenderer).Render { scx = 1.0; scy = 1.0 } Map.empty
-       (ArrowLeftToRightRenderer() :> IGlyphRenderer).Render { scx = 1.0; scy = 1.0 } Map.empty
-       (ArrowRightToLeftRenderer() :> IGlyphRenderer).Render { scx = 1.0; scy = 1.0 } Map.empty |]
-    |> Array.Parallel.map (fun f -> Array.Parallel.map f scanGridResult)
-    |> Array.concat
-    |> Array.choose id
-    |> Array.sort
+    scanGridResult
+    |> Array.Parallel.map (Render Scale Map.empty)
+    |> Array.fold (fun r s -> r + s + "\n") ""
 
   printfn "%A" renderResult
 
   let renderResultExpected =
-    [|"      <polygon fill=\"black\" points=\"8.000,29.000 4.000,29.000 8.000,36.000 8.000,29.000 12.000,29.000 8.000,28.000\" />";
-      "      <polygon fill=\"black\" points=\"8.000,35.000 12.000,35.000 8.000,28.000 8.000,35.000 4.000,35.000 8.000,36.000\" />";
-      "      <polygon fill=\"black\" points=\"8.000,35.000 4.000,35.000 11.000,35.000 8.000,35.000 8.000,35.000 8.000,36.000\" />";
-      "      <polygon fill=\"black\" points=\"8.000,5.000 8.000,13.000 1.000,9.000 8.000,5.000 8.000,9.000 15.000,9.000\" />";
-      "      <polygon fill=\"black\" points=\"9.000,12.000 9.000,20.000 16.000,16.000 9.000,12.000 9.000,16.000 2.000,16.000\" />";
-      "      <polygon fill=\"black\" points=\"9.000,16.000 9.000,24.000 16.000,20.000 9.000,16.000 9.000,20.000 2.000,20.000\" />";
-      "      <polygon fill=\"black\" points=\"9.000,28.000 5.000,35.000 12.000,35.000 9.000,28.000 9.000,35.000 9.000,36.000\" />";
-      "      <polygon fill=\"black\" points=\"9.000,35.000 5.000,35.000 12.000,35.000 9.000,35.000 9.000,35.000 9.000,36.000\" />"|]
-  //Assert.AreEqual (renderResultExpected, renderResult)
+    "      <polygon fill=\"black\" points=\"9.000,22.000 17.000,22.000 13.000,15.000 9.000,22.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"13.000\" y1=\"22.000\" x2=\"13.000\" y2=\"29.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"45.000,22.000 53.000,22.000 49.000,15.000 45.000,22.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"49.000\" y1=\"22.000\" x2=\"49.000\" y2=\"29.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"253.000,18.000 253.000,26.000 260.000,22.000 253.000,18.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"253.000\" y1=\"22.000\" x2=\"252.000\" y2=\"22.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"412.000,18.000 412.000,26.000 405.000,22.000 412.000,18.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"412.000\" y1=\"22.000\" x2=\"413.000\" y2=\"22.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"108.000,37.000 116.000,37.000 112.000,44.000 108.000,37.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"112.000\" y1=\"37.000\" x2=\"112.000\" y2=\"30.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"144.000,37.000 152.000,37.000 148.000,44.000 144.000,37.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"148.000\" y1=\"37.000\" x2=\"148.000\" y2=\"30.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"253.000,33.000 253.000,41.000 260.000,37.000 253.000,33.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"253.000\" y1=\"37.000\" x2=\"252.000\" y2=\"37.000\" />\n\n" +
+
+    "      <polygon fill=\"black\" points=\"412.000,33.000 412.000,41.000 405.000,37.000 412.000,33.000\" />\n" +
+    "      <line stroke=\"black\" stroke-width=\"1\" x1=\"412.000\" y1=\"37.000\" x2=\"413.000\" y2=\"37.000\" />\n\n"
+  Assert.AreEqual (renderResultExpected, renderResult)
 
   CanvasWidth <- 450.0
   CanvasHeight <- 75.0
   let ArrowGlyphsAsSvg =
-    svgTemplateOpen + (renderResult |> Array.fold (fun r s -> r + s + "\n") "") + svgTemplateClose
+    //SvgTemplateOpen + (renderResult |> Array.fold (fun r s -> r + s + "\n") "") + SvgTemplateClose
+    SvgTemplateOpen + renderResult + SvgTemplateClose
 
   printfn "%A" ArrowGlyphsAsSvg
 

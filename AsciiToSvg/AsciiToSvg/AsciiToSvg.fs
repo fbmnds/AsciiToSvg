@@ -3,69 +3,71 @@
 type TxtGrid = char[][]
 
 type GridCoordinates = { col : int; row : int }
-type SvgCoordinates = { px : float; py : float }
+type SvgCoordinates = { colpx : float; rowpx : float }
 
 type SvgOption = Map<string, string>
 
-type SvgScale = { scx : float; scy : float }
-
-type GlyphKindProperties =
-  { letter : char
-    gridCoord : GridCoordinates
-    glyphOptions : SvgOption }
+type SvgScale = { colsc : float; rowsc : float }
 
 type Glyph =
-  | ArrowUp of GlyphKindProperties
-  | ArrowDown of GlyphKindProperties
-  | ArrowLeftToRight of GlyphKindProperties
-  | ArrowRightToLeft of GlyphKindProperties
+  | ArrowUp
+  | ArrowDown
+  | ArrowLeftToRight
+  | ArrowRightToLeft
   //
-  | UpperLeftCorner of GlyphKindProperties
-  | LowerLeftCorner of GlyphKindProperties
-  | UpperRightCorner of GlyphKindProperties
-  | LowerRightCorner of GlyphKindProperties
+  | UpperLeftCorner
+  | LowerLeftCorner
+  | UpperRightCorner
+  | LowerRightCorner
   //
-  | UpperLeftRightCorner of GlyphKindProperties
-  | LowerLeftRightCorner of GlyphKindProperties
-  | UpperLowerRightCorner of GlyphKindProperties
-  | UpperLowerLeftCorner of GlyphKindProperties
-  | AllCorner of GlyphKindProperties
+  | UpperLeftRightCorner
+  | LowerLeftRightCorner
+  | UpperLowerRightCorner
+  | UpperLowerLeftCorner
+  | AllCorner
   //
-  | RoundUpperLeftCorner of GlyphKindProperties
-  | RoundLowerLeftCorner of GlyphKindProperties
-  | RoundUpperRightCorner of GlyphKindProperties
-  | RoundLowerRightCorner of GlyphKindProperties
+  | RoundUpperLeftCorner
+  | RoundLowerLeftCorner
+  | RoundUpperRightCorner
+  | RoundLowerRightCorner
   //
-  | RoundUpperLeftRightCorner of GlyphKindProperties
-  | RoundLowerLeftRightCorner of GlyphKindProperties
-  | RoundUpperLowerRightCorner of GlyphKindProperties
-  | RoundUpperLowerLeftCorner of GlyphKindProperties
-  | RoundAllCorner of GlyphKindProperties
+  | RoundUpperLeftRightCorner
+  | RoundLowerLeftRightCorner
+  | RoundUpperLowerRightCorner
+  | RoundUpperLowerLeftCorner
+  | RoundAllCorner
   //
-  | DiamondLeftCorner of GlyphKindProperties
-  | DiamondRightCorner of GlyphKindProperties
-  | DiamondUpperCorner of GlyphKindProperties
-  | DiamondLowerCorner of GlyphKindProperties
+  | DiamondLeftCorner
+  | DiamondRightCorner
+  | DiamondUpperCorner
+  | DiamondLowerCorner
   //
-  | DiamondUpperAndLeftCorner of GlyphKindProperties
-  | DiamondUpperAndRightCorner of GlyphKindProperties
-  | DiamondLowerAndLeftCorner of GlyphKindProperties
-  | DiamondLowerAndRightCorner of GlyphKindProperties
-  | DiamondAllCorner of GlyphKindProperties
+  | DiamondUpperAndLeftCorner
+  | DiamondUpperAndRightCorner
+  | DiamondLowerAndLeftCorner
+  | DiamondLowerAndRightCorner
+  | DiamondAllCorner
   //
-  | LargeUpperLeftCorner of GlyphKindProperties
-  | LargeLowerLeftCorner of GlyphKindProperties
-  | LargeUpperRightCorner of GlyphKindProperties
-  | LargeLowerRightCorner of GlyphKindProperties
+  | LargeUpperLeftCorner
+  | LargeLowerLeftCorner
+  | LargeUpperRightCorner
+  | LargeLowerRightCorner
   //
-  | LargeUpperLeftRightCorner of GlyphKindProperties
-  | LargeLowerLeftRightCorner of GlyphKindProperties
-  | LargeUpperLowerRightCorner of GlyphKindProperties
-  | LargeUpperLowerLeftCorner of GlyphKindProperties
-  | LargeAllCorner of GlyphKindProperties
+  | LargeUpperLeftRightCorner
+  | LargeLowerLeftRightCorner
+  | LargeUpperLowerRightCorner
+  | LargeUpperLowerLeftCorner
+  | LargeAllCorner
   //
-  | Ellipse of GlyphKindProperties
-  | Circle of GlyphKindProperties
+  | Ellipse
+  | Circle
+  //
+  | Empty
+
+type GlyphKindProperties =
+  { glyphKind : Glyph
+    gridCoord : GridCoordinates
+    glyphOptions : SvgOption }
 
 type GlyphLetter =
   | Letter of char
@@ -74,12 +76,12 @@ type GlyphLetter =
 type GlyphPattern = (GridCoordinates * GlyphLetter)[]
 
 type IGlyphScanner =
-  abstract Scan :  TxtGrid -> Glyph[]
+  abstract Scan :  TxtGrid -> GlyphKindProperties[]
 
 type ScannerRepository = IGlyphScanner []
 
 type IGlyphRenderer =
-  abstract Render : SvgScale -> SvgOption -> Glyph -> string option
+  abstract Render : SvgScale -> SvgOption -> GlyphKindProperties -> string option
 
 type RendererRepository = Map<Glyph, IGlyphRenderer>
 
@@ -92,7 +94,7 @@ type SvgComponent =
   | SvgShape
   | Text
 
-// Error handling
+// #region Error handling
 
 type ErrorLabel = ErrorLabel of string
 type Stacktrace = Stacktrace of string
@@ -133,8 +135,9 @@ type Result<'TEntity> =
     | Success of 'TEntity
     | Failure of AsciiToSvgMessage list
 
+// #endregion
 
-// Logging Interface
+// #region Logging Interface
 
 type LogMessageBaseType =
     | String of string
@@ -148,3 +151,5 @@ type LogMessage = seq<LogMessageBaseType>
 type ILogger =
     inherit System.IDisposable
     abstract member Log: string -> LogMessage -> unit
+
+//#endregion

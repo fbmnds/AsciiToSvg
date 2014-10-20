@@ -44,35 +44,35 @@ let IsArrowRightToLeft (txtGrid: TxtGrid) col row =
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
-let ScanGrid (grid : TxtGrid) : Glyph[] =
-  let scan letter i j =
-    let glyphProperty : GlyphKindProperties =
-     { letter = letter;
+let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
+  let scan i j =
+    let glyphProperty glyphKind : GlyphKindProperties =
+     { glyphKind = glyphKind;
        gridCoord = { col = i; row = j };
        glyphOptions = Map.empty }
-    if (IsArrowUp grid i j) then [| glyphProperty |> ArrowUp |] else
-    if (IsArrowDown grid i j) then [| glyphProperty |> ArrowDown |] else
-    if (IsArrowLeftToRight grid i j) then [| glyphProperty |> ArrowLeftToRight |] else
-    if (IsArrowRightToLeft grid i j) then [| glyphProperty |> ArrowRightToLeft |]
+    if (IsArrowUp grid i j) then glyphProperty ArrowUp else
+    if (IsArrowDown grid i j) then glyphProperty ArrowDown else
+    if (IsArrowLeftToRight grid i j) then glyphProperty ArrowLeftToRight else
+    if (IsArrowRightToLeft grid i j) then glyphProperty ArrowRightToLeft
     else
-      [||]
+      glyphProperty Empty
   if grid.Length = 0 then [||]
   else
     grid
-    |> Array.Parallel.mapi (fun row -> Array.mapi (fun col letter -> scan letter col row))
-    |> Array.Parallel.map Array.concat
+    |> Array.Parallel.mapi (fun row -> Array.mapi (fun col _ -> scan col row))
+    |> Array.Parallel.mapi (fun row -> Array.filter (fun x -> x.glyphKind <> Empty))
     |> Array.concat
 
 type ArrowUpScanner() = class
 
   interface IGlyphScanner with
 
-    member x.Scan (grid : TxtGrid) : Glyph[] =
+    member x.Scan (grid : TxtGrid) : GlyphKindProperties[] =
         let scan letter i j =
             if (IsArrowUp grid i j) then
-              [| { letter = '^'
+              [| { glyphKind = ArrowUp
                    gridCoord = { col = i; row = j }
-                   glyphOptions = Map.empty } |> ArrowUp |]
+                   glyphOptions = Map.empty } |]
             else
               [||]
         if grid.Length = 0 then [||]

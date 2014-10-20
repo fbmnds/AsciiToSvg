@@ -1,48 +1,76 @@
 ﻿module AsciiToSvg.SvgDocument
 
+open System
+open System.Globalization
+
 let mutable FontSize = 12.0
 let mutable FontOffsetWidth = 0.0
 let mutable FontOffsetHeight = 11.0
 let mutable GlyphWidth = 9.0
 let mutable GlyphHeight = 15.0
-let mutable CanvasWidth = 720.0  //  80 glyphs per line
-let mutable CanvasHeight = 675.0 // 45 lines
+let mutable CanvasWidth = 720.0   //  80 glyphs per line
+let mutable CanvasHeight = 675.0  // 45 lines
+let mutable Scale = { colsc = 1.0; rowsc = 1.0 }
+let mutable Fill = "black"
+let mutable Stroke = "black"
+let mutable StrokeWidth = 1.0
 
-let svgTemplateOpen =
-  "<?xml version=\"1.0\" standalone=\"no\"?>" +
+let culture = new CultureInfo("en-US")
+
+let SvgTemplateOpen =
+  "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
   "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"" +
-  "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" +
-  "<!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->" +
-  (sprintf "<svg width=\"%.0fpx\" height=\"%.0fpx\" font-size=\"%.1f\" version=\"1.1\"" CanvasWidth CanvasHeight FontSize) +
+  "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
+  "<!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->\n" +
+  (sprintf "<svg width=\"%.0fpx\" height=\"%.0fpx\" font-size=\"%.3f\" version=\"1.1\"\n" CanvasWidth CanvasHeight FontSize) +
   """
-    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-      <filter id="dsFilterNoBlur" width="150%" height="150%">
-        <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
-        <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
-        <feBlend in="SourceGraphic" in2="matrixOut" mode="normal"/>
-      </filter>
-      <filter id="dsFilter" width="150%" height="150%">
-        <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
-        <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
-        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"/>
-        <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
-      </filter>
-      <marker id="iPointer"
-        viewBox="0 0 10 10" refX="5" refY="5"
-        markerUnits="strokeWidth"
-        markerWidth="8" markerHeight="7"
-        orient="auto">
-        <path d="M 10 0 L 10 10 L 0 5 z" />
-      </marker>
-      <marker id="Pointer"
-        viewBox="0 0 10 10" refX="5" refY="5"
-        markerUnits="strokeWidth"
-        markerWidth="8" markerHeight="7"
-        orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10 z" />
-      </marker>
-    </defs>
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <filter id="dsFilterNoBlur" width="150%" height="150%">
+      <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
+      <feBlend in="SourceGraphic" in2="matrixOut" mode="normal"/>
+    </filter>
+    <filter id="dsFilter" width="150%" height="150%">
+      <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"/>
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+    </filter>
+  </defs>
   """
 
-let svgTemplateClose = "  </svg>"
+let SvgTemplateClose = "  </svg>"
+
+let ConvertCoordGridToSvg scale (gridCoord: GridCoordinates) =
+  { colpx = ((float) gridCoord.col * GlyphWidth * scale.colsc) |> fun x -> Math.Round(x, 3)
+    rowpx = ((float) gridCoord.row * GlyphHeight * scale.rowsc) |> fun x -> Math.Round(x, 3) }
+
+let shiftColCoordGridToSvg scale coldpx (gridCoord: GridCoordinates) =
+  ((float) gridCoord.col * GlyphWidth + coldpx) * scale.colsc |> fun x -> Math.Round(x, 3)
+
+let shiftRowCoordGridToSvg scale rowdpx gridCoord =
+  ((float) gridCoord.row * GlyphHeight + rowdpx) * scale.rowsc |> fun x -> Math.Round(x, 3)
+
+let ShiftedCoordGridToSvg scale coldpx rowdpx (gridCoord: GridCoordinates) =
+  { colpx = shiftColCoordGridToSvg scale coldpx gridCoord
+    rowpx = shiftRowCoordGridToSvg scale rowdpx gridCoord }
+
+let ScalableArrowTemplate (glyph: GlyphKindProperties) (options: Map<string, string>) scale ax ay bx by cx cy dx dy ex ey =
+  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
+  let cols = [|ax; bx; cx; dx; ex|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
+  let rows = [|ay; by; cy; dy; ey|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
+  [|"      <polygon "
+    sprintf "fill=\"%s\" " (getOption "fill" Fill)
+    sprintf "points=\"%.3f,%.3f " cols.[0] rows.[0]
+    sprintf "%.3f,%.3f " cols.[1] rows.[1]
+    sprintf "%.3f,%.3f " cols.[2] rows.[2]
+    sprintf "%.3f,%.3f\" />\n" cols.[0] rows.[0]
+    "      <line "
+    sprintf "stroke=\"%s\" " (getOption "stroke" (Stroke.ToString(culture)))
+    sprintf "stroke-width=\"%s\" " (getOption "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" cols.[3] rows.[3] cols.[4] rows.[4] |]
+  |> Array.fold (fun r s -> r + s) ""
+
+let ArrowTemplate (glyph: GlyphKindProperties) ax ay bx by cx cy dx dy ex ey =
+  ScalableArrowTemplate glyph Map.empty Scale ax ay bx by cx cy dx dy ex ey
