@@ -2,7 +2,7 @@
 
 type TxtGrid = char[][]
 
-type GridCoordinates = { row : int; col : int }
+type GridCoordinates = { col : int; row : int }
 type SvgCoordinates = { px : float; py : float }
 
 type SvgOption = Map<string, string>

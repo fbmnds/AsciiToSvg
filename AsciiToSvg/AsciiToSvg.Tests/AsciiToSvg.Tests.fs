@@ -11,6 +11,7 @@ open NUnit.Framework
 open AsciiToSvg
 open AsciiToSvg.GlyphScanner
 open AsciiToSvg.GlyphRenderer
+open AsciiToSvg.SvgDocument
 
 [<Test>]
 let ``TxtFile : TestLogo.txt``() =
@@ -77,9 +78,9 @@ let ``TxtFile : TestLogo.txt``() =
   let makeGridResult = splitTxtResult |> fun (a, b) -> b |> makeFramedGrid
   Assert.AreEqual (makeGridResultExpected, makeGridResult)
 
-  let matchPositionsExpected = [2; 25]
+  let matchPositionsExpected = [25; 2]
   let replaceOptionResultExpected =
-    ([2; 25], "-----------------------------------------")
+    ([25; 2], "-----------------------------------------")
   let input = "--[Logo]-----------------[Logo]----------"
             //    01234567890123456789012345
   Assert.AreEqual (matchPositionsExpected, matchPositions "Logo" input)
@@ -138,11 +139,12 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
         ' '; 'v'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '+'; '>'; ' ';
         ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
         '<'; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '|]|]
-  let makeGridResult = splitTxtResult |> fun (a, b) -> b |> makeTrimmedGrid
+  let makeGridResult = splitTxtResult |> fun (_, b) -> b |> makeTrimmedGrid
   Assert.AreEqual (makeGridResultExpected, makeGridResult)
 
   let scanner = new ArrowUpScanner() :> IGlyphScanner
   let scanResult = makeGridResult |> scanner.Scan
+  printfn "%A" scanResult
   let scanResultExpected =
     [| ArrowUp { letter = '^';
          gridCoord = {row = 1; col = 1;};
@@ -153,14 +155,14 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
   Assert.AreEqual (scanResultExpected, scanResult)
 
   let scanGridResultExpected =
-    [|ArrowUp { letter = '^'; gridCoord = { row = 1; col = 1 }; glyphOptions = Map.empty }
-      ArrowUp { letter = '^'; gridCoord = { row = 1; col = 5 }; glyphOptions = Map.empty }
-      ArrowDown { letter = 'v'; gridCoord = { row = 2; col = 12 }; glyphOptions = Map.empty }
-      ArrowDown { letter = 'v'; gridCoord = { row = 2; col = 16 }; glyphOptions = Map.empty }
-      ArrowLeftToRight { letter = '>'; gridCoord = { row = 1; col = 28 }; glyphOptions = Map.empty }
-      ArrowLeftToRight { letter = '>'; gridCoord = { row = 2; col = 28 }; glyphOptions = Map.empty }
-      ArrowRightToLeft { letter = '<'; gridCoord = { row = 1; col = 45 }; glyphOptions = Map.empty }
-      ArrowRightToLeft { letter = '<'; gridCoord = { row = 2; col = 45 }; glyphOptions = Map.empty }|]
+    [|ArrowUp { letter = '^'; gridCoord = { col = 1; row = 1 }; glyphOptions = Map.empty }
+      ArrowUp { letter = '^'; gridCoord = { col = 5; row = 1 }; glyphOptions = Map.empty }
+      ArrowDown { letter = 'v'; gridCoord = { col = 12; row = 2 }; glyphOptions = Map.empty }
+      ArrowDown { letter = 'v'; gridCoord = { col = 16; row = 2 }; glyphOptions = Map.empty }
+      ArrowLeftToRight { letter = '>'; gridCoord = { col = 28; row = 1 }; glyphOptions = Map.empty }
+      ArrowLeftToRight { letter = '>'; gridCoord = { col = 28; row = 2 }; glyphOptions = Map.empty }
+      ArrowRightToLeft { letter = '<'; gridCoord = { col = 45; row = 1 }; glyphOptions = Map.empty }
+      ArrowRightToLeft { letter = '<'; gridCoord = { col = 45; row = 2 }; glyphOptions = Map.empty }|]
   let scanGridResult = makeGridResult |> ScanGrid
   let scanGridResultMapped =
     scanGridResult
@@ -191,6 +193,8 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
       "      <polygon fill=\"black\" points=\"9.000,35.000 5.000,35.000 12.000,35.000 9.000,35.000 9.000,35.000 9.000,36.000\" />"|]
   //Assert.AreEqual (renderResultExpected, renderResult)
 
+  CanvasWidth <- 450.0
+  CanvasHeight <- 75.0
   let ArrowGlyphsAsSvg =
     svgTemplateOpen + (renderResult |> Array.fold (fun r s -> r + s + "\n") "") + svgTemplateClose
 
