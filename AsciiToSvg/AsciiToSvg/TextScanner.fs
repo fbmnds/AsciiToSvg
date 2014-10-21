@@ -19,7 +19,7 @@ let ScanTextByChars (grid : TxtGrid) : Text[] =
     |> Array.Parallel.mapi (fun row -> Array.filter (fun x -> x.text <> ""))
     |> Array.concat
 
-let ScanText (grid : TxtGrid) (*: Text[]*) =
+let ScanText (grid : TxtGrid) : Text[] =
   let testStart col row =
     if col = 0 then (IsNotGlyph grid col row)
     else (IsGlyph grid (col - 1) row) && (IsNotGlyph grid col row)

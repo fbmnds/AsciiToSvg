@@ -6,6 +6,7 @@ open System.Globalization
 let mutable FontSize = 12.0
 let mutable FontOffsetWidth = 0.0
 let mutable FontOffsetHeight = 11.0
+let mutable FontFamily = "Consolas"
 let mutable GlyphWidth = 9.0
 let mutable GlyphHeight = 15.0
 let mutable CanvasWidth = 720.0   //  80 glyphs per line
@@ -101,3 +102,17 @@ let ScalableCornerTemplate (glyph: Glyph) (options: Map<string, string>) scale =
     set <- set.Add (putTick cols.[0] rows.[0] cols.[1] rows.[1])
   | _ -> ()
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
+
+let ScalableTextTemplate (text: Text) (options: Map<string, string>) scale =
+  let x = (float)text.gridCoord.col * GlyphWidth * scale.colsc
+  let y = ((float)(text.gridCoord.row) * GlyphHeight + 11.0) * scale.rowsc
+  let fontSize = (FontSize * scale.rowsc).ToString(culture)
+  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
+  [|"      <text "
+    sprintf "x=\"%.3f\" y=\"%.3f\" " x y
+    sprintf "style=\"fill:%s\" " (getOption "fill" Fill)
+    sprintf "font-family=\"%s\" " (getOption "font-family" FontFamily)
+    sprintf "font-size=\"%s\">\n" (getOption "font-size" fontSize)
+    text.text
+    "\n      </text>"|]
+  |> Array.fold (fun r s -> r + s) ""

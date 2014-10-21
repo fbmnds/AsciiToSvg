@@ -15,6 +15,7 @@ open AsciiToSvg.GlyphRenderer
 open AsciiToSvg.SvgDocument
 
 
+
 // #region Handling input files
 
 [<Test>]
@@ -239,6 +240,22 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
         gridCoord = { col = 0; row = 0 }
         glyphOptions = Map.empty }|]
   Assert.AreEqual(textExpected, text)
+
+  // This test will fail after implementing Line rendering!
+  //
+  CanvasWidth <- (float)makeGridResult.[0].Length * GlyphWidth
+  CanvasHeight <- (float)makeGridResult.Length * GlyphHeight
+  let renderedText = (TextRenderer.RenderAll Scale Map.empty text).[0]
+  let arrowGlyphsAsSvg =
+    SvgTemplateOpen + (sprintf "\n%s\n" renderedText ) + renderResult + SvgTemplateClose
+    |> fun x -> regex(@"\r\n").Replace(x, "\n")
+  let arrowGlyphsAsSvgExpected =
+    @"../../TestSvgFiles/ArrowGlyphs.svg"
+    |> readFileAsText
+    |> function | Success x -> x | _ -> ""
+    |> fun x -> regex(@"\r\n").Replace(x, "\n")
+  Assert.AreEqual(arrowGlyphsAsSvgExpected, arrowGlyphsAsSvg)
+
 
 // #endregion
 

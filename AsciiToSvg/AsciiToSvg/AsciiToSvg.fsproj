@@ -59,6 +59,7 @@
     <Compile Include="GlyphRenderer.fs" />
     <Compile Include="LineScanner.fs" />
     <Compile Include="TextScanner.fs" />
+    <Compile Include="TextRenderer.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
   </ItemGroup>
