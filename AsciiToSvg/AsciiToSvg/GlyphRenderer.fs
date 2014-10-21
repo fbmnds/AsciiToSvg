@@ -1,6 +1,5 @@
 ﻿module AsciiToSvg.GlyphRenderer
 
-open System
 
 open AsciiToSvg.SvgDocument
 

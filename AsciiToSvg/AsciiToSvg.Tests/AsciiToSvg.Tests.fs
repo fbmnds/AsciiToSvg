@@ -146,17 +146,6 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
   let makeGridResult = splitTxtResult |> fun (_, b) -> b |> makeTrimmedGrid
   Assert.AreEqual (makeGridResultExpected, makeGridResult)
 
-  let scanner = new ArrowUpScanner() :> IGlyphScanner
-  let scanResult = makeGridResult |> scanner.Scan
-  let scanResultExpected =
-    [|{ glyphKind = ArrowUp;
-        gridCoord = {row = 1; col = 1;};
-        glyphOptions = Map.empty };
-      { glyphKind = ArrowUp;
-        gridCoord = {row = 1; col = 5;};
-        glyphOptions = Map.empty }|]
-  Assert.AreEqual (scanResultExpected, scanResult)
-
   let gridCoord = [|{ col = 0; row = 2 }; { col = 2; row = 0 }|]
   let svgCoord = gridCoord |> Array.map (ConvertCoordGridToSvg Scale)
   let svgCoordExpected = [|{ colpx = 0.0; rowpx = 30.0 }; { colpx = 18.0; rowpx = 0.0 }|]

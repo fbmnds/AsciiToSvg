@@ -56,7 +56,7 @@ let ShiftedCoordGridToSvg scale coldpx rowdpx (gridCoord: GridCoordinates) =
   { colpx = shiftColCoordGridToSvg scale coldpx gridCoord
     rowpx = shiftRowCoordGridToSvg scale rowdpx gridCoord }
 
-let ScalableArrowTemplate (glyph: GlyphKindProperties) (options: Map<string, string>) scale ax ay bx by cx cy dx dy ex ey =
+let ScalableArrowTemplate (glyph: Glyph) (options: Map<string, string>) scale ax ay bx by cx cy dx dy ex ey =
   let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
   let cols = [|ax; bx; cx; dx; ex|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|ay; by; cy; dy; ey|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
@@ -72,5 +72,5 @@ let ScalableArrowTemplate (glyph: GlyphKindProperties) (options: Map<string, str
     sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" cols.[3] rows.[3] cols.[4] rows.[4] |]
   |> Array.fold (fun r s -> r + s) ""
 
-let ArrowTemplate (glyph: GlyphKindProperties) ax ay bx by cx cy dx dy ex ey =
+let ArrowTemplate (glyph: Glyph) ax ay bx by cx cy dx dy ex ey =
   ScalableArrowTemplate glyph Map.empty Scale ax ay bx by cx cy dx dy ex ey

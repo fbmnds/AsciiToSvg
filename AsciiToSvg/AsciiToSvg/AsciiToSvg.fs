@@ -9,7 +9,7 @@ type SvgOption = Map<string, string>
 
 type SvgScale = { colsc : float; rowsc : float }
 
-type Glyph =
+type GlyphKind =
   | ArrowUp
   | ArrowDown
   | ArrowLeftToRight
@@ -64,8 +64,8 @@ type Glyph =
   //
   | Empty
 
-type GlyphKindProperties =
-  { glyphKind : Glyph
+type Glyph =
+  { glyphKind : GlyphKind
     gridCoord : GridCoordinates
     glyphOptions : SvgOption }
 
@@ -74,16 +74,6 @@ type GlyphLetter =
   | Wildcard
 
 type GlyphPattern = (GridCoordinates * GlyphLetter)[]
-
-type IGlyphScanner =
-  abstract Scan :  TxtGrid -> GlyphKindProperties[]
-
-type ScannerRepository = IGlyphScanner []
-
-type IGlyphRenderer =
-  abstract Render : SvgScale -> SvgOption -> GlyphKindProperties -> string option
-
-type RendererRepository = Map<Glyph, IGlyphRenderer>
 
 type SvgShape =
   | Glyph

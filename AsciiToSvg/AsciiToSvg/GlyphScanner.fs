@@ -115,20 +115,27 @@ let IsCrossCorner (txtGrid: TxtGrid) col row =
 
 // #endregion
 
-let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
+let ScanGrid (grid : TxtGrid) : Glyph[] =
   let scan i j =
-    let glyphProperty glyphKind : GlyphKindProperties =
+    let glyphProperty glyphKind : Glyph =
      { glyphKind = glyphKind;
        gridCoord = { col = i; row = j };
        glyphOptions = Map.empty }
+    // Arrows
     if (IsArrowUp grid i j) then glyphProperty ArrowUp else
     if (IsArrowDown grid i j) then glyphProperty ArrowDown else
     if (IsArrowLeftToRight grid i j) then glyphProperty ArrowLeftToRight else
     if (IsArrowRightToLeft grid i j) then glyphProperty ArrowRightToLeft else
+    // Corners
     if (IsUpperLeftCorner grid i j) then glyphProperty UpperLeftCorner else
     if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
     if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
-    if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner
+    if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner else
+    if (IsUpperLeftAndRightCorner grid i j) then glyphProperty UpperLeftAndRightCorner else
+    if (IsLowerLeftAndRightCorner grid i j) then glyphProperty LowerLeftAndRightCorner else
+    if (IsUpperAndLowerRightCorner grid i j) then glyphProperty UpperAndLowerRightCorner else
+    if (IsUpperAndLowerLeftCorner grid i j) then glyphProperty UpperAndLowerLeftCorner else
+    if (IsCrossCorner grid i j) then glyphProperty CrossCorner
     else
       glyphProperty Empty
   if grid.Length = 0 then [||]
@@ -137,28 +144,3 @@ let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
     |> Array.Parallel.mapi (fun row -> Array.mapi (fun col _ -> scan col row))
     |> Array.Parallel.mapi (fun row -> Array.filter (fun x -> x.glyphKind <> Empty))
     |> Array.concat
-
-// #region Depricated
-
-type ArrowUpScanner() = class
-
-  interface IGlyphScanner with
-
-    member x.Scan (grid : TxtGrid) : GlyphKindProperties[] =
-        let scan letter i j =
-            if (IsArrowUp grid i j) then
-              [| { glyphKind = ArrowUp
-                   gridCoord = { col = i; row = j }
-                   glyphOptions = Map.empty } |]
-            else
-              [||]
-        if grid.Length = 0 then [||]
-        else
-          grid
-          |> Array.Parallel.mapi (fun i -> Array.mapi (fun j c -> scan c j i))
-          |> Array.Parallel.map Array.concat
-          |> Array.concat
-
-end
-
-// #endregion
