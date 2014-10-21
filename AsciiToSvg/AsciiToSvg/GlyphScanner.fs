@@ -12,6 +12,8 @@ let IsGlyphByPattern (pattern: GlyphPattern) (txtGrid: TxtGrid) col row =
       with _ -> false)
   |> Array.reduce (fun x y -> x && y)
 
+// #region Arrows
+
 let IsArrowUp (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter '^'))
       ({ col = 0; row = 1 }, (Letter '+'))|]
@@ -44,6 +46,136 @@ let IsArrowRightToLeft (txtGrid: TxtGrid) col row =
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
+// #endregion
+
+// #region Corners
+
+let IsUpperLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsLowerLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsUpperRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsLowerRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+  //------------------------------------------
+  //------------------------------------------
+
+let IsUpperLeftAndRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '-'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsLowerLeftAndRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = 1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsUpperAndLowerRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = 1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsUpperAndLowerLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsCrossCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '-'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '|'))|]
+    [|({ col = 0; row = 0 }, (Letter '+'))
+      ({ col = -1; row = 0 }, (Letter '+'))
+      ({ col = 0; row = -1 }, (Letter '+'))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+  //------------------------------------------
+  //------------------------------------------
+
+// #endregion
+
 let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
   let scan i j =
     let glyphProperty glyphKind : GlyphKindProperties =
@@ -53,7 +185,11 @@ let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
     if (IsArrowUp grid i j) then glyphProperty ArrowUp else
     if (IsArrowDown grid i j) then glyphProperty ArrowDown else
     if (IsArrowLeftToRight grid i j) then glyphProperty ArrowLeftToRight else
-    if (IsArrowRightToLeft grid i j) then glyphProperty ArrowRightToLeft
+    if (IsArrowRightToLeft grid i j) then glyphProperty ArrowRightToLeft else
+    if (IsUpperLeftCorner grid i j) then glyphProperty UpperLeftCorner else
+    if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
+    if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
+    if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner
     else
       glyphProperty Empty
   if grid.Length = 0 then [||]
@@ -62,6 +198,8 @@ let ScanGrid (grid : TxtGrid) : GlyphKindProperties[] =
     |> Array.Parallel.mapi (fun row -> Array.mapi (fun col _ -> scan col row))
     |> Array.Parallel.mapi (fun row -> Array.filter (fun x -> x.glyphKind <> Empty))
     |> Array.concat
+
+// #region Depricated
 
 type ArrowUpScanner() = class
 
@@ -83,3 +221,5 @@ type ArrowUpScanner() = class
           |> Array.concat
 
 end
+
+// #endregion

@@ -20,22 +20,22 @@ type Glyph =
   | UpperRightCorner
   | LowerRightCorner
   //
-  | UpperLeftRightCorner
-  | LowerLeftRightCorner
-  | UpperLowerRightCorner
-  | UpperLowerLeftCorner
-  | AllCorner
+  | UpperLeftAndRightCorner
+  | LowerLeftAndRightCorner
+  | UpperAndLowerRightCorner
+  | UpperAndLowerLeftCorner
+  | CrossCorner
   //
   | RoundUpperLeftCorner
   | RoundLowerLeftCorner
   | RoundUpperRightCorner
   | RoundLowerRightCorner
   //
-  | RoundUpperLeftRightCorner
-  | RoundLowerLeftRightCorner
-  | RoundUpperLowerRightCorner
-  | RoundUpperLowerLeftCorner
-  | RoundAllCorner
+  | RoundUpperLeftAndRightCorner
+  | RoundLowerLeftAndRightCorner
+  | RoundUpperAndLowerRightCorner
+  | RoundUpperAndLowerLeftCorner
+  | RoundCrossCorner
   //
   | DiamondLeftCorner
   | DiamondRightCorner
@@ -46,18 +46,18 @@ type Glyph =
   | DiamondUpperAndRightCorner
   | DiamondLowerAndLeftCorner
   | DiamondLowerAndRightCorner
-  | DiamondAllCorner
+  | DiamondCrossCorner
   //
   | LargeUpperLeftCorner
   | LargeLowerLeftCorner
   | LargeUpperRightCorner
   | LargeLowerRightCorner
   //
-  | LargeUpperLeftRightCorner
-  | LargeLowerLeftRightCorner
-  | LargeUpperLowerRightCorner
-  | LargeUpperLowerLeftCorner
-  | LargeAllCorner
+  | LargeUpperLeftAndRightCorner
+  | LargeLowerLeftAndRightCorner
+  | LargeUpperAndLowerRightCorner
+  | LargeUpperAndLowerLeftCorner
+  | LargeCrossCorner
   //
   | Ellipse
   | Circle

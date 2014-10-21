@@ -13,8 +13,11 @@ open AsciiToSvg.GlyphScanner
 open AsciiToSvg.GlyphRenderer
 open AsciiToSvg.SvgDocument
 
+
+// #region Handling input files
+
 [<Test>]
-let ``TxtFile : TestLogo.txt``() =
+let ``Handling input files : TestLogo.txt``() =
   let splitTxtResultExpected =
     [|("Logo", "{\"fill\":\"#88d\",\"a2s:delref\":true}")|],
        [|" .-[Logo]------------------.   ";
@@ -87,8 +90,9 @@ let ``TxtFile : TestLogo.txt``() =
   Assert.AreEqual (replaceOptionResultExpected, replaceOption '-' "Logo" input)
 
 
-//--------------------------------------------------------------------------------------------------------------------
+// #endregion
 
+// #region Scanning and rendering Glyphs (arrows)
 
 [<Test>]
 let ``GlyphRenderer : ArrowGlyphs.txt``() =
@@ -201,8 +205,6 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
     |> Array.Parallel.map (Render Scale Map.empty)
     |> Array.fold (fun r s -> r + s + "\n") ""
 
-  printfn "%A" renderResult
-
   let renderResultExpected =
     "      <polygon fill=\"black\" points=\"9.000,22.000 17.000,22.000 13.000,15.000 9.000,22.000\" />\n" +
     "      <line stroke=\"black\" stroke-width=\"1\" x1=\"13.000\" y1=\"22.000\" x2=\"13.000\" y2=\"29.000\" />\n\n" +
@@ -232,12 +234,11 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
   CanvasWidth <- 450.0
   CanvasHeight <- 75.0
   let ArrowGlyphsAsSvg =
-    //SvgTemplateOpen + (renderResult |> Array.fold (fun r s -> r + s + "\n") "") + SvgTemplateClose
     SvgTemplateOpen + renderResult + SvgTemplateClose
 
   printfn "%A" ArrowGlyphsAsSvg
 
-//--------------------------------------------------------------------------------------------------------------------
+// #endregion
 
-sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
-|> printfn "%s"
+  sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
+  |> printfn "%s"

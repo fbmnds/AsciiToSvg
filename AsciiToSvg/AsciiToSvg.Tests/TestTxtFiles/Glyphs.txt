@@ -7,14 +7,14 @@
       +-               |                -+                 |
       |                +-                |                -+
        
- UpperLeftRightCorner  LowerLeftRightCorner  UpperLowerRightCorner  UpperLowerLeftCorner
-         -+-                    |                      |                     |
-          |                    -+-                    -+                     +-
-                                                       |                     |
+ UpperLeftAndRightCorner  LowerLeftAndRightCorner  UpperAndLowerRightCorner  UpperAndLowerLeftCorner
+  -+- ++- -++ +++              |   |   |   |          |  |  +  |  +  |  +     |  |  +  |  +  |  +
+   |   |   |   |              -+- ++- -++ +++        -+ ++ -+ -+ ++ ++ ++     +- ++ +- +- ++ ++ ++
+                                                      |  |  |  +  |  +  +     |  |  |  +  |  +  +
           
-               |
- AllCorner    -+-
-               |
+                 |
+ CrossCorner    -+-
+                 |
                
  RoundUpperLeftCorner  RoundLowerLeftCorner  RoundUpperRightCorner  RoundLowerRightCorner
       .-                         |                    -.                     |
@@ -25,9 +25,9 @@
           |                          -'-                        -.   -'                 .-    '-
                                                                  |    |                 |     |
           
-                    |       |
- RoundAllCorner    -.-     -'-
-                    |       |
+                      |       |
+ RoundCrossCorner    -.-     -'-
+                      |       |
             
         
         
@@ -41,7 +41,26 @@
            ^                            ^                           v                           v 
           / \                          / \                         /                             \
           
-  DiamondAllCorners
+  DiamondCrossCorners
          \ /
           x
          / \
+
+
+ LargeUpperLeftCorner  LargeLowerLeftCorner  LargeUpperRightCorner  LargeLowerRightCorner
+       -                        |                    -                       |
+      /                         \                     \                      /
+      |                          -                    |                     -
+       
+ LargeUpperLeftRightCorner  LargeLowerLeftRightCorner  LargeUpperLowerRightCorner  LargeUpperLowerLeftCorner
+        -   -                          |                           |                        |
+         \ /                          / \                         /                          \ 
+          |                          -   -                       -                            -
+                                                                  \                          /
+                                                                   |                        |
+
+                       |
+                      / \
+ LargeCrossCorner    -   -     
+                      \ /     
+                       |
