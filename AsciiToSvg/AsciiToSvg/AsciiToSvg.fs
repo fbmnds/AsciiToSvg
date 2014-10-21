@@ -75,13 +75,15 @@ type GlyphLetter =
 
 type GlyphPattern = (GridCoordinates * GlyphLetter)[]
 
-type SvgShape =
-  | Glyph
+type Text =
+  { text : string
+    gridCoord : GridCoordinates
+    glyphOptions : SvgOption }
+
+type SvgElement =
+  | Glyph of Glyph
   | Box
   | Line
-
-type SvgComponent =
-  | SvgShape
   | Text
 
 // #region Error handling

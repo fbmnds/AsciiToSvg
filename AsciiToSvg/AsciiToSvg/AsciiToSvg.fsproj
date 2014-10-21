@@ -53,10 +53,12 @@
     <Compile Include="AsciiToSvg.fs" />
     <Compile Include="SvgDocument.fs" />
     <Compile Include="Results.fs" />
+    <Compile Include="Common.fs" />
     <Compile Include="TxtFile.fs" />
-    <Compile Include="GlyphRenderer.fs" />
     <Compile Include="GlyphScanner.fs" />
-    <Compile Include="Grid.fs" />
+    <Compile Include="GlyphRenderer.fs" />
+    <Compile Include="LineScanner.fs" />
+    <Compile Include="TextScanner.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
   </ItemGroup>

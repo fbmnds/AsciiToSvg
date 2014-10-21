@@ -74,3 +74,30 @@ let ScalableArrowTemplate (glyph: Glyph) (options: Map<string, string>) scale ax
 
 let ArrowTemplate (glyph: Glyph) ax ay bx by cx cy dx dy ex ey =
   ScalableArrowTemplate glyph Map.empty Scale ax ay bx by cx cy dx dy ex ey
+
+let ScalableCornerTemplate (glyph: Glyph) (options: Map<string, string>) scale =
+  let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
+  let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
+  let mutable set = Set.empty<string>
+  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
+  let putTick col1 row1 col2 row2 =
+    [|"      <line "
+      sprintf "stroke=\"%s\" " (getOption "stroke" (Stroke.ToString(culture)))
+      sprintf "stroke-width=\"%s\" " (getOption "stroke-width" (StrokeWidth.ToString(culture)))
+      sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" col1 row1 col2 row2 |]
+    |> Array.fold (fun r s -> r + s) ""
+  match glyph.glyphKind with
+  | UpperLeftCorner ->
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[2] rows.[2])
+  | LowerLeftCorner ->
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[4] rows.[4])
+  | UpperRightCorner ->
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[3] rows.[3])
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[2] rows.[2])
+  | LowerRightCorner ->
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[3] rows.[3])
+    set <- set.Add (putTick cols.[0] rows.[0] cols.[1] rows.[1])
+  | _ -> ()
+  set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""

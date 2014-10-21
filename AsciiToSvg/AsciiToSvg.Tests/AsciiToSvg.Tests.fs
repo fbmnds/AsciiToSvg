@@ -9,6 +9,7 @@ open System
 open NUnit.Framework
 
 open AsciiToSvg
+open AsciiToSvg.TxtFile
 open AsciiToSvg.GlyphScanner
 open AsciiToSvg.GlyphRenderer
 open AsciiToSvg.SvgDocument
@@ -182,7 +183,7 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
       { glyphKind = ArrowLeftToRight; gridCoord = { col = 28; row = 2 }; glyphOptions = Map.empty }
       { glyphKind = ArrowRightToLeft; gridCoord = { col = 45; row = 1 }; glyphOptions = Map.empty }
       { glyphKind = ArrowRightToLeft; gridCoord = { col = 45; row = 2 }; glyphOptions = Map.empty }|]
-  let scanGridResult = makeGridResult |> ScanGrid
+  let scanGridResult = makeGridResult |> ScanGlyphs
   let scanGridResultMapped =
     scanGridResult
     |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
@@ -231,6 +232,13 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
     |> function | Success x -> x | _ -> ""
     |> fun x -> regex(@"\r\n").Replace(x, "\n")
   Assert.AreEqual(arrowGlyphsWithoutTextAsSvgExpected, arrowGlyphsWithoutTextAsSvg)
+
+  let text = makeGridResult |> AsciiToSvg.TextScanner.ScanText
+  let textExpected =
+    [|{ text = "ArrowUp  ArrowDown  ArrowLeftToRight  ArrowRightToLeft"
+        gridCoord = { col = 0; row = 0 }
+        glyphOptions = Map.empty }|]
+  Assert.AreEqual(textExpected, text)
 
 // #endregion
 
