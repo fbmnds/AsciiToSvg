@@ -202,7 +202,7 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
 
   let renderResult =
     scanGridResult
-    |> Array.Parallel.map (Render Scale Map.empty)
+    |> Array.map (Render Scale Map.empty)
     |> Array.fold (fun r s -> r + s + "\n") ""
 
   let renderResultExpected =
@@ -233,12 +233,17 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
 
   CanvasWidth <- 450.0
   CanvasHeight <- 75.0
-  let ArrowGlyphsAsSvg =
+  let arrowGlyphsWithoutTextAsSvg =
     SvgTemplateOpen + renderResult + SvgTemplateClose
-
-  printfn "%A" ArrowGlyphsAsSvg
+    |> fun x -> regex(@"\r\n").Replace(x, "\n")
+  let arrowGlyphsWithoutTextAsSvgExpected =
+    @"../../TestSvgFiles/ArrowGlyphsWithoutText.svg"
+    |> readFileAsText
+    |> function | Success x -> x | _ -> ""
+    |> fun x -> regex(@"\r\n").Replace(x, "\n")
+  Assert.AreEqual(arrowGlyphsWithoutTextAsSvgExpected, arrowGlyphsWithoutTextAsSvg)
 
 // #endregion
 
-  sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
+  sprintf "[OK] Test run finished at %A" (DateTime.Now.ToLocalTime())
   |> printfn "%s"

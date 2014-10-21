@@ -11,6 +11,13 @@ let readFile file =
     |> Success
   with ex -> ReadFileError |> Results.setError (sprintf "Error while reading file '%s'" file) ex
 
+let readFileAsText file =
+  try
+    file
+    |> File.ReadAllText
+    |> Success
+  with ex -> ReadFileError |> Results.setError (sprintf "Error while reading file '%s'" file) ex
+
 let regex s = new Regex(s)
 let (=~) s (re : Regex) = re.IsMatch(s)
 

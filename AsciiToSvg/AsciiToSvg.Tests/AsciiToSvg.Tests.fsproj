@@ -87,6 +87,7 @@
     <Content Include="TestTxtFiles\TestSimpleBox.txt" />
     <Content Include="TestTxtFiles\Glyphs.txt" />
     <Content Include="TestTxtFiles\ArrowGlyphs.txt" />
+    <None Include="TestSvgFiles\ArrowGlyphsWithoutText.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">
