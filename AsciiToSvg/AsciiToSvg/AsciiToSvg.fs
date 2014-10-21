@@ -70,7 +70,7 @@ type GlyphKindProperties =
     glyphOptions : SvgOption }
 
 type GlyphLetter =
-  | Letter of char
+  | Letter of char[]
   | Wildcard
 
 type GlyphPattern = (GridCoordinates * GlyphLetter)[]
