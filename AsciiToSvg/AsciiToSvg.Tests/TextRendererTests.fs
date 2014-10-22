@@ -12,10 +12,10 @@ module TextRenderer =
     CanvasWidth <- (float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth
     CanvasHeight <- (float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight
     let renderedText = (RenderAll Scale Map.empty Tests.TextScanner.text).[0]
-    let arrowGlyphsAsSvg =
+    let arrowGlyphsWithoutLinesAsSvg =
       SvgTemplateOpen + (sprintf "\n%s\n" renderedText ) + ArrowGlyph_txt.renderResult + SvgTemplateClose
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
-    let arrowGlyphsAsSvgExpected =
+    let arrowGlyphsWithoutLinesAsSvgExpected =
       @"../../TestSvgFiles/ArrowGlyphsWithoutLines.svg"
       |> readFileAsText
       |> function | Success x -> x | _ -> ""

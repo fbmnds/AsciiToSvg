@@ -55,8 +55,8 @@ let ScanLineVertically (grid : TxtGrid) : Line[] =
     |> Array.concat
     |> Array.Parallel.map (fun (col, row, colEnd, chars) ->
       { orientation = (Vertical)
-        gridCorrdStart = { col = col; row = row }
-        gridCorrdEnd = { col = colEnd; row = row }
+        gridCorrdStart = { col = row; row = col }
+        gridCorrdEnd = { col = row; row = colEnd }
         linechars = chars
         lineOptions = Map.empty })
   vertLines

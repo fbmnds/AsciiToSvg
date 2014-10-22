@@ -57,53 +57,55 @@ let ShiftedCoordGridToSvg scale coldpx rowdpx (gridCoord: GridCoordinates) =
   { colpx = shiftColCoordGridToSvg scale coldpx gridCoord
     rowpx = shiftRowCoordGridToSvg scale rowdpx gridCoord }
 
-let ScalableArrowTemplate (glyph: Glyph) (options: Map<string, string>) scale ax ay bx by cx cy dx dy ex ey =
-  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
+let getOption (options: SvgOption) key defaultValue =
+  if options.ContainsKey key then options.Item key else defaultValue
+
+let putTick (options: SvgOption) col1 row1 col2 row2 =
+  [|"      <line "
+    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
+    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" col1 row1 col2 row2 |]
+  |> Array.fold (fun r s -> r + s) ""
+
+let ScalableArrowTemplate (glyph: Glyph) (options: SvgOption) scale ax ay bx by cx cy dx dy ex ey =
   let cols = [|ax; bx; cx; dx; ex|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|ay; by; cy; dy; ey|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
   [|"      <polygon "
-    sprintf "fill=\"%s\" " (getOption "fill" Fill)
+    sprintf "fill=\"%s\" " (getOption options "fill" Fill)
     sprintf "points=\"%.3f,%.3f " cols.[0] rows.[0]
     sprintf "%.3f,%.3f " cols.[1] rows.[1]
     sprintf "%.3f,%.3f " cols.[2] rows.[2]
     sprintf "%.3f,%.3f\" />\n" cols.[0] rows.[0]
     "      <line "
-    sprintf "stroke=\"%s\" " (getOption "stroke" (Stroke.ToString(culture)))
-    sprintf "stroke-width=\"%s\" " (getOption "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
+    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
     sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" cols.[3] rows.[3] cols.[4] rows.[4] |]
   |> Array.fold (fun r s -> r + s) ""
 
 let ArrowTemplate (glyph: Glyph) ax ay bx by cx cy dx dy ex ey =
   ScalableArrowTemplate glyph Map.empty Scale ax ay bx by cx cy dx dy ex ey
 
-let ScalableCornerTemplate (glyph: Glyph) (options: Map<string, string>) scale =
+let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
   let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
   let mutable set = Set.empty<string>
-  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
-  let putTick col1 row1 col2 row2 =
-    [|"      <line "
-      sprintf "stroke=\"%s\" " (getOption "stroke" (Stroke.ToString(culture)))
-      sprintf "stroke-width=\"%s\" " (getOption "stroke-width" (StrokeWidth.ToString(culture)))
-      sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" col1 row1 col2 row2 |]
-    |> Array.fold (fun r s -> r + s) ""
   match glyph.glyphKind with
   | UpperLeftCorner ->
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[4] rows.[4])
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[2] rows.[2])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
   | LowerLeftCorner ->
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
   | UpperRightCorner ->
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[3] rows.[3])
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[2] rows.[2])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
   | LowerRightCorner ->
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[3] rows.[3])
-    set <- set.Add (putTick cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
   | _ -> ()
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
-let ScalableTextTemplate (text: Text) (options: Map<string, string>) scale =
+let ScalableTextTemplate (text: Text) (options: SvgOption) scale =
   let x = (float)text.gridCoord.col * GlyphWidth * scale.colsc
   let y = ((float)(text.gridCoord.row) * GlyphHeight + 11.0) * scale.rowsc
   let fontSize = (FontSize * scale.rowsc).ToString(culture)
@@ -116,3 +118,18 @@ let ScalableTextTemplate (text: Text) (options: Map<string, string>) scale =
     text.text
     "\n      </text>"|]
   |> Array.fold (fun r s -> r + s) ""
+
+let ScalableLineTemplate (line: Line) (options: SvgOption) scale =
+  match line.orientation with
+  | Horizontal ->
+    let col0 = shiftColCoordGridToSvg scale -1.0 line.gridCorrdStart
+    let row0 = shiftRowCoordGridToSvg scale 7.0 line.gridCorrdStart
+    let col1 = shiftColCoordGridToSvg scale 9.0 line.gridCorrdEnd
+    let row1 = shiftRowCoordGridToSvg scale 7.0 line.gridCorrdEnd
+    putTick options col0 row0 col1 row1
+  | Vertical ->
+    let col0 = shiftColCoordGridToSvg scale 4.0 line.gridCorrdStart
+    let row0 = shiftRowCoordGridToSvg scale -1.0 line.gridCorrdStart
+    let col1 = shiftColCoordGridToSvg scale 4.0 line.gridCorrdEnd
+    let row1 = shiftRowCoordGridToSvg scale 15.0 line.gridCorrdEnd
+    putTick options col0 row0 col1 row1

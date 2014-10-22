@@ -84,6 +84,7 @@
     <Compile Include="TextScannerTests.fs" />
     <Compile Include="TextRendererTests.fs" />
     <Compile Include="LineScannerTests.fs" />
+    <Compile Include="LineRendererTests.fs" />
     <Compile Include="CoreTests.fs" />
     <None Include="Script.fsx" />
     <None Include="packages.config" />

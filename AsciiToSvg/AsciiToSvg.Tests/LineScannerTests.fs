@@ -35,24 +35,24 @@ module LineScanner =
            linechars = [|'+'|]
            lineOptions = Map.empty }|],
        [|{ orientation = Vertical
-           gridCorrdStart = { col = 2; row = 1 }
-           gridCorrdEnd = { col = 2; row = 1 }
+           gridCorrdStart = { col = 1; row = 2 }
+           gridCorrdEnd = { col = 1; row = 2 }
            linechars = [|'|'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = {col = 2; row = 5 }
-           gridCorrdEnd = { col = 2; row = 5 }
+           gridCorrdStart = {col = 5; row = 2 }
+           gridCorrdEnd = { col = 5; row = 2 }
            linechars = [|'+'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = { col = 1; row = 12 }
-           gridCorrdEnd = { col = 1; row = 12 }
+           gridCorrdStart = { col = 12; row = 1 }
+           gridCorrdEnd = { col = 12; row = 1 }
            linechars = [|'|'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = {col = 1; row = 16 }
-           gridCorrdEnd = { col = 1; row = 16 }
+           gridCorrdStart = {col = 16; row = 1 }
+           gridCorrdEnd = { col = 16; row = 1 }
            linechars = [|'+'|]
            lineOptions = Map.empty }|])
 
-    let lineScanOK = (horizLines, vertLines) = allLinesExpected && allLinesExpected = allLines
+    let lineScanResult = (horizLines, vertLines) = allLinesExpected && allLinesExpected = allLines

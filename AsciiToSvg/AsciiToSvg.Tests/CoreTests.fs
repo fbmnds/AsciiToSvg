@@ -12,6 +12,7 @@ module Core =
   open AsciiToSvg.Tests.GlyphRenderer
   open AsciiToSvg.Tests.TextRenderer
   open AsciiToSvg.Tests.LineScanner
+  open AsciiToSvg.Tests.LineRenderer
 
   // #region AsciiToSvg.Common.Tests
 
@@ -102,7 +103,7 @@ module Core =
 
   [<Test>]
   let ``TextRenderer : RenderAll``() =
-    Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsAsSvgExpected, ArrowGlyph_txt.arrowGlyphsAsSvg)
+    Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsWithoutLinesAsSvgExpected, ArrowGlyph_txt.arrowGlyphsWithoutLinesAsSvg)
 
   // #endregion
 
@@ -110,8 +111,16 @@ module Core =
 
   [<Test>]
   let ``LineScanner : ScanLineHorizontally`` () =
-    ArrowGlyph_txt.lineScanOK
+    ArrowGlyph_txt.lineScanResult
     |> Assert.True
+
+  // #endregion
+
+  // #region  AsciiToSvg.LineRenderer.Tests
+
+  [<Test>]
+  let ``LineRenderer : RenderAll`` () =
+    Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsSvgExpected, ArrowGlyph_txt.arrowGlyphsAsSvg)
 
   // #endregion
 
