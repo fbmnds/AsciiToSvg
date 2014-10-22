@@ -4,7 +4,8 @@ module TextScanner =
 
   open AsciiToSvg
   open AsciiToSvg.TextScanner
-  open AsciiToSvg.Tests.GlyphScanner
+  open AsciiToSvg.Tests.TxtFile
+
 
   let text = ArrowGlyph_txt.makeGridResult |> ScanText
   let textExpected =

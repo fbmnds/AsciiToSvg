@@ -83,6 +83,7 @@
     <Compile Include="GlyphRendererTests.fs" />
     <Compile Include="TextScannerTests.fs" />
     <Compile Include="TextRendererTests.fs" />
+    <Compile Include="LineScannerTests.fs" />
     <Compile Include="CoreTests.fs" />
     <None Include="Script.fsx" />
     <None Include="packages.config" />
@@ -94,7 +95,8 @@
     <Content Include="TestTxtFiles\Glyphs.txt" />
     <Content Include="TestTxtFiles\ArrowGlyphs.txt" />
     <None Include="TestSvgFiles\ArrowGlyphsWithoutText.svg" />
-    <None Include="TestSvgFiles\ArrowGlyphs.svg" />
+    <None Include="TestSvgFiles\ArrowGlyphsTabbed.svg" />
+    <None Include="TestSvgFiles\ArrowGlyphsWithoutLines.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

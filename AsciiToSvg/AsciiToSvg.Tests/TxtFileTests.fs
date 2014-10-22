@@ -76,3 +76,54 @@ module TxtFile =
             //    01234567890123456789012345
   let matchPositionsResult = matchPositions "Logo" input
   let replaceOptionResult = replaceOption '-' "Logo" input
+
+  module ArrowGlyph_txt =
+
+    let splitTxtResultExpected : (string * string)[] * string[] =
+      [||],
+      [|"";
+        " ArrowUp  ArrowDown  ArrowLeftToRight  ArrowRightToLeft";
+        "  ^   ^      |   +          ->                <-";
+        "  |   +      v   v          +>                <+";
+        " "|]
+    let splitTxtResult =
+      @"../../TestTxtFiles/ArrowGlyphs.txt"
+      |> readFile
+      |> splitTxt
+    let splitTxtResultOk = (splitTxtResultExpected = splitTxtResult)
+
+
+    let leftOffsetExpected = 1
+    let leftOffsetResult = leftOffset (snd splitTxtResult)
+
+    let trimWithOffsetExpected =
+      [|[||];
+        [|'A'; 'r'; 'r'; 'o'; 'w'; 'U'; 'p'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'D';
+          'o'; 'w'; 'n'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'L'; 'e'; 'f'; 't'; 'T';
+          'o'; 'R'; 'i'; 'g'; 'h'; 't'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'R'; 'i';
+          'g'; 'h'; 't'; 'T'; 'o'; 'L'; 'e'; 'f'; 't'|];
+        [|' '; '^'; ' '; ' '; ' '; '^'; ' '; ' '; ' '; ' '; ' '; ' '; '|'; ' '; ' ';
+          ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '-'; '>'; ' ';
+          ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+          '<'; '-'|];
+        [|' '; '|'; ' '; ' '; ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; 'v'; ' '; ' ';
+          ' '; 'v'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '+'; '>'; ' ';
+          ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+          '<'; '+'|];
+        [||]|]
+    let trimWithOffsetResult = trimWithOffset 1 (snd splitTxtResult)
+
+    let makeGridResultExpected =
+      [|[|'A'; 'r'; 'r'; 'o'; 'w'; 'U'; 'p'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'D';
+          'o'; 'w'; 'n'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'L'; 'e'; 'f'; 't'; 'T';
+          'o'; 'R'; 'i'; 'g'; 'h'; 't'; ' '; ' '; 'A'; 'r'; 'r'; 'o'; 'w'; 'R'; 'i';
+          'g'; 'h'; 't'; 'T'; 'o'; 'L'; 'e'; 'f'; 't'|];
+        [|' '; '^'; ' '; ' '; ' '; '^'; ' '; ' '; ' '; ' '; ' '; ' '; '|'; ' '; ' ';
+          ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '-'; '>'; ' ';
+          ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+          '<'; '-'; ' '; ' '; ' '; ' '; ' '; ' '; ' '|];
+        [|' '; '|'; ' '; ' '; ' '; '+'; ' '; ' '; ' '; ' '; ' '; ' '; 'v'; ' '; ' ';
+          ' '; 'v'; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; '+'; '>'; ' ';
+          ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' '; ' ';
+          '<'; '+'; ' '; ' '; ' '; ' '; ' '; ' '; ' '|]|]
+    let makeGridResult = splitTxtResult |> fun (_, b) -> b |> makeTrimmedGrid
