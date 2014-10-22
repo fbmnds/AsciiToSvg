@@ -77,7 +77,13 @@
     <Compile Include="FsCheckAddin.fs" />
     <Compile Include="NUnitRunner.fs" />
     <Compile Include="AsciiToSvgScaffolding.Tests.fs" />
-    <Compile Include="AsciiToSvg.Tests.fs" />
+    <Compile Include="SvgDocumentTests.fs" />
+    <Compile Include="TxtFileTests.fs" />
+    <Compile Include="GlyphScannerTests.fs" />
+    <Compile Include="GlyphRendererTests.fs" />
+    <Compile Include="TextScannerTests.fs" />
+    <Compile Include="TextRendererTests.fs" />
+    <Compile Include="CoreTests.fs" />
     <None Include="Script.fsx" />
     <None Include="packages.config" />
     <None Include="App.config" />
