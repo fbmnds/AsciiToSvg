@@ -42,3 +42,29 @@ let ScanText (grid : TxtGrid) : Text[] =
     { text = text
       gridCoord = { col = col; row = row }
       glyphOptions = Map.empty })
+
+let ScanTabbedText (grid : TxtGrid) : Text[] =
+  let testStart col row =
+    if col = 0 then (IsNotGlyph grid col row) else
+    if col = 0 then (IsNotGlyph grid col row) && (IsGlyph grid (col - 1) row)
+    else (IsNotGlyph grid col row) && ((IsGlyph grid (col - 1) row) || ((grid.[row].[col-1] = ' ') && (grid.[row].[col-2] = ' ')))
+  let testEnd col row =
+    if col = (grid.[row].Length - 1) then (IsNotGlyph grid col row) else
+    if col = (grid.[row].Length - 2) then (IsNotGlyph grid col row) && (IsGlyph grid (col + 1) row)
+    else (IsNotGlyph grid col row) && ((IsGlyph grid (col + 1) row) || ((grid.[row].[col+1] = ' ') && (grid.[row].[col+2] = ' ')))
+  let textPos row (line: char[]) =
+    Array.zip
+      (line |> Array.Parallel.mapi (fun col _ -> if (testStart col row) then col else -1) |> Array.filter (fun col -> col > -1))
+      (line |> Array.Parallel.mapi (fun col _ -> if (testEnd col row) then col else -1) |> Array.filter (fun col -> col > -1))
+  grid
+  |> Array.Parallel.mapi (fun row line -> row, (textPos row line))
+  |> Array.Parallel.map
+    (fun (row, positions) ->
+      (positions |> Array.map (fun (posStart, posEnd) ->
+        posStart, row, [| for col in [posStart .. posEnd] do yield grid.[row].[col] |] |> fun cs -> new string(cs))))
+  |> Array.concat
+  |> Array.filter (fun (_, _, str) -> not (str =~ (regex @"^\s*$")))
+  |> Array.Parallel.map (fun (col, row, text) ->
+    { text = text
+      gridCoord = { col = col; row = row }
+      glyphOptions = Map.empty })

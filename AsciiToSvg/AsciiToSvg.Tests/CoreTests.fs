@@ -7,7 +7,7 @@ module Core =
   open NUnit.Framework
 
   open AsciiToSvg
-
+  open AsciiToSvg.Tests.GlyphScanner
 
   // #region AsciiToSvg.Common.Tests
 
@@ -38,18 +38,17 @@ module Core =
 
   [<Test>]
   let ``AsciiToSvg.TxtFile : leftOffset``() =
-    Assert.AreEqual(Tests.GlyphScanner.leftOffsetExpected, Tests.GlyphScanner.leftOffsetResult)
+    Assert.AreEqual(ArrowGlyph_txt.leftOffsetExpected, ArrowGlyph_txt.leftOffsetResult)
 
   [<Test>]
   let ``AsciiToSvg.TxtFile : trimWithOffset``() =
-    Assert.AreEqual(Tests.GlyphScanner.trimWithOffsetExpected, Tests.GlyphScanner.trimWithOffsetResult)
+    Assert.AreEqual(ArrowGlyph_txt.trimWithOffsetExpected, ArrowGlyph_txt.trimWithOffsetResult)
 
   [<Test>]
   let ``AsciiToSvg.TxtFile : splitText``() =
     Tests.TxtFile.splitTxtResult = Tests.TxtFile.splitTxtResultExpected
     |>  Assert.True
-    //Assert.AreEqual(Tests.GlyphScanner.splitTxtResult, Tests.GlyphScanner.splitTxtResultExpected)
-    Tests.GlyphScanner.splitTxtResultOk
+    ArrowGlyph_txt.splitTxtResultOk
     |>  Assert.True
 
   [<Test>]
@@ -58,7 +57,7 @@ module Core =
 
   [<Test>]
   let ``AsciiToSvg.TxtFile : makeTrimmedGrid`` () =
-    Assert.AreEqual (Tests.GlyphScanner.makeGridResultExpected, Tests.GlyphScanner.makeGridResult)
+    Assert.AreEqual (ArrowGlyph_txt.makeGridResultExpected, ArrowGlyph_txt.makeGridResult)
 
   [<Test>]
   let ``AsciiToSvg.TxtFile : replaceOption`` () =
@@ -70,7 +69,7 @@ module Core =
 
   [<Test>]
   let ``AsciiToSvg.GlyphScanner : ScanGlyphs``() =
-    Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], Tests.GlyphScanner.scanGridResultMapped)
+    Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], ArrowGlyph_txt.scanGridResultMapped)
 
   // #endregion
 
@@ -88,6 +87,10 @@ module Core =
   [<Test>]
   let ``AsciiToSvg.TextScanner : ScanText``() =
     Assert.AreEqual(Tests.TextScanner.textExpected, Tests.TextScanner.text)
+
+  [<Test>]
+  let ``AsciiToSvg.TextScanner : ScanTabbedText``() =
+    Assert.AreEqual(Tests.TextScanner.textTabbedExpected, Tests.TextScanner.textTabbed)
 
   // #endregion
 

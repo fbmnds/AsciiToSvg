@@ -5,9 +5,10 @@ module GlyphRenderer =
   open AsciiToSvg
   open AsciiToSvg.GlyphRenderer
   open AsciiToSvg.SvgDocument
+  open AsciiToSvg.Tests.GlyphScanner
 
   let renderResult =
-    Tests.GlyphScanner.scanGridResult
+    ArrowGlyph_txt.scanGridResult
     |> Array.map (Render Scale Map.empty)
     |> Array.fold (fun r s -> r + s + "\n") ""
 
