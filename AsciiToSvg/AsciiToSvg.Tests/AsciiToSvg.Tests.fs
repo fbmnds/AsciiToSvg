@@ -11,7 +11,7 @@ open NUnit.Framework
 open AsciiToSvg
 open AsciiToSvg.TxtFile
 open AsciiToSvg.GlyphScanner
-open AsciiToSvg.GlyphRenderer
+//open AsciiToSvg.GlyphRenderer
 open AsciiToSvg.SvgDocument
 
 
@@ -90,7 +90,6 @@ let ``Handling input files : TestLogo.txt``() =
             //    01234567890123456789012345
   Assert.AreEqual (matchPositionsExpected, matchPositions "Logo" input)
   Assert.AreEqual (replaceOptionResultExpected, replaceOption '-' "Logo" input)
-
 
 // #endregion
 
@@ -193,7 +192,7 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
 
   let renderResult =
     scanGridResult
-    |> Array.map (Render Scale Map.empty)
+    |> Array.map (GlyphRenderer.Render Scale Map.empty)
     |> Array.fold (fun r s -> r + s + "\n") ""
 
   let renderResultExpected =
@@ -241,7 +240,8 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
         glyphOptions = Map.empty }|]
   Assert.AreEqual(textExpected, text)
 
-  // This test will fail after implementing Line rendering!
+
+  // TODO: add Line rendering to this test case
   //
   CanvasWidth <- (float)makeGridResult.[0].Length * GlyphWidth
   CanvasHeight <- (float)makeGridResult.Length * GlyphHeight
@@ -255,7 +255,6 @@ let ``GlyphRenderer : ArrowGlyphs.txt``() =
     |> function | Success x -> x | _ -> ""
     |> fun x -> regex(@"\r\n").Replace(x, "\n")
   Assert.AreEqual(arrowGlyphsAsSvgExpected, arrowGlyphsAsSvg)
-
 
 // #endregion
 

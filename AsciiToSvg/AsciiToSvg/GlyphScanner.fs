@@ -16,7 +16,7 @@ let IsGlyphByPattern (pattern: GlyphPattern) (txtGrid: TxtGrid) col row =
 
 // #region Line Glyphs
 
-let IsVerticalLine (txtGrid: TxtGrid) col row =
+let IsVerticalGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'|'|]))
       ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'|'|]))
@@ -24,7 +24,7 @@ let IsVerticalLine (txtGrid: TxtGrid) col row =
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
-let IsHorizontalLine (txtGrid: TxtGrid) col row =
+let IsHorizontalGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'-'|]))
       ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'-'|]))
@@ -32,7 +32,7 @@ let IsHorizontalLine (txtGrid: TxtGrid) col row =
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
-let IsCross (txtGrid: TxtGrid) col row =
+let IsCrossGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'+'|]))
       ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'+'|]))
@@ -257,9 +257,9 @@ let ScanGlyphs (grid : TxtGrid) : Glyph[] =
 
 let IsGlyph (grid: TxtGrid) col row =
   [|// Line Glyph
-    (IsVerticalLine grid col row)
-    (IsHorizontalLine grid col row)
-    (IsCross grid col row)
+    (IsVerticalGlyph grid col row)
+    (IsHorizontalGlyph grid col row)
+    (IsCrossGlyph grid col row)
     // Arrows
     (IsArrowUp grid col row)
     (IsArrowDown grid col row)

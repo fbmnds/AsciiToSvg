@@ -80,11 +80,22 @@ type Text =
     gridCoord : GridCoordinates
     glyphOptions : SvgOption }
 
+type Orientation =
+  | Vertical
+  | Horizontal
+
+type Line =
+  { orientation : Orientation
+    gridCorrdStart : GridCoordinates
+    gridCorrdEnd : GridCoordinates
+    linechars : char[]
+    lineOptions : SvgOption }
+
 type SvgElement =
   | Glyph of Glyph
   | Box
   | Line
-  | Text
+  | Text of Text
 
 // #region Error handling
 
