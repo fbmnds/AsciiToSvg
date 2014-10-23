@@ -55,7 +55,7 @@ let splitTxt lines =
     | _ -> [||], [||]
   | _ -> [||], [||]
 
-let makeFramedGrid ascii =
+let makeFramedGrid ascii : TxtGrid =
   let yLength = ascii |> Array.map String.length |> Array.max
   let fillArray (arr: string) = [| for i in [0..yLength-arr.Length] do yield ' ' |]
   let emptyLine = [| for i in [0..yLength] do yield ' ' |]
@@ -65,7 +65,7 @@ let makeFramedGrid ascii =
         else Array.concat [ascii.[i-1].ToCharArray(); (fillArray ascii.[i-1]) ]
   |]
 
-let makeTrimmedGrid (ascii': string[]) =
+let makeTrimmedGrid (ascii': string[]) : TxtGrid =
   let offset = leftOffset ascii'
   let ascii =
     ascii'

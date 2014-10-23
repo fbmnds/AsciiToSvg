@@ -9,7 +9,7 @@ let IsGlyphByPattern (pattern: GlyphPattern) (txtGrid: TxtGrid) col row =
   pattern
   |> Array.Parallel.map (fun x ->
     match x with
-    | (_, Wildcard _) -> true
+    | (_, Wildcard) -> true
     | (coord, (Letter letters)) ->
       letters |> Array.map (fun letter -> test coord letter) |> Array.reduce (fun x y -> x || y))
   |> Array.reduce (fun x y -> x && y)
@@ -145,6 +145,21 @@ let IsCrossCorner (txtGrid: TxtGrid) col row =
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
+let IsCorner (txtGrid: TxtGrid) col row =
+  [|IsUpperLeftCorner
+    IsLowerLeftCorner
+    IsUpperRightCorner
+    IsLowerRightCorner
+    IsUpperLeftAndRightCorner
+    IsLowerLeftAndRightCorner
+    IsUpperAndLowerRightCorner
+    IsUpperAndLowerLeftCorner
+    IsCrossCorner|]
+  |> Array.Parallel.map (fun f -> f txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsNotCorner (txtGrid: TxtGrid) col row = not (IsCorner txtGrid col row)
+
 // #endregion
 
 // #region Not implemented
@@ -199,15 +214,15 @@ let ScanGlyphs (grid : TxtGrid) : Glyph[] =
     if (IsArrowLeftToRight grid i j) then glyphProperty ArrowLeftToRight else
     if (IsArrowRightToLeft grid i j) then glyphProperty ArrowRightToLeft else
     // Corners
-    if (IsUpperLeftCorner grid i j) then glyphProperty UpperLeftCorner else
-    if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
-    if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
-    if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner else
+    if (IsCrossCorner grid i j) then glyphProperty CrossCorner else
     if (IsUpperLeftAndRightCorner grid i j) then glyphProperty UpperLeftAndRightCorner else
     if (IsLowerLeftAndRightCorner grid i j) then glyphProperty LowerLeftAndRightCorner else
     if (IsUpperAndLowerRightCorner grid i j) then glyphProperty UpperAndLowerRightCorner else
     if (IsUpperAndLowerLeftCorner grid i j) then glyphProperty UpperAndLowerLeftCorner else
-    if (IsCrossCorner grid i j) then glyphProperty CrossCorner else
+    if (IsUpperLeftCorner grid i j) then glyphProperty UpperLeftCorner else
+    if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
+    if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
+    if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner else
 // #region Not implemented
     // RoundCorners
     if (IsRoundUpperLeftCorner grid i j) then glyphProperty RoundUpperLeftCorner else

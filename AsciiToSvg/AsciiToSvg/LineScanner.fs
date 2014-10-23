@@ -1,4 +1,5 @@
-﻿module AsciiToSvg.LineScanner
+﻿[<RequireQualifiedAccess>]
+module AsciiToSvg.LineScanner
 
 open AsciiToSvg.GlyphScanner
 
@@ -31,34 +32,32 @@ let ScanLineHorizontally (grid : TxtGrid) : Line[] =
         lineOptions = Map.empty })
   horizLines
 
-let ScanLineVertically (grid : TxtGrid) : Line[] =
-  let gridT =
-    [| for col in [0..grid.[0].Length-1] do yield [| for row in [0..grid.Length-1] do yield grid.[row].[col] |] |]
+let ScanLineVertically (grid : TxtGrid)  =
   let IsNotVertGlyph grid col row = not(IsVerticalGlyph grid col row || IsCrossGlyph grid col row)
   let testVertStart col row =
-    if row = 0 then (IsVerticalGlyph grid row col)
-    else (IsNotVertGlyph grid (row - 1) col) && (IsVerticalGlyph grid row col)
+    if row = 0 then (IsVerticalGlyph grid col row)
+    else (IsNotVertGlyph grid col (row - 1)) && (IsVerticalGlyph grid col row)
   let testVertEnd col row =
-    if row = (gridT.Length - 1) then (IsVerticalGlyph grid row col)
-    else (IsVerticalGlyph grid row col) && (IsNotVertGlyph grid (row + 1) col)
-  let vertLinePos row (line: char[]) =
-    Array.zip
-      (line |> Array.Parallel.mapi (fun col _ -> if (testVertStart col row) then col else -1) |> Array.filter (fun col -> col > -1))
-      (line |> Array.Parallel.mapi (fun col _ -> if (testVertEnd col row) then col else -1) |> Array.filter (fun col -> col > -1))
-  let vertLines =
+    if row = (grid.Length - 1) then (IsVerticalGlyph grid col row)
+    else (IsVerticalGlyph grid col row) && (IsNotVertGlyph grid col (row + 1))
+  let gridT =
+    [| for col in [0..grid.[0].Length-1] do yield [| for row in [0..grid.Length-1] do yield grid.[row].[col] |] |]
+  let startPos =
     gridT
-    |> Array.Parallel.mapi (fun row line -> row, (vertLinePos row line))
-    |> Array.Parallel.map
-      (fun (row, positions) ->
-        (positions |> Array.map (fun (posStart, posEnd) ->
-          posStart, row, posEnd, [| for col in [posStart .. posEnd] do yield gridT.[row].[col] |] )))
-    |> Array.concat
-    |> Array.Parallel.map (fun (col, row, colEnd, chars) ->
-      { orientation = (Vertical)
-        gridCorrdStart = { col = row; row = col }
-        gridCorrdEnd = { col = row; row = colEnd }
-        linechars = chars
-        lineOptions = Map.empty })
-  vertLines
+    |> Array.Parallel.mapi (fun col line -> line |> Array.mapi (fun row _ -> if testVertStart col row then row else -1))
+    |> Array.Parallel.map (fun line -> line |> Array.filter (fun x -> x > -1))
+  let endPos =
+    gridT
+    |> Array.Parallel.mapi (fun col line -> line |> Array.mapi (fun row _ -> if testVertEnd col row then row else -1))
+    |> Array.Parallel.map (fun line -> line |> Array.filter (fun x -> x > -1))
+  matrixZip startPos endPos
+  |> Array.Parallel.mapi (fun col line -> [| for i in [0..line.Length-1] do yield col,(fst line.[i]), (snd line.[i]) |])
+  |> Array.concat
+  |> Array.Parallel.map (fun (col, rowStart, rowEnd) ->
+    { orientation = (Vertical)
+      gridCorrdStart = { col = col; row = rowStart }
+      gridCorrdEnd = { col = col; row = rowEnd }
+      linechars = [|for i in [rowStart..rowEnd] do yield grid.[i].[col]|]
+      lineOptions = Map.empty })
 
 let ScanLine (grid : TxtGrid) : Line[] * Line[] = ScanLineHorizontally grid, ScanLineVertically grid

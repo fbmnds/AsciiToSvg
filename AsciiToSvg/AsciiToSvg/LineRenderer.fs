@@ -1,4 +1,5 @@
-﻿module AsciiToSvg.LineRenderer
+﻿[<RequireQualifiedAccess>]
+module AsciiToSvg.LineRenderer
 
 open AsciiToSvg.SvgDocument
 

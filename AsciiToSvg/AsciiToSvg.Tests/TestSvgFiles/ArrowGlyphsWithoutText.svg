@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->
-<svg width="720px" height="675px" font-size="12.000" version="1.1"
+<svg width="486px" height="45px" font-size="12" version="1.1"
 
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
@@ -17,7 +17,8 @@
       <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
     </filter>
   </defs>
-        <polygon fill="black" points="9.000,22.000 17.000,22.000 13.000,15.000 9.000,22.000" />
+  
+      <polygon fill="black" points="9.000,22.000 17.000,22.000 13.000,15.000 9.000,22.000" />
       <line stroke="black" stroke-width="1" x1="13.000" y1="22.000" x2="13.000" y2="29.000" />
 
       <polygon fill="black" points="45.000,22.000 53.000,22.000 49.000,15.000 45.000,22.000" />
@@ -40,5 +41,6 @@
 
       <polygon fill="black" points="412.000,33.000 412.000,41.000 405.000,37.000 412.000,33.000" />
       <line stroke="black" stroke-width="1" x1="412.000" y1="37.000" x2="413.000" y2="37.000" />
+
 
   </svg>

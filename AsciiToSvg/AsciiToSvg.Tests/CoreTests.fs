@@ -10,6 +10,7 @@ module Core =
   open AsciiToSvg.Tests.TxtFile
   open AsciiToSvg.Tests.GlyphScanner
   open AsciiToSvg.Tests.GlyphRenderer
+  open AsciiToSvg.Tests.TextScanner
   open AsciiToSvg.Tests.TextRenderer
   open AsciiToSvg.Tests.LineScanner
   open AsciiToSvg.Tests.LineRenderer
@@ -55,6 +56,8 @@ module Core =
     |>  Assert.True
     ArrowGlyph_txt.splitTxtResultOk
     |>  Assert.True
+    ArrowGlyphWithFrame_txt.splitTxtResultOk
+    |>  Assert.True
 
   [<Test>]
   let ``TxtFile : makeFramedGrid`` () =
@@ -63,6 +66,7 @@ module Core =
   [<Test>]
   let ``TxtFile : makeTrimmedGrid`` () =
     Assert.AreEqual (ArrowGlyph_txt.makeGridResultExpected, ArrowGlyph_txt.makeGridResult)
+    Assert.AreEqual (ArrowGlyphWithFrame_txt.makeGridResultExpected, ArrowGlyphWithFrame_txt.makeGridResult)
 
   [<Test>]
   let ``TxtFile : replaceOption`` () =
@@ -75,7 +79,8 @@ module Core =
   [<Test>]
   let ``GlyphScanner : ScanGlyphs``() =
     Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], ArrowGlyph_txt.scanGridResultMapped)
-
+    Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22|],
+                     ArrowGlyphWithFrame_txt.scanGridResultMapped)
   // #endregion
 
   // #region  AsciiToSvg.GlyphRenderer.Tests
@@ -84,6 +89,7 @@ module Core =
   let ``GlyphRenderer : Render``() =
     Assert.AreEqual (ArrowGlyph_txt.renderResultExpected, ArrowGlyph_txt.renderResult)
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsWithoutTextAsSvgExpected, ArrowGlyph_txt.arrowGlyphsWithoutTextAsSvg)
+    Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsFramedWithoutTextAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsFramedWithoutTextAsSvg)
 
   // #endregion
 
@@ -91,11 +97,12 @@ module Core =
 
   [<Test>]
   let ``TextScanner : ScanText``() =
-    Assert.AreEqual(Tests.TextScanner.textExpected, Tests.TextScanner.text)
+    Assert.AreEqual(ArrowGlyph_txt.textExpected, ArrowGlyph_txt.text)
 
   [<Test>]
   let ``TextScanner : ScanTabbedText``() =
-    Assert.AreEqual(Tests.TextScanner.textTabbedExpected, Tests.TextScanner.textTabbed)
+    Assert.AreEqual(ArrowGlyph_txt.textTabbedExpected,ArrowGlyph_txt.textTabbed)
+    Assert.AreEqual(ArrowGlyphWithFrame_txt.textTabbedExpected,ArrowGlyphWithFrame_txt.textTabbed)
 
   // #endregion
 
@@ -104,14 +111,17 @@ module Core =
   [<Test>]
   let ``TextRenderer : RenderAll``() =
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsWithoutLinesAsSvgExpected, ArrowGlyph_txt.arrowGlyphsWithoutLinesAsSvg)
+    Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsFramedTabbedAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsFramedTabbedAsSvg)
 
   // #endregion
 
   // #region  AsciiToSvg.LineScanner.Tests
 
   [<Test>]
-  let ``LineScanner : ScanLineHorizontally`` () =
+  let ``LineScanner : ScanLine`` () =
     ArrowGlyph_txt.lineScanResult
+    |> Assert.True
+    ArrowGlyphWithFrame_txt.lineScanResult
     |> Assert.True
 
   // #endregion
@@ -121,8 +131,9 @@ module Core =
   [<Test>]
   let ``LineRenderer : RenderAll`` () =
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsSvgExpected, ArrowGlyph_txt.arrowGlyphsAsSvg)
-
+    Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvg)
   // #endregion
+  //printfn "%A" ArrowGlyphWithFrame_txt.allLines
 
   sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
   |> printfn "%s"

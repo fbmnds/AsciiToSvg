@@ -51,9 +51,9 @@
   <ItemGroup>
     <None Include="Script.fsx" />
     <Compile Include="AsciiToSvg.fs" />
-    <Compile Include="SvgDocument.fs" />
     <Compile Include="Results.fs" />
     <Compile Include="Common.fs" />
+    <Compile Include="SvgDocument.fs" />
     <Compile Include="TxtFile.fs" />
     <Compile Include="GlyphScanner.fs" />
     <Compile Include="GlyphRenderer.fs" />

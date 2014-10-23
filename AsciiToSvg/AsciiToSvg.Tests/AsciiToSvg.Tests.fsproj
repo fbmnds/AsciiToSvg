@@ -95,9 +95,13 @@
     <Content Include="TestTxtFiles\TestSimpleBox.txt" />
     <Content Include="TestTxtFiles\Glyphs.txt" />
     <Content Include="TestTxtFiles\ArrowGlyphs.txt" />
+    <Content Include="TestTxtFiles\ArrowGlyphsWithFrame.txt" />
+    <None Include="TestSvgFiles\ArrowGlyphs.svg" />
+    <None Include="TestSvgFiles\ArrowGlyphsFramedTabbed.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithoutText.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsTabbed.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithoutLines.svg" />
+    <None Include="TestSvgFiles\ArrowGlyphsFramedWithoutText.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

@@ -3,27 +3,33 @@
 open System
 open System.Globalization
 
-let mutable FontSize = 12.0
-let mutable FontOffsetWidth = 0.0
-let mutable FontOffsetHeight = 11.0
-let mutable FontFamily = "Consolas"
-let mutable GlyphWidth = 9.0
-let mutable GlyphHeight = 15.0
-let mutable CanvasWidth = 720.0   //  80 glyphs per line
-let mutable CanvasHeight = 675.0  // 45 lines
-let mutable Scale = { colsc = 1.0; rowsc = 1.0 }
-let mutable Fill = "black"
-let mutable Stroke = "black"
-let mutable StrokeWidth = 1.0
+let FontSize = 12.0
+let FontOffsetWidth = 0.0
+let FontOffsetHeight = 11.0
+let FontFamily = "Consolas"
+let GlyphWidth = 9.0
+let GlyphHeight = 15.0
+let CanvasWidth = 720.0   //  80 glyphs per line
+let CanvasHeight = 675.0  // 45 lines
+let Scale = { colsc = 1.0; rowsc = 1.0 }
+let Fill = "black"
+let Stroke = "black"
+let StrokeWidth = 1.0
 
 let culture = new CultureInfo("en-US")
 
-let SvgTemplateOpen =
+let getOption (options: SvgOption) key defaultValue =
+  if options.ContainsKey key then options.Item key else defaultValue
+
+let SvgTemplateOpen (options: SvgOption) =
+  let canvasWidth = getOption options "canvas-width" (CanvasWidth.ToString(culture))
+  let canvasHeight = getOption options "canvas-height" (CanvasHeight.ToString(culture))
+  let fontSize = getOption options "canvas-font-size" (FontSize.ToString(culture))
   "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
   "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"" +
   "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
   "<!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->\n" +
-  (sprintf "<svg width=\"%.0fpx\" height=\"%.0fpx\" font-size=\"%.3f\" version=\"1.1\"\n" CanvasWidth CanvasHeight FontSize) +
+  (sprintf "<svg width=\"%spx\" height=\"%spx\" font-size=\"%s\" version=\"1.1\"\n" canvasWidth canvasHeight fontSize) +
   """
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
@@ -56,9 +62,6 @@ let shiftRowCoordGridToSvg scale rowdpx gridCoord =
 let ShiftedCoordGridToSvg scale coldpx rowdpx (gridCoord: GridCoordinates) =
   { colpx = shiftColCoordGridToSvg scale coldpx gridCoord
     rowpx = shiftRowCoordGridToSvg scale rowdpx gridCoord }
-
-let getOption (options: SvgOption) key defaultValue =
-  if options.ContainsKey key then options.Item key else defaultValue
 
 let putTick (options: SvgOption) col1 row1 col2 row2 =
   [|"      <line "
@@ -102,19 +105,44 @@ let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
   | LowerRightCorner ->
     set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
     set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
+  | UpperLeftAndRightCorner ->
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
+    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
+  | LowerLeftAndRightCorner ->
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
+  | UpperAndLowerRightCorner ->
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
+    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
+  | UpperAndLowerLeftCorner ->
+    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
+  | CrossCorner ->
+    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
+    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
   | _ -> ()
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
 let ScalableTextTemplate (text: Text) (options: SvgOption) scale =
-  let x = (float)text.gridCoord.col * GlyphWidth * scale.colsc
-  let y = ((float)(text.gridCoord.row) * GlyphHeight + 11.0) * scale.rowsc
+  let fontOffsetWidth =
+    FontOffsetWidth.ToString(culture)
+    |> getOption options "canvas-font-offset-width"
+    |> getOption options "font-offset-width"
+    |> toFloat
+  let fontOffsetHeight =
+    FontOffsetHeight.ToString(culture)
+    |> getOption options "canvas-font-offset-height"
+    |> getOption options "font-offset-height"
+    |> toFloat
+  let leadingBlanks = text.text.Length - text.text.TrimStart().Length
+  let x = ((float)(text.gridCoord.col + leadingBlanks) * GlyphWidth  + fontOffsetWidth)* scale.colsc
+  let y = ((float)(text.gridCoord.row) * GlyphHeight + fontOffsetHeight) * scale.rowsc
   let fontSize = (FontSize * scale.rowsc).ToString(culture)
-  let getOption key defaultValue = if options.ContainsKey key then options.Item key else defaultValue
   [|"      <text "
     sprintf "x=\"%.3f\" y=\"%.3f\" " x y
-    sprintf "style=\"fill:%s\" " (getOption "fill" Fill)
-    sprintf "font-family=\"%s\" " (getOption "font-family" FontFamily)
-    sprintf "font-size=\"%s\">\n" (getOption "font-size" fontSize)
+    sprintf "style=\"fill:%s\" " (getOption options "fill" Fill)
+    sprintf "font-family=\"%s\" " (getOption options "font-family" (getOption options "canvas-font-family" FontFamily))
+    sprintf "font-size=\"%s\">\n" (getOption options "font-size" (getOption options "canvas-font-size" fontSize))
     text.text
     "\n      </text>"|]
   |> Array.fold (fun r s -> r + s) ""

@@ -3,14 +3,20 @@
 module GlyphRenderer =
 
   open AsciiToSvg
-  open AsciiToSvg.GlyphRenderer
   open AsciiToSvg.SvgDocument
+  open AsciiToSvg.Tests.TxtFile
   open AsciiToSvg.Tests.GlyphScanner
 
   module ArrowGlyph_txt =
+
+    let options =
+      ["canvas-width", ((float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+      |> Map.ofList
+
     let renderResult =
       ArrowGlyph_txt.scanGridResult
-      |> Array.map (Render Scale Map.empty)
+      |> Array.map (GlyphRenderer.Render Scale options)
       |> Array.fold (fun r s -> r + s + "\n") ""
 
     let renderResultExpected =
@@ -38,13 +44,43 @@ module GlyphRenderer =
       "      <polygon fill=\"black\" points=\"412.000,33.000 412.000,41.000 405.000,37.000 412.000,33.000\" />\n" +
       "      <line stroke=\"black\" stroke-width=\"1\" x1=\"412.000\" y1=\"37.000\" x2=\"413.000\" y2=\"37.000\" />\n\n"
 
-    CanvasWidth <- 450.0
-    CanvasHeight <- 75.0
     let arrowGlyphsWithoutTextAsSvg =
-      SvgTemplateOpen + renderResult + SvgTemplateClose
+      [|SvgTemplateOpen(options)
+        renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
     let arrowGlyphsWithoutTextAsSvgExpected =
       @"../../TestSvgFiles/ArrowGlyphsWithoutText.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+
+  module ArrowGlyphWithFrame_txt =
+
+    let options =
+      ["canvas-width", ((float)ArrowGlyphWithFrame_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)ArrowGlyphWithFrame_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New"]
+      |> Map.ofList
+
+    let renderResult =
+      ArrowGlyphWithFrame_txt.scanGridResult
+      |> Array.Parallel.map (GlyphRenderer.Render Scale options)
+      |> Array.sort
+      |> Array.fold (fun r s -> r + s + "\n") ""
+
+    let arrowGlyphsFramedWithoutTextAsSvg =
+      [|SvgTemplateOpen(options)
+        renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let arrowGlyphsFramedWithoutTextAsSvgExpected =
+      @"../../TestSvgFiles/ArrowGlyphsFramedWithoutText.svg"
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
