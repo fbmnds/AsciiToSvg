@@ -66,7 +66,7 @@ The resulting SVG file looks like this:
 
 The usage of polygon shapes looks like this:
 
-<pre>
+<pre><code>
                 |
                 v
              -<-+------+
@@ -79,7 +79,7 @@ The usage of polygon shapes looks like this:
    |                ||
    +----------------++
                     ++
-</pre>
+</code></pre>
 
 This input renders to:
 
