@@ -50,6 +50,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <None Include="Script.fsx" />
+    <Compile Include="AssemblyInfo.fs" />
     <Compile Include="AsciiToSvg.fs" />
     <Compile Include="Results.fs" />
     <Compile Include="Common.fs" />

@@ -103,6 +103,7 @@
     <None Include="TestSvgFiles\ArrowGlyphsWithoutLines.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsFramedWithoutText.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithFrame.svg" />
+    <None Include="TestSvgFiles\TestPolygonBoxGlyphsOnly.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

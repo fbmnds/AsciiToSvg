@@ -84,3 +84,30 @@ module GlyphRenderer =
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module TestPolygonBox_txt =
+
+    let options =
+      ["canvas-width", ((float)TestPolygonBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New"]
+      |> Map.ofList
+
+    let renderResult =
+      TestPolygonBox_txt.scanGridResult
+      |> Array.Parallel.map (GlyphRenderer.Render Scale options)
+      |> Array.sort
+      |> Array.fold (fun r s -> r + s + "\n") ""
+
+    let testPolygonBoxGlyphsOnlyAsSvg =
+      [|SvgTemplateOpen(options)
+        renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let testPolygonBoxGlyphsOnlyAsSvgExpected =
+      @"../../TestSvgFiles/TestPolygonBoxGlyphsOnly.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")

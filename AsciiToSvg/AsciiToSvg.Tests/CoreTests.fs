@@ -58,6 +58,8 @@ module Core =
     |>  Assert.True
     ArrowGlyphWithFrame_txt.splitTxtResultOk
     |>  Assert.True
+    TestPolygonBox_txt.splitTxtResultOk
+    |>  Assert.True
 
   [<Test>]
   let ``TxtFile : makeFramedGrid`` () =
@@ -67,6 +69,7 @@ module Core =
   let ``TxtFile : makeTrimmedGrid`` () =
     Assert.AreEqual (ArrowGlyph_txt.makeGridResultExpected, ArrowGlyph_txt.makeGridResult)
     Assert.AreEqual (ArrowGlyphWithFrame_txt.makeGridResultExpected, ArrowGlyphWithFrame_txt.makeGridResult)
+    Assert.AreEqual (TestPolygonBox_txt.makeGridResultExpected, TestPolygonBox_txt.makeGridResult)
 
   [<Test>]
   let ``TxtFile : replaceOption`` () =
@@ -81,6 +84,9 @@ module Core =
     Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], ArrowGlyph_txt.scanGridResultMapped)
     [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22|]
     |> fun x -> Assert.AreEqual(ArrowGlyphWithFrame_txt.scanGridResultMapped, x)
+    [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15|]
+    |> fun x -> Assert.AreEqual(TestPolygonBox_txt.scanGridResultMapped, x)
+
   // #endregion
 
   // #region  AsciiToSvg.GlyphRenderer.Tests
@@ -90,6 +96,7 @@ module Core =
     Assert.AreEqual (ArrowGlyph_txt.renderResultExpected, ArrowGlyph_txt.renderResult)
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsWithoutTextAsSvgExpected, ArrowGlyph_txt.arrowGlyphsWithoutTextAsSvg)
     Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsFramedWithoutTextAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsFramedWithoutTextAsSvg)
+    Assert.AreEqual(TestPolygonBox_txt.testPolygonBoxGlyphsOnlyAsSvgExpected, TestPolygonBox_txt.testPolygonBoxGlyphsOnlyAsSvg)
 
   // #endregion
 
@@ -123,6 +130,8 @@ module Core =
     |> Assert.True
     ArrowGlyphWithFrame_txt.lineScanResult
     |> Assert.True
+    TestPolygonBox_txt.lineScanResult
+    |> Assert.True
 
   // #endregion
 
@@ -132,6 +141,7 @@ module Core =
   let ``LineRenderer : RenderAll`` () =
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsSvgExpected, ArrowGlyph_txt.arrowGlyphsAsSvg)
     Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvg)
+    Assert.AreEqual(TestPolygonBox_txt.testPolygonBoxAsSvgExpected, TestPolygonBox_txt.testPolygonBoxAsSvg)
 
   // #endregion
 

@@ -63,3 +63,30 @@ module LineRenderer =
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module TestPolygonBox_txt =
+
+    let options =
+      ["canvas-width", ((float)TestPolygonBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+        "canvas-height", ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+        "canvas-font-family", "Courier New"]
+      |> Map.ofList
+
+    let renderedAllLines =
+      [|LineRenderer.RenderAll Scale options TestPolygonBox_txt.horizLines
+        LineRenderer.RenderAll Scale options TestPolygonBox_txt.vertLines|]
+      |> Array.fold (fun r s -> r + s) ""
+
+    let testPolygonBoxAsSvg =
+      [|SvgTemplateOpen(options)
+        TestPolygonBox_txt.renderResult
+        renderedAllLines
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s) ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let testPolygonBoxAsSvgExpected =
+      @"../../TestSvgFiles/TestPolygonBox.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")

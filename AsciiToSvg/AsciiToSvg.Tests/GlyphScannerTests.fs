@@ -56,3 +56,28 @@ module GlyphScanner =
       scanGridResult
       |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
       |> Array.sort
+
+  module TestPolygonBox_txt =
+
+    let scanGridResultExpected =
+      [|{ glyphKind = ArrowDown; gridCoord = {col = 13; row = 1 }; glyphOptions = Map.empty };
+        { glyphKind = ArrowRightToLeft; gridCoord = {col = 11; row = 2 }; glyphOptions = Map.empty };
+        { glyphKind = UpperLeftAndRightCorner; gridCoord = {col = 13; row = 2 }; glyphOptions = Map.empty };
+        { glyphKind = UpperRightCorner; gridCoord = {col = 20; row = 2 }; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 0; row = 5 }; glyphOptions = Map.empty };
+        { glyphKind = LowerLeftAndRightCorner; gridCoord = {col = 13; row = 5 }; glyphOptions = Map.empty };
+        { glyphKind = UpperLeftAndRightCorner; gridCoord = {col = 17; row = 5 }; glyphOptions = Map.empty };
+        { glyphKind = UpperLeftAndRightCorner; gridCoord = {col = 18; row = 5 }; glyphOptions = Map.empty };
+        { glyphKind = LowerRightCorner; gridCoord = {col = 20; row = 5 }; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 17; row = 7 }; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 18; row = 7 }; glyphOptions = Map.empty };
+        { glyphKind = LowerLeftCorner; gridCoord = {col = 0; row = 10 }; glyphOptions = Map.empty };
+        { glyphKind = CrossCorner; gridCoord = {col = 17; row = 10 }; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 18; row = 10 }; glyphOptions = Map.empty };
+        { glyphKind = LowerLeftCorner; gridCoord = {col = 17; row = 11 }; glyphOptions = Map.empty };
+        { glyphKind = LowerRightCorner; gridCoord = {col = 18; row = 11 }; glyphOptions = Map.empty }|]
+    let scanGridResult = TestPolygonBox_txt.makeGridResult |> ScanGlyphs
+    let scanGridResultMapped =
+      scanGridResult
+      |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
+      |> Array.sort
