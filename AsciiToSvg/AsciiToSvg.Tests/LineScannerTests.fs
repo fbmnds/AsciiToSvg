@@ -14,43 +14,43 @@ module LineScanner =
 
     let allLinesExpected =
       ([|{ orientation = Horizontal
-           gridCorrdStart = { col = 27; row = 1 }
-           gridCorrdEnd = { col = 27; row = 1 }
+           gridCoordStart = { col = 27; row = 1 }
+           gridCoordEnd = { col = 27; row = 1 }
            linechars = [|'-'|]
            lineOptions = Map.empty };
          { orientation = Horizontal
-           gridCorrdStart = { col = 46; row = 1 }
-           gridCorrdEnd = { col = 46; row = 1 }
+           gridCoordStart = { col = 46; row = 1 }
+           gridCoordEnd = { col = 46; row = 1 }
            linechars = [|'-'|]
            lineOptions = Map.empty };
          { orientation = Horizontal
-           gridCorrdStart = { col = 27; row = 2 }
-           gridCorrdEnd = { col = 27; row = 2}
+           gridCoordStart = { col = 27; row = 2 }
+           gridCoordEnd = { col = 27; row = 2}
            linechars = [|'+'|]
            lineOptions = Map.empty };
          { orientation = Horizontal
-           gridCorrdStart = { col = 46; row = 2 }
-           gridCorrdEnd = { col = 46; row = 2 }
+           gridCoordStart = { col = 46; row = 2 }
+           gridCoordEnd = { col = 46; row = 2 }
            linechars = [|'+'|]
            lineOptions = Map.empty }|],
        [|{ orientation = Vertical
-           gridCorrdStart = { col = 1; row = 2 }
-           gridCorrdEnd = { col = 1; row = 2 }
+           gridCoordStart = { col = 1; row = 2 }
+           gridCoordEnd = { col = 1; row = 2 }
            linechars = [|'|'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = {col = 5; row = 2 }
-           gridCorrdEnd = { col = 5; row = 2 }
+           gridCoordStart = {col = 5; row = 2 }
+           gridCoordEnd = { col = 5; row = 2 }
            linechars = [|'+'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = { col = 12; row = 1 }
-           gridCorrdEnd = { col = 12; row = 1 }
+           gridCoordStart = { col = 12; row = 1 }
+           gridCoordEnd = { col = 12; row = 1 }
            linechars = [|'|'|]
            lineOptions = Map.empty };
          { orientation = Vertical
-           gridCorrdStart = {col = 16; row = 1 }
-           gridCorrdEnd = { col = 16; row = 1 }
+           gridCoordStart = {col = 16; row = 1 }
+           gridCoordEnd = { col = 16; row = 1 }
            linechars = [|'+'|]
            lineOptions = Map.empty }|])
 
@@ -62,159 +62,276 @@ module LineScanner =
     let vertLines = ArrowGlyphWithFrame_txt.makeGridResult |> LineScanner.ScanLineVertically
     let allLines = ArrowGlyphWithFrame_txt.makeGridResult |> LineScanner.ScanLine
 
-    let allLinesExpected = 
+    let allLinesExpected =
       ([| { orientation = Horizontal
-            gridCorrdStart = 
-              { col = 0
+            gridCoordStart =
+              { col = 1
                 row = 0 }
-            gridCorrdEnd = 
-              { col = 60
+            gridCoordEnd =
+              { col = 9
                 row = 0 }
-            linechars = 
-              [| '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; 
-                 '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; 
-                 '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+' |]
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
-              { col = 0
-                row = 2 }
-            gridCorrdEnd = 
-              { col = 60
-                row = 2 }
-            linechars = 
-              [| '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; 
-                 '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; 
-                 '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+' |]
+            gridCoordStart =
+              { col = 11
+                row = 0 }
+            gridCoordEnd =
+              { col = 21
+                row = 0 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
+            gridCoordStart =
+              { col = 23
+                row = 0 }
+            gridCoordEnd =
+              { col = 40
+                row = 0 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 42
+                row = 0 }
+            gridCoordEnd =
+              { col = 59
+                row = 0 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 1
+                row = 2 }
+            gridCoordEnd =
+              { col = 9
+                row = 2 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 11
+                row = 2 }
+            gridCoordEnd =
+              { col = 21
+                row = 2 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 23
+                row = 2 }
+            gridCoordEnd =
+              { col = 40
+                row = 2 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 42
+                row = 2 }
+            gridCoordEnd =
+              { col = 59
+                row = 2 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
               { col = 31
                 row = 3 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 31
                 row = 3 }
             linechars = [| '-' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 51
                 row = 3 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 51
                 row = 3 }
             linechars = [| '-' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 31
                 row = 4 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 31
                 row = 4 }
             linechars = [| '+' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 51
                 row = 4 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 51
                 row = 4 }
             linechars = [| '+' |]
             lineOptions = Map.empty }
           { orientation = Horizontal
-            gridCorrdStart = 
-              { col = 0
+            gridCoordStart =
+              { col = 1
                 row = 5 }
-            gridCorrdEnd = 
-              { col = 60
+            gridCoordEnd =
+              { col = 9
                 row = 5 }
-            linechars = 
-              [| '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; 
-                 '-'; '+'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+'; 
-                 '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '+' |]
-            lineOptions = Map.empty } |], 
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 11
+                row = 5 }
+            gridCoordEnd =
+              { col = 21
+                row = 5 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 23
+                row = 5 }
+            gridCoordEnd =
+              { col = 40
+                row = 5 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty }
+          { orientation = Horizontal
+            gridCoordStart =
+              { col = 42
+                row = 5 }
+            gridCoordEnd =
+              { col = 59
+                row = 5 }
+            linechars = [| '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-' |]
+            lineOptions = Map.empty } |],
        [| { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 0
-                row = 0 }
-            gridCorrdEnd = 
+                row = 1 }
+            gridCoordEnd =
               { col = 0
-                row = 5 }
-            linechars = [| '+'; '|'; '+'; '|'; '|'; '+' |]
+                row = 1 }
+            linechars = [| '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
+              { col = 0
+                row = 3 }
+            gridCoordEnd =
+              { col = 0
+                row = 4 }
+            linechars = [| '|'; '|' |]
+            lineOptions = Map.empty }
+          { orientation = Vertical
+            gridCoordStart =
               { col = 3
                 row = 4 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 3
                 row = 4 }
             linechars = [| '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 7
                 row = 4 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 7
                 row = 4 }
             linechars = [| '+' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 10
-                row = 0 }
-            gridCorrdEnd = 
+                row = 1 }
+            gridCoordEnd =
               { col = 10
-                row = 5 }
-            linechars = [| '+'; '|'; '+'; '|'; '|'; '+' |]
+                row = 1 }
+            linechars = [| '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
+              { col = 10
+                row = 3 }
+            gridCoordEnd =
+              { col = 10
+                row = 4 }
+            linechars = [| '|'; '|' |]
+            lineOptions = Map.empty }
+          { orientation = Vertical
+            gridCoordStart =
               { col = 15
                 row = 3 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 15
                 row = 3 }
             linechars = [| '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 19
                 row = 3 }
-            gridCorrdEnd = 
+            gridCoordEnd =
               { col = 19
                 row = 3 }
             linechars = [| '+' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
               { col = 22
-                row = 0 }
-            gridCorrdEnd = 
+                row = 1 }
+            gridCoordEnd =
               { col = 22
-                row = 5 }
-            linechars = [| '+'; '|'; '+'; '|'; '|'; '+' |]
+                row = 1 }
+            linechars = [| '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
-              { col = 41
-                row = 0 }
-            gridCorrdEnd = 
-              { col = 41
-                row = 5 }
-            linechars = [| '+'; '|'; '+'; '|'; '|'; '+' |]
+            gridCoordStart =
+              { col = 22
+                row = 3 }
+            gridCoordEnd =
+              { col = 22
+                row = 4 }
+            linechars = [| '|'; '|' |]
             lineOptions = Map.empty }
           { orientation = Vertical
-            gridCorrdStart = 
+            gridCoordStart =
+              { col = 41
+                row = 1 }
+            gridCoordEnd =
+              { col = 41
+                row = 1 }
+            linechars = [| '|' |]
+            lineOptions = Map.empty }
+          { orientation = Vertical
+            gridCoordStart =
+              { col = 41
+                row = 3 }
+            gridCoordEnd =
+              { col = 41
+                row = 4 }
+            linechars = [| '|'; '|' |]
+            lineOptions = Map.empty }
+          { orientation = Vertical
+            gridCoordStart =
               { col = 60
-                row = 0 }
-            gridCorrdEnd = 
+                row = 1 }
+            gridCoordEnd =
               { col = 60
-                row = 5 }
-            linechars = [| '+'; '|'; '+'; '|'; '|'; '+' |]
+                row = 1 }
+            linechars = [| '|' |]
+            lineOptions = Map.empty }
+          { orientation = Vertical
+            gridCoordStart =
+              { col = 60
+                row = 3 }
+            gridCoordEnd =
+              { col = 60
+                row = 4 }
+            linechars = [| '|'; '|' |]
             lineOptions = Map.empty } |])
 
     let lineScanResult = (horizLines, vertLines) = allLinesExpected && allLinesExpected = allLines

@@ -5,13 +5,17 @@ open AsciiToSvg.GlyphScanner
 
 
 let ScanLineHorizontally (grid : TxtGrid) : Line[] =
-  let IsNotHorizGlyph grid col row = not(IsHorizontalGlyph grid col row || IsCrossGlyph grid col row)
+  let IsNotHorizGlyph grid col row = not (IsHorizontalGlyph grid col row)
   let testHorizStart col row =
+    let IsInLineSequence = (IsNotHorizGlyph grid (col - 1) row) && (IsHorizontalGlyph grid col row)
+    let IsNextToCorner = (IsCorner grid (col - 1) row) && (IsHorizontalGlyph grid col row)
     if col = 0 then (IsHorizontalGlyph grid col row)
-    else (IsNotHorizGlyph grid (col - 1) row) && (IsHorizontalGlyph grid col row)
+    else IsInLineSequence || IsNextToCorner
   let testHorizEnd col row =
+    let IsInLineSequence = (IsHorizontalGlyph grid col row) && (IsNotHorizGlyph grid (col + 1) row)
+    let IsNextToCorner = (IsHorizontalGlyph grid col row) && (IsCorner grid (col + 1) row)
     if col = (grid.[row].Length - 1) then (IsHorizontalGlyph grid col row)
-    else (IsHorizontalGlyph grid col row) && (IsNotHorizGlyph grid (col + 1) row)
+    else IsInLineSequence || IsNextToCorner
   let horizLinePos row (line: char[]) =
     Array.zip
       (line |> Array.Parallel.mapi (fun col _ -> if (testHorizStart col row) then col else -1) |> Array.filter (fun col -> col > -1))
@@ -26,20 +30,24 @@ let ScanLineHorizontally (grid : TxtGrid) : Line[] =
     |> Array.concat
     |> Array.Parallel.map (fun (col, row, colEnd, chars) ->
       { orientation = (Horizontal)
-        gridCorrdStart = { col = col; row = row }
-        gridCorrdEnd = { col = colEnd; row = row }
+        gridCoordStart = { col = col; row = row }
+        gridCoordEnd = { col = colEnd; row = row }
         linechars = chars
         lineOptions = Map.empty })
   horizLines
 
 let ScanLineVertically (grid : TxtGrid)  =
-  let IsNotVertGlyph grid col row = not(IsVerticalGlyph grid col row || IsCrossGlyph grid col row)
+  let IsNotVertGlyph grid col row = not (IsVerticalGlyph grid col row)
   let testVertStart col row =
+    let IsInLineSequence = (IsNotVertGlyph grid col (row - 1)) && (IsVerticalGlyph grid col row)
+    let IsNextToCorner = (IsCorner grid col (row - 1)) && (IsVerticalGlyph grid col row)
     if row = 0 then (IsVerticalGlyph grid col row)
-    else (IsNotVertGlyph grid col (row - 1)) && (IsVerticalGlyph grid col row)
+    else IsInLineSequence || IsNextToCorner
   let testVertEnd col row =
+    let IsInLineSequence = (IsVerticalGlyph grid col row) && (IsNotVertGlyph grid col (row + 1))
+    let IsNextToCorner = (IsVerticalGlyph grid col row) && (IsCorner grid col (row + 1))
     if row = (grid.Length - 1) then (IsVerticalGlyph grid col row)
-    else (IsVerticalGlyph grid col row) && (IsNotVertGlyph grid col (row + 1))
+    else IsInLineSequence || IsNextToCorner
   let gridT =
     [| for col in [0..grid.[0].Length-1] do yield [| for row in [0..grid.Length-1] do yield grid.[row].[col] |] |]
   let startPos =
@@ -55,8 +63,8 @@ let ScanLineVertically (grid : TxtGrid)  =
   |> Array.concat
   |> Array.Parallel.map (fun (col, rowStart, rowEnd) ->
     { orientation = (Vertical)
-      gridCorrdStart = { col = col; row = rowStart }
-      gridCorrdEnd = { col = col; row = rowEnd }
+      gridCoordStart = { col = col; row = rowStart }
+      gridCoordEnd = { col = col; row = rowEnd }
       linechars = [|for i in [rowStart..rowEnd] do yield grid.[i].[col]|]
       lineOptions = Map.empty })
 

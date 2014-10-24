@@ -14,37 +14,6 @@ let IsGlyphByPattern (pattern: GlyphPattern) (txtGrid: TxtGrid) col row =
       letters |> Array.map (fun letter -> test coord letter) |> Array.reduce (fun x y -> x || y))
   |> Array.reduce (fun x y -> x && y)
 
-// #region Line Glyphs
-
-let IsVerticalGlyph (txtGrid: TxtGrid) col row =
-  [|[|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
-      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
-    [|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
-      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]|]
-  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
-  |> Array.reduce (fun x y -> x || y)
-
-let IsHorizontalGlyph (txtGrid: TxtGrid) col row =
-  [|[|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
-    [|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
-  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
-  |> Array.reduce (fun x y -> x || y)
-
-let IsCrossGlyph (txtGrid: TxtGrid) col row =
-  [|[|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
-    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]
-    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
-    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
-  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
-  |> Array.reduce (fun x y -> x || y)
-
-// #endregion
 
 // #region Arrows
 
@@ -161,6 +130,41 @@ let IsCorner (txtGrid: TxtGrid) col row =
 let IsNotCorner (txtGrid: TxtGrid) col row = not (IsCorner txtGrid col row)
 
 // #endregion
+
+// #region Line Glyphs
+
+let IsVerticalGlyph (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+  |> fun x -> x && IsNotCorner txtGrid col row
+
+let IsHorizontalGlyph (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+  |> fun x -> x && IsNotCorner txtGrid col row
+
+let IsCrossGlyph (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'+'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+// #endregion
+
 
 // #region Not implemented
 

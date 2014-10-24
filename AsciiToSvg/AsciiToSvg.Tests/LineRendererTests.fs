@@ -29,7 +29,7 @@ module LineRenderer =
         SvgTemplateClose|]
       |> Array.fold (fun r s -> r + s) ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
-    System.IO.File.WriteAllText(@"../../TestSvgFiles/ArrowGlyphs.svg", arrowGlyphsAsSvg)
+
     let arrowGlyphsSvgExpected =
       @"../../TestSvgFiles/ArrowGlyphs.svg"
       |> readFileAsText
@@ -57,7 +57,7 @@ module LineRenderer =
         SvgTemplateClose|]
       |> Array.fold (fun r s -> r + s) ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
-    System.IO.File.WriteAllText(@"../../TestSvgFiles/ArrowGlyphsWithFrame.svg", arrowGlyphsWithFrameAsSvg)
+
     let arrowGlyphsWithFrameAsSvgExpected =
       @"../../TestSvgFiles/ArrowGlyphsWithFrame.svg"
       |> readFileAsText

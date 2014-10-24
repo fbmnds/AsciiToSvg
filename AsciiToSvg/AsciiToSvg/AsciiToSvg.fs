@@ -86,8 +86,8 @@ type Orientation =
 
 type Line =
   { orientation : Orientation
-    gridCorrdStart : GridCoordinates
-    gridCorrdEnd : GridCoordinates
+    gridCoordStart : GridCoordinates
+    gridCoordEnd : GridCoordinates
     linechars : char[]
     lineOptions : SvgOption }
 

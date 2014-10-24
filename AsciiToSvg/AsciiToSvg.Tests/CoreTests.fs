@@ -79,8 +79,8 @@ module Core =
   [<Test>]
   let ``GlyphScanner : ScanGlyphs``() =
     Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7|], ArrowGlyph_txt.scanGridResultMapped)
-    Assert.AreEqual ([|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22|],
-                     ArrowGlyphWithFrame_txt.scanGridResultMapped)
+    [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22|]
+    |> fun x -> Assert.AreEqual(ArrowGlyphWithFrame_txt.scanGridResultMapped, x)
   // #endregion
 
   // #region  AsciiToSvg.GlyphRenderer.Tests
@@ -132,8 +132,8 @@ module Core =
   let ``LineRenderer : RenderAll`` () =
     Assert.AreEqual(ArrowGlyph_txt.arrowGlyphsSvgExpected, ArrowGlyph_txt.arrowGlyphsAsSvg)
     Assert.AreEqual(ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvgExpected, ArrowGlyphWithFrame_txt.arrowGlyphsWithFrameAsSvg)
+
   // #endregion
-  //printfn "%A" ArrowGlyphWithFrame_txt.allLines
 
   sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
   |> printfn "%s"

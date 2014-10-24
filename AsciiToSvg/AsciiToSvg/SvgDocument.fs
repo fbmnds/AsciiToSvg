@@ -150,14 +150,14 @@ let ScalableTextTemplate (text: Text) (options: SvgOption) scale =
 let ScalableLineTemplate (line: Line) (options: SvgOption) scale =
   match line.orientation with
   | Horizontal ->
-    let col0 = shiftColCoordGridToSvg scale -1.0 line.gridCorrdStart
-    let row0 = shiftRowCoordGridToSvg scale 7.0 line.gridCorrdStart
-    let col1 = shiftColCoordGridToSvg scale 9.0 line.gridCorrdEnd
-    let row1 = shiftRowCoordGridToSvg scale 7.0 line.gridCorrdEnd
+    let col0 = shiftColCoordGridToSvg scale -1.0 line.gridCoordStart
+    let row0 = shiftRowCoordGridToSvg scale 7.0 line.gridCoordStart
+    let col1 = shiftColCoordGridToSvg scale 9.0 line.gridCoordEnd
+    let row1 = shiftRowCoordGridToSvg scale 7.0 line.gridCoordEnd
     putTick options col0 row0 col1 row1
   | Vertical ->
-    let col0 = shiftColCoordGridToSvg scale 4.0 line.gridCorrdStart
-    let row0 = shiftRowCoordGridToSvg scale -1.0 line.gridCorrdStart
-    let col1 = shiftColCoordGridToSvg scale 4.0 line.gridCorrdEnd
-    let row1 = shiftRowCoordGridToSvg scale 15.0 line.gridCorrdEnd
+    let col0 = shiftColCoordGridToSvg scale 4.0 line.gridCoordStart
+    let row0 = shiftRowCoordGridToSvg scale -1.0 line.gridCoordStart
+    let col1 = shiftColCoordGridToSvg scale 4.0 line.gridCoordEnd
+    let row1 = shiftRowCoordGridToSvg scale 15.0 line.gridCoordEnd
     putTick options col0 row0 col1 row1
