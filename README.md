@@ -91,7 +91,7 @@ This input renders to:
 
 The first figure in the [ZeroMQ Guide] renders to:
 
-![](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestSvgFiles/ZeroMQ_Fig1.svg?raw=true)
+![](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/ZeroMQ_Fig1.svg?raw=true)
 
 
                     
