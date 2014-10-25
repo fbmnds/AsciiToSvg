@@ -68,8 +68,8 @@ module LineRenderer =
 
     let options =
       ["canvas-width", ((float)TestPolygonBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-        "canvas-height", ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-        "canvas-font-family", "Courier New"]
+       "canvas-height", ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New"]
       |> Map.ofList
 
     let renderedAllLines =
@@ -87,6 +87,61 @@ module LineRenderer =
 
     let testPolygonBoxAsSvgExpected =
       @"../../TestSvgFiles/TestPolygonBox.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+
+  module TestMiniBox_txt =
+
+    let options =
+      ["canvas-width", ((float)TestMiniBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)TestMiniBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+      |> Map.ofList
+
+    let renderedAllLines =
+      [|LineRenderer.RenderAll Scale options TestMiniBox_txt.horizLines
+        LineRenderer.RenderAll Scale options TestMiniBox_txt.vertLines|]
+      |> Array.fold (fun r s -> r + s) ""
+
+    let testMiniBoxAsSvg =
+      [|SvgTemplateOpen(options)
+        TestMiniBox_txt.renderResult
+        renderedAllLines
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s) ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let testMiniBoxAsSvgExpected =
+      @"../../TestSvgFiles/TestMiniBox.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module ZeroMQ_Fig1_txt =
+
+    let options =
+      ["canvas-width", ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New"]
+      |> Map.ofList
+
+    let renderedAllLines =
+      [|LineRenderer.RenderAll Scale options ZeroMQ_Fig1_txt.horizLines
+        LineRenderer.RenderAll Scale options ZeroMQ_Fig1_txt.vertLines|]
+      |> Array.fold (fun r s -> r + s) ""
+
+    let zeroMQ_Fig1AsSvg =
+      [|SvgTemplateOpen(options)
+        ZeroMQ_Fig1_txt.renderedFramedTextTabbed
+        ZeroMQ_Fig1_txt.renderResult
+        renderedAllLines
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s) ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+    System.IO.File.WriteAllText(@"../../TestSvgFiles/ZeroMQ_Fig1.svg", zeroMQ_Fig1AsSvg)
+    let zeroMQ_Fig1AsSvgExpected =
+      @"../../TestSvgFiles/ZeroMQ_Fig1.svg"
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")

@@ -65,3 +65,30 @@ module TextRenderer =
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module ZeroMQ_Fig1_txt =
+
+    let options =
+      ["canvas-width", ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New";
+       "canvas-font-size", "15.0"]
+      |> Map.ofList
+
+    let renderedFramedTextTabbed =
+      (TextRenderer.RenderAll Scale options ZeroMQ_Fig1_txt.textTabbed)
+      |> Array.fold (fun r s -> r + s + "\n") ""
+
+    let zeroMQ_Fig1TabbedAsSvg =
+      [|SvgTemplateOpen(options)
+        (sprintf "\n%s\n" renderedFramedTextTabbed )
+        ZeroMQ_Fig1_txt.renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let zeroMQ_Fig1TabbedAsSvgExpected =
+      @"../../TestSvgFiles/ZeroMQ_Fig1Tabbed.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")

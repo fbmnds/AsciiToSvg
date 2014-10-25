@@ -1,0 +1,17 @@
+.------------.        .--------------.
+|            |        |              |
+| TCP socket +------->|              | ZAP!
+|            | BOOM!  |  ZeroMQ socket  |
+'------------'        |              |  POW!!
+  ^    ^    ^         |              |
+  |    |    |         '--------------'
+  |    |    |
+  |    |    |
+  |    |    '--------- Spandex
+  |    |
+  |    '-------------- Cosmic rays
+
+ Illegal radioisotopes from
+ secret Soviet atomic city
+ 
+ source: https://raw.githubusercontent.com/imatix/zguide/master/images/fig1.txt

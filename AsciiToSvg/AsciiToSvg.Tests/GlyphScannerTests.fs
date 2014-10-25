@@ -81,3 +81,43 @@ module GlyphScanner =
       scanGridResult
       |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
       |> Array.sort
+
+
+  module TestMiniBox_txt =
+
+    let scanGridResultExpected =
+      [|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 2; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty }|]
+    let scanGridResult = TestMiniBox_txt.makeGridResult |> ScanGlyphs
+
+    let scanGridResultMapped =
+      scanGridResult
+      |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
+      |> Array.sort
+
+  module ZeroMQ_Fig1_txt =
+
+    let scanGridResultExpected =
+      [|{glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
+        {glyphKind = RoundUpperRightCorner; gridCoord = {col = 13; row = 0;}; glyphOptions = Map.empty };
+        {glyphKind = RoundUpperLeftCorner; gridCoord = {col = 22; row = 0;}; glyphOptions = Map.empty };
+        {glyphKind = RoundUpperRightCorner; gridCoord = {col = 37; row = 0;}; glyphOptions = Map.empty };
+        {glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 13; row = 2;}; glyphOptions = Map.empty };
+        {glyphKind = ArrowLeftToRight; gridCoord = {col = 21; row = 2;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 4;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerRightCorner; gridCoord = {col = 13; row = 4;}; glyphOptions = Map.empty };
+        {glyphKind = ArrowUp; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty };
+        {glyphKind = ArrowUp; gridCoord = {col = 7; row = 5;}; glyphOptions = Map.empty };
+        {glyphKind = ArrowUp; gridCoord = {col = 12; row = 5;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 22; row = 6;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerRightCorner; gridCoord = {col = 37; row = 6;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 12; row = 9;}; glyphOptions = Map.empty };
+        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 7; row = 11;}; glyphOptions = Map.empty }|]
+    let scanGridResult = ZeroMQ_Fig1_txt.makeGridResult |> ScanGlyphs
+
+    let scanGridResultMapped =
+      scanGridResult
+      |> Array.map (fun x -> Array.IndexOf(scanGridResultExpected, x))
+      |> Array.sort

@@ -96,6 +96,7 @@
     <Content Include="TestTxtFiles\Glyphs.txt" />
     <Content Include="TestTxtFiles\ArrowGlyphs.txt" />
     <Content Include="TestTxtFiles\ArrowGlyphsWithFrame.txt" />
+    <Content Include="TestTxtFiles\ZeroMQ_Fig1.txt" />
     <None Include="TestSvgFiles\ArrowGlyphs.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsFramedTabbed.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithoutText.svg" />
@@ -104,6 +105,11 @@
     <None Include="TestSvgFiles\ArrowGlyphsFramedWithoutText.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithFrame.svg" />
     <None Include="TestSvgFiles\TestPolygonBoxGlyphsOnly.svg" />
+    <None Include="TestSvgFiles\TestPolygonBox.svg" />
+    <None Include="TestSvgFiles\TestMiniBoxGlyphsOnly.svg" />
+    <None Include="TestSvgFiles\TestMiniBox.svg" />
+    <None Include="TestSvgFiles\ZeroMQ_Fig1GlyphsOnly.svg" />
+    <None Include="TestSvgFiles\ZeroMQ_Fig1.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->
+<!-- Created with ASCIIToSVG (https://github.com/fbmnds/AsciiToSvg) -->
 <svg width="549px" height="90px" font-size="12" version="1.1"
 
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -18,16 +18,16 @@
     </filter>
   </defs>
         <text x="18.000" y="26.000" style="fill:black" font-family="Courier New" font-size="15.0">
- ArrowUp 
+ArrowUp
       </text>
       <text x="108.000" y="26.000" style="fill:black" font-family="Courier New" font-size="15.0">
- ArrowDown 
+ArrowDown
       </text>
       <text x="216.000" y="26.000" style="fill:black" font-family="Courier New" font-size="15.0">
- ArrowLeftToRight 
+ArrowLeftToRight
       </text>
       <text x="387.000" y="26.000" style="fill:black" font-family="Courier New" font-size="15.0">
- ArrowRightToLeft 
+ArrowRightToLeft
       </text>
       <line stroke="black" stroke-width="1" x1="198.000" y1="37.000" x2="206.000" y2="37.000" />
       <line stroke="black" stroke-width="1" x1="202.000" y1="30.000" x2="202.000" y2="44.000" />

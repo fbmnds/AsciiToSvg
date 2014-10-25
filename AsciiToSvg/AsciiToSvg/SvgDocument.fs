@@ -28,7 +28,7 @@ let SvgTemplateOpen (options: SvgOption) =
   "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
   "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"" +
   "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
-  "<!-- Created with ASCIIToSVG (https://github.com/fbmnds/a2svg) -->\n" +
+  "<!-- Created with ASCIIToSVG (https://github.com/fbmnds/AsciiToSvg) -->\n" +
   (sprintf "<svg width=\"%spx\" height=\"%spx\" font-size=\"%s\" version=\"1.1\"\n" canvasWidth canvasHeight fontSize) +
   """
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -68,6 +68,13 @@ let putTick (options: SvgOption) col1 row1 col2 row2 =
     sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
     sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
     sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" col1 row1 col2 row2 |]
+  |> Array.fold (fun r s -> r + s) ""
+
+let putArc (options: SvgOption) col1 row1 col2 row2 col3 row3 =
+  [|"      <path fill=\"none\" "
+    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
+    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "d=\"M %.3f %.3f Q %.3f %.3f  %.3f %.3f\" />\n" col1 row1 col2 row2 col3 row3 |]
   |> Array.fold (fun r s -> r + s) ""
 
 let ScalableArrowTemplate (glyph: Glyph) (options: SvgOption) scale ax ay bx by cx cy dx dy ex ey =
@@ -120,6 +127,40 @@ let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
   | CrossCorner ->
     set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
     set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
+  | _ -> ()
+  set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
+
+let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
+  // <path d="M 45 75 q 0 -45 45 -45" stroke="blue" stroke-width="5" fill="none" />
+  let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
+  let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
+  let mutable set = Set.empty<string>
+  match glyph.glyphKind with
+  | RoundUpperLeftCorner ->
+    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
+  | RoundLowerLeftCorner ->
+    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
+  | RoundUpperRightCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
+  | RoundLowerRightCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
+  | RoundUpperLeftAndRightCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
+    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
+  | RoundLowerLeftAndRightCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
+  | RoundUpperAndLowerRightCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
+  | RoundUpperAndLowerLeftCorner ->
+    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
+  | RoundCrossCorner ->
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
+    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
+    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
+    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
   | _ -> ()
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 

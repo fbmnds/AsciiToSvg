@@ -135,50 +135,127 @@ let IsNotCorner (txtGrid: TxtGrid) col row = not (IsCorner txtGrid col row)
 
 let IsVerticalGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
-      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'; '.'|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'|'; '+'|]))
-      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]|]
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'; '\''|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
   |> fun x -> x && IsNotCorner txtGrid col row
 
 let IsHorizontalGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'; '.'; '\''|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'; '.'; '\''|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
   |> fun x -> x && IsNotCorner txtGrid col row
 
 let IsCrossGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'|]))|]
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'; '^'; '.'|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'|]))|]
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'; 'v'; '\''|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'|]))|]
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'; '.'; '\''|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'|]))|]|]
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'; '.'; '\''|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
 
 // #endregion
 
 
+// #region RoundCorners
+
+let IsRoundUpperLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundLowerLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'\''|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundUpperRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundLowerRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'\''|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundUpperLeftAndRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundLowerLeftAndRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'\''|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundUpperAndLowerRightCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'; '\''|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundUpperAndLowerLeftCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'; '\''|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundCrossCorner (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'; '\''|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|'|'; '+'|]))
+      ({ col = 0; row = 1 }, (Letter [|'|'; '+'|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsRoundCorner (txtGrid: TxtGrid) col row =
+  [|IsRoundUpperLeftCorner
+    IsRoundLowerLeftCorner
+    IsRoundUpperRightCorner
+    IsRoundLowerRightCorner
+    IsRoundUpperLeftAndRightCorner
+    IsRoundLowerLeftAndRightCorner
+    IsRoundUpperAndLowerRightCorner
+    IsRoundUpperAndLowerLeftCorner
+    IsRoundCrossCorner|]
+  |> Array.Parallel.map (fun f -> f txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsNotRoundCorner (txtGrid: TxtGrid) col row = not (IsRoundCorner txtGrid col row)
+
+// #endregion
+
 // #region Not implemented
 
-let IsRoundUpperLeftCorner (txtGrid: TxtGrid) col row = false
-let IsRoundLowerLeftCorner (txtGrid: TxtGrid) col row = false
-let IsRoundUpperRightCorner (txtGrid: TxtGrid) col row = false
-let IsRoundLowerRightCorner (txtGrid: TxtGrid) col row = false
-  //
-let IsRoundUpperLeftAndRightCorner (txtGrid: TxtGrid) col row = false
-let IsRoundLowerLeftAndRightCorner (txtGrid: TxtGrid) col row = false
-let IsRoundUpperAndLowerRightCorner (txtGrid: TxtGrid) col row = false
-let IsRoundUpperAndLowerLeftCorner (txtGrid: TxtGrid) col row = false
-let IsRoundCrossCorner (txtGrid: TxtGrid) col row = false
-  //
 let IsDiamondLeftCorner (txtGrid: TxtGrid) col row = false
 let IsDiamondRightCorner (txtGrid: TxtGrid) col row = false
 let IsDiamondUpperCorner (txtGrid: TxtGrid) col row = false
@@ -227,18 +304,18 @@ let ScanGlyphs (grid : TxtGrid) : Glyph[] =
     if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
     if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
     if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner else
-// #region Not implemented
     // RoundCorners
+    if (IsRoundCrossCorner grid i j) then glyphProperty RoundCrossCorner else
+    if (IsRoundUpperLeftAndRightCorner grid i j) then glyphProperty RoundUpperLeftAndRightCorner else
+    if (IsRoundLowerLeftAndRightCorner grid i j) then glyphProperty RoundLowerLeftAndRightCorner else
+    if (IsRoundUpperAndLowerRightCorner grid i j) then glyphProperty RoundUpperAndLowerRightCorner else
+    if (IsRoundUpperAndLowerLeftCorner grid i j) then glyphProperty RoundUpperAndLowerLeftCorner else
     if (IsRoundUpperLeftCorner grid i j) then glyphProperty RoundUpperLeftCorner else
     if (IsRoundLowerLeftCorner grid i j) then glyphProperty RoundLowerLeftCorner else
     if (IsRoundUpperRightCorner grid i j) then glyphProperty RoundUpperRightCorner else
     if (IsRoundLowerRightCorner grid i j) then glyphProperty RoundLowerRightCorner else
     //
-    if (IsRoundUpperLeftAndRightCorner grid i j) then glyphProperty RoundUpperLeftAndRightCorner else
-    if (IsRoundLowerLeftAndRightCorner grid i j) then glyphProperty RoundLowerLeftAndRightCorner else
-    if (IsRoundUpperAndLowerRightCorner grid i j) then glyphProperty RoundUpperAndLowerRightCorner else
-    if (IsRoundUpperAndLowerLeftCorner grid i j) then glyphProperty RoundUpperAndLowerLeftCorner else
-    if (IsRoundCrossCorner grid i j) then glyphProperty RoundCrossCorner else
+// #region Not implemented
     // DiamondCorners
     if (IsDiamondLeftCorner grid i j) then glyphProperty DiamondLeftCorner else
     if (IsDiamondRightCorner grid i j) then glyphProperty DiamondRightCorner else
@@ -294,7 +371,6 @@ let IsGlyph (grid: TxtGrid) col row =
     (IsUpperAndLowerRightCorner grid col row)
     (IsUpperAndLowerLeftCorner grid col row)
     (IsCrossCorner grid col row)
-// #region Not implemented
     // RoundCorners
     (IsRoundUpperLeftCorner grid col row)
     (IsRoundLowerLeftCorner grid col row)
@@ -306,6 +382,7 @@ let IsGlyph (grid: TxtGrid) col row =
     (IsRoundUpperAndLowerRightCorner grid col row)
     (IsRoundUpperAndLowerLeftCorner grid col row)
     (IsRoundCrossCorner grid col row)
+// #region Not implemented
     // DiamondCorners
     (IsDiamondLeftCorner grid col row)
     (IsDiamondRightCorner grid col row)
@@ -335,3 +412,7 @@ let IsGlyph (grid: TxtGrid) col row =
     |> Array.reduce (fun x y -> x || y)
 
 let IsNotGlyph (grid: TxtGrid) col row = not (IsGlyph grid col row)
+
+let IsCornerKind (grid: TxtGrid) col row = (IsCorner grid col row) || (IsRoundCorner grid col row)
+
+let IsNotCornerKind (grid: TxtGrid) col row = not (IsCornerKind grid col row)

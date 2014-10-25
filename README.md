@@ -35,7 +35,7 @@ This feature is not yet fully implemented but planned and will be explained late
 
 The steps to generate a SVG graphic are:
 
-* [read the file into memory and separate the picture part from the options part](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TxtFileTests.fs#L141)
+* [read the ASCII text file into memory and separate the picture part from the options part](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TxtFileTests.fs#L141)
 * [make a trimmed grid, i.e. remove trailing spces and blank lines (important for proper scaling of the graphic)](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TxtFileTests.fs#L178)
 * [scan the ASCII input](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/GlyphScannerTests.fs#L54)
 * [set the approriate SVG options (scaling)](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/GlyphRendererTests.fs#L63)
@@ -45,7 +45,12 @@ The steps to generate a SVG graphic are:
 * [render the text](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TextRendererTests.fs#L51)
 * [scan the lines](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/LineScannerTests.fs#L63)
 * [render the lines](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/LineRendererTests.fs#L47)
-* [produce SVG](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/LineRendererTests.fs#L52)
+* [produce the SVG graphic](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/LineRendererTests.fs#L52)
+
+## Why using AsciiToSvg instead of Graphiz, InkScape, ...?
+
+It applies the same rationale why one would like to use Markdown instead of Microsoft Word, TeX/LaTeX, and alike.
+It boils down to trading ease in workflow using automation capabilities versus feature richness of the alternatives.
 
 ## How does it look like?
 
@@ -62,7 +67,6 @@ A basic example is given by the following ASCII input file:
 The resulting SVG file looks like this:
 
 ![ArrowGlyphsWithFrame](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/ArrowGlyphsWithFrame.png?raw=true)
-
 
 The usage of polygon shapes looks like this:
 
@@ -84,6 +88,12 @@ The usage of polygon shapes looks like this:
 This input renders to:
 
 ![TestPolygonBox](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/TestPolygonBox.png?raw=true)
+
+The first figure in the [ZeroMQ Guide] renders to:
+
+<img src="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestSvgFiles/ZeroMQ_Fig1.svg?raw=true">
+
+
                     
 ## Library license
 

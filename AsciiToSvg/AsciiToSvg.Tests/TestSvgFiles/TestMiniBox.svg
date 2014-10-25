@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with ASCIIToSVG (https://github.com/fbmnds/AsciiToSvg) -->
+<svg width="27px" height="45px" font-size="12" version="1.1"
+
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <filter id="dsFilterNoBlur" width="150%" height="150%">
+      <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
+      <feBlend in="SourceGraphic" in2="matrixOut" mode="normal"/>
+    </filter>
+    <filter id="dsFilter" width="150%" height="150%">
+      <feOffset result="offOut" in="SourceGraphic" dx="3" dy="3"/>
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0"/>
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="3"/>
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+    </filter>
+  </defs>
+        <path fill="none" stroke="black" stroke-width="1" d="M 18.000 37.000 Q 22.000 37.000  22.000 30.000" />
+
+      <path fill="none" stroke="black" stroke-width="1" d="M 18.000 7.000 Q 22.000 7.000  22.000 14.000" />
+
+      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 14.000 Q 4.000 7.000  8.000 7.000" />
+
+      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 30.000 Q 4.000 37.000  8.000 37.000" />
+
+      <line stroke="black" stroke-width="1" x1="8.000" y1="7.000" x2="18.000" y2="7.000" />
+
+      <line stroke="black" stroke-width="1" x1="8.000" y1="37.000" x2="18.000" y2="37.000" />
+
+      <line stroke="black" stroke-width="1" x1="4.000" y1="14.000" x2="4.000" y2="30.000" />
+
+      <line stroke="black" stroke-width="1" x1="22.000" y1="14.000" x2="22.000" y2="30.000" />
+
+  </svg>

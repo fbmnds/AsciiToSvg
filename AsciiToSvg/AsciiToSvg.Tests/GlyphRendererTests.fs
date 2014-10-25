@@ -111,3 +111,56 @@ module GlyphRenderer =
       |> readFileAsText
       |> function | Success x -> x | _ -> ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module TestMiniBox_txt =
+
+    let options =
+      ["canvas-width", ((float)TestMiniBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)TestMiniBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+      |> Map.ofList
+
+    let renderResult =
+      TestMiniBox_txt.scanGridResult
+      |> Array.Parallel.map (GlyphRenderer.Render Scale options)
+      |> Array.sort
+      |> Array.fold (fun r s -> r + s + "\n") ""
+
+    let testMiniBoxGlyphsOnlyAsSvg =
+      [|SvgTemplateOpen(options)
+        renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let testMiniBoxGlyphsOnlyAsSvgExpected =
+      @"../../TestSvgFiles/TestMiniBoxGlyphsOnly.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+  module ZeroMQ_Fig1_txt =
+
+    let options =
+      ["canvas-width", ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
+       "canvas-height", ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
+       "canvas-font-family", "Courier New"]
+      |> Map.ofList
+
+    let renderResult =
+      ZeroMQ_Fig1_txt.scanGridResult
+      |> Array.Parallel.map (GlyphRenderer.Render Scale options)
+      |> Array.sort
+      |> Array.fold (fun r s -> r + s + "\n") ""
+
+    let zeroMQ_Fig1GlyphsOnlyAsSvg =
+      [|SvgTemplateOpen(options)
+        renderResult
+        SvgTemplateClose|]
+      |> Array.fold (fun r s -> r + s + "\n") ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")
+
+    let zeroMQ_Fig1GlyphsOnlyAsSvgExpected =
+      @"../../TestSvgFiles/ZeroMQ_Fig1GlyphsOnly.svg"
+      |> readFileAsText
+      |> function | Success x -> x | _ -> ""
+      |> fun x -> regex(@"\r\n").Replace(x, "\n")

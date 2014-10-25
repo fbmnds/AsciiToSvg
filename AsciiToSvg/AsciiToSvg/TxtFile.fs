@@ -4,12 +4,12 @@
 let TxtOptionRegex = regex @"^\[([^\]]+)\]:?\s+({[^}]+?})"
 let isTxtOption str = (str =~ TxtOptionRegex)
 
-let leftOffset lines =
-  let re = regex@"\s*[^\s]"
+let leftOffset (lines: string []) =
+  if lines.Length = 0 then 0 else
   lines
-  |> Array.Parallel.map (fun line -> re.Match(line).Groups.[0].Value.Length - 1)
-  |> Array.filter (fun x -> x > 0)
-  |> fun x -> if x.Length = 0 then 0 else Array.min x
+  |> Array.filter (fun line -> line.Length <> 0 && line.TrimStart(' ').Length <> 0)
+  |> Array.Parallel.map (fun line -> line.Length - line.TrimStart(' ').Length)
+  |> Array.min
 
 let trimWithOffset offset (lines: string[])  =
   if offset < 1 then lines |> Array.Parallel.map (fun line -> line.TrimEnd(' '))
@@ -65,18 +65,29 @@ let makeFramedGrid ascii : TxtGrid =
         else Array.concat [ascii.[i-1].ToCharArray(); (fillArray ascii.[i-1]) ]
   |]
 
-let makeTrimmedGrid (ascii': string[]) : TxtGrid =
-  let offset = leftOffset ascii'
-  let ascii =
-    ascii'
-    |> Array.Parallel.map (fun line -> line.TrimEnd(' '))
-    |> Seq.ofArray |> Seq.skipWhile (fun x -> x.Length < 1) |> Seq.takeWhile (fun x -> x.Length > 0) |> Array.ofSeq
-    |> trimWithOffset offset
-  let yLength =
+let removeBlankTrimmedLines (lines: string[]) =
+  lines
+  |> Array.Parallel.map (fun line -> line.Length, line)
+  |> Seq.ofArray
+  |> Seq.skipWhile (fun (x, _) -> x < 1)
+  |> Seq.takeWhile (fun _ -> true)
+  |> Array.ofSeq
+  |> Array.Parallel.map (fun (_, line) -> line)
+
+let removeTrailingBlankTrimmedLines (lines: string[]) =
+  lines |> Array.rev |> removeBlankTrimmedLines |> Array.rev
+
+let fillingBlanks yLength (arr: string) = [| for i in [1..yLength-arr.Length] do yield ' ' |]
+
+let makeTrimmedGrid (ascii: string[]) : TxtGrid =
+  let ascii' =
     ascii
-    |> Array.Parallel.map String.length |> Array.max
-  let fillArray (arr: string) = [| for i in [1..yLength-arr.Length] do yield ' ' |]
-  [| for i in [0..ascii.Length-1] do yield Array.concat [ascii.[i].ToCharArray(); (fillArray ascii.[i]) ] |]
+    |> Array.Parallel.map (fun line -> line.TrimEnd(' '))
+    |> removeBlankTrimmedLines
+    |> removeTrailingBlankTrimmedLines
+    |> fun x -> trimWithOffset (leftOffset x) x
+  let yLength = ascii' |> Array.Parallel.map String.length |> Array.max
+  [| for i in [0..ascii'.Length-1] do yield Array.concat [ascii'.[i].ToCharArray(); (fillingBlanks yLength ascii'.[i]) ] |]
 
 let replaceOption letter (option: string) ascii =
   let replacement = [| for i in [0..option.Length+3] do yield letter |] |> fun x -> new string (x)
