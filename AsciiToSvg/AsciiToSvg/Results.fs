@@ -14,6 +14,7 @@ module Results =
                  (msg : Error -> AsciiToSvgMessage) =
         appendError label exn msg []
 
+    // mostly unused boilerplate code; cleanup deferred
     let messageToString message =
         let toString s (x : ErrorLabel) (y : Stacktrace) = sprintf "%s\n%A\n%A\n" s x y
         match message with

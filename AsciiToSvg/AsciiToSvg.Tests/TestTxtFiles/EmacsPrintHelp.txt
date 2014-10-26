@@ -1,0 +1,42 @@
+printing.el version 6.9.3    ps-print.el version 7.3.5
+
+
+Menu Layout
+-----------
+
+The `printing' menu (Tools/Printing or File/Print) has the following layout:
+
+       +-----------------------------+
+A   0  |   Printing Interface        |
+       +-----------------------------+       +-A---------+     +-B------+
+I   1  |   PostScript Preview       >|-------|Directory >|-----|1-up    |
+    2  |   PostScript Print         >|---- A |Buffer    >|-- B |2-up    |
+    3  |   PostScript Printer: name >|---- C |Region    >|-- B |4-up    |
+       +-----------------------------+       |Mode      >|-- B |Other...|
+II  4  |   Printify                 >|-----\ |File      >|--\  +--------+
+    5  |   Print                    >|---\ | |Despool... |  |
+    6  |   Text Printer: name       >|-\ | | +-----------+  |
+       +-----------------------------+ | | | +---------+   +------------+
+III 7  |[ ]Landscape                 | | | \-|Directory|   | No Prep... | Ia
+    8  |[ ]Print Header              | | |   |Buffer   |   +------------+ Ib
+    9  |[ ]Print Header Frame        | | |   |Region   |   |   name    >|- C
+    10 |[ ]Line Number               | | |   +---------+   +------------+
+    11 |[ ]Zebra Stripes             | | |   +---------+   |   1-up...  | Ic
+    12 |[ ]Duplex                    | | \---|Directory|   |   2-up...  |
+    13 |[ ]Tumble                    | \--\  |Buffer   |   |   4-up...  |
+    14 |[ ]Upside-Down               |    |  |Region   |   |   Other... |
+    15 |   Print All Pages          >|--\ |  |Mode     |   +------------+
+       +-----------------------------+  | |  +---------+   |[ ]Landscape| Id
+IV  16 |[ ]Spool Buffer              |  | |  +-C-------+   |[ ]Duplex   | Ie
+    17 |[ ]Print with faces          |  | \--|( )name A|   |[ ]Tumble   | If
+    18 |[ ]Print via Ghostscript     |  |    |( )name B|   +------------+
+       +-----------------------------+  |    |...      |
+V   19 |[ ]Auto Region               |  |    |(*)name  |
+    20 |[ ]Auto Mode                 |  |    |...      |
+    21 |[ ]Menu Lock                 |  |    +---------+   +--------------+
+       +-----------------------------+  \------------------|(*)All Pages  |
+VI  22 |   Customize                >|--- D  +-D------+    |( )Even Pages |
+    23 |   Show Settings            >|-------|printing|    |( )Odd Pages  |
+    24 |   Help                      |       |ps-print|    |( )Even Sheets|
+       +-----------------------------+       |lpr     |    |( )Odd Sheets |
+                                             +--------+    +--------------+
