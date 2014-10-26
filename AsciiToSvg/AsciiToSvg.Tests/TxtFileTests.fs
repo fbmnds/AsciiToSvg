@@ -72,13 +72,29 @@ module TxtFile =
     let makeFramedGridResult = splitTxtResult |> fun (a, b) -> b |> makeFramedGrid
 
 
-    let matchPositionsExpected = [2; 25]
-    let replaceOptionResultExpected =
+    let matchPositionsExpected = [3; 26]
+    let replaceOptionInLineExpected =
       ([2; 25], "-----------------------------------------")
     let input = "--[Logo]-----------------[Logo]----------"
               //    01234567890123456789012345
     let matchPositionsResult = matchPositions "Logo" input
-    let replaceOptionResult = replaceOption '-' "Logo" input
+    let replaceOptionInLineResult = replaceOptionInLine '-' "Logo" input
+
+    let input2 =
+      [|"-----------------------------------------"
+        "---[Logo] ---- [Logo]--------------------"
+        "--[Logo]-----------------[Logo]----------"
+        "-[Logo]---------------------------[Logo]-"
+        "[Logo]-----------------------------[Logo]"|]
+    let replaceOptionInAsciiExpected =
+      ([|[||]; [||]; [|(2, 2); (2, 25)|]; [|(3, 1); (3, 34)|]; [||]|],
+       [|"-----------------------------------------"
+         "---[Logo] ---- [Logo]--------------------"
+         "-----------------------------------------"
+         "-----------------------------------------"
+         "[Logo]-----------------------------[Logo]"|])
+    let replaceOptionInAsciiResult = replaceOptionInAscii '-' "Logo" input2
+    let replaceOptionInAsciiOK = (replaceOptionInAsciiResult = replaceOptionInAsciiExpected)
 
   module ArrowGlyph_txt =
 

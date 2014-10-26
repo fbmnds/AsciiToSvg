@@ -9,19 +9,20 @@ AsciiToSvg is a library intended to support authoring arbitrary content in plain
 The inspiration of the approach was influenced by the workflow description 
 of the project documentation process in the [ZeroMQ Guide][2].
 
-The tool used by the ZeroMQ project to convert plain ASCII text input into SVG vector graphics is an 
-[interesting tool set][3] consisting of a Perl wrapper script for a PHP port of a C Parser/Lexer based package. 
+The ZeroMQ project team  is using an  [interesting tool set][3] to convert plain ASCII text input 
+into SVG vector graphics consisting of a Perl wrapper script for a PHP port of a C Parser/Lexer based package. 
+Interestingly, the sourcecode comments contain a hint, that parts of this software is current use of the SQlite project, but I did not check this.
 
-AsciiToSvg is a F# implementation of a tool that serves the same purpose as the Perl/PHP/C tool.
-It is potentially a nifty enhancement for the [FSharp.Formatting](https://github.com/tpetricek/FSharp.Formatting) tool.
+AsciiToSvg is a F# implementation that serves the same purpose as this Perl/PHP/C tool.
+It is potentially a nifty enhancement for the [FSharp.Formatting][14] tool.
 
 ## Why another implementation?
 
-The existing implementation comes with nice examples. I especially like the logo:
+The existing implementation comes with nice examples, especially the logo:
 
 ![OriginalAsciiToSvgLogo](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/OriginalAsciiToSvgLogo.png?raw=true)
 
-The current version of the the F# implementation does not support color and shading options. I assume no problems to add this support within the next few months.
+The current version of the the F# implementation does not yet support color and shading options but this is work in progress.
 
 While the existing tool serves serious doumentation purposes, it failed to render the first example that I tried.
 The tool actually bailed out with an Out-of-Memory exception on this input:
@@ -79,23 +80,21 @@ The F# implementation however produces an acceptable outcome on this example:
 
 ## How does it work?
 
-AsciiToSvg is a conceptionally different from the forementioned implementation. 
+AsciiToSvg is conceptionally different from the forementioned implementation. 
 A good entry point for examining the differences is the 
-[pattern identification][4] in combination with the [line identification][5]
+[pattern identification][4] in combination with the [line identification][5] in F#
 in contrast to the [multi-step parsing][6] with its ['generic, recursive line walker'][7] 
 that needs to be supported by a [follow wall algorithm][8].
 
-AsciiToSvg is conceptionally based on the notion of 'glyphs', i.e. symbols consisting of ASCII letter combinations, that are 
+AsciiToSvg is based on the notion of 'glyphs', i.e. symbols consisting of ASCII letter combinations, that are 
 interpreted and rendered as SVG graphic elements like ['text'][9], 
 ['line'][10] and ['polygon'][11].
 
-The concept include the possibility to include options in the ASCII input text. 
-It resembles the idea as laid out in this example: 
-[input](https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.txt), 
-[svg](https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.svg).
-This feature is not yet fully implemented but planned and will be explained later.
+The concept includes the possibility to annotate SVG options to the ASCII input text for the rendering process. 
+It resembles the idea as applied for generating the logo ([input][12], 
+[svg][13]).
 
-The steps to generate a SVG graphic are:
+The steps to generate a SVG graphic with the new F# tool are:
 
 * read the ASCII text file into memory and separate the picture part from the options part
 * make a trimmed grid, i.e. remove trailing spces and blank lines (important for proper scaling of the graphic)
@@ -108,7 +107,7 @@ The steps to generate a SVG graphic are:
 * render the lines
 * produce the SVG graphic
 
-The [`EmacsPrintHelp.fsx`](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/EmacsPrintHelp.fsx) script file demonstrates how to put everything together. 
+The [`EmacsPrintHelp.fsx`][15] script file demonstrates how to put everything together. 
 
 ## Why using AsciiToSvg instead of Graphiz, InkScape, ...?
 
@@ -124,17 +123,19 @@ The library does not contain an abstration for SVG documents. For a feature set 
 
 As mentioned above, the library does not yet provide the option mechanism that the original tool uses for annotating color and shading information.
 
-Github does not support SVG redering in markup text for security reasons. There are some work arounds by using 3rd party websites mentioned on [SO](http://stackoverflow.com/questions/13808020/include-an-svg-hosted-on-github-in-markdown). This enforces however the need for another backend in order to convert the SVG format, for example in PNG,
-which compromises the ease of processing.
+Github does not support SVG redering in markup text for security reasons. There are some work arounds by using 3rd party websites mentioned on [SO][16]. 
+This enforces however the need for another backend in order to convert the SVG format, for example into PNG, which compromises the ease of processing.
 
-Drawing slanted lines and circle/ellipses is a challenge fo ASCII based graphics because of the limited resolution and the disproportion of width and height of ASCII characters. Hence, the F# logo is not a good candidate for this tool. It should however be fairly easy to inject arbitrary SVG shapes via some include directive in the foremntioned option mechanism.
+Drawing slanted lines and circle/ellipses is a challenge fo ASCII based graphics because of the limited resolution and the disproportion of width and height of ASCII characters. 
+Hence, the F# logo is for example not a good candidate for this tool. It should however be fairly easy to inject arbitrary SVG shapes 
+via some include directive into the forementioned option mechanism.
 
-The sourcecode is undocumented and documentation beside this Readme is an open issue. The ZeroMQ Guide provides a [guideline](https://github.com/imatix/zguide/tree/master/bin/asciitosvg) 
-that applies here as well.
+The sourcecode is undocumented and documentation other than this Readme file is an open issue that will be eventually closed. 
+The ZeroMQ Guide provides a [guideline][17] on ASCII graphics that applies here as well to a some greater extent.
 
 ## Are there further examples?
 
-For regression testing, the library comes with some examples that cover the currrent feature set. It is however not a fancy gallery.
+For regression testing, the library comes with some examples that cover the current feature set. It is however not a fancy gallery.
 
 A basic example is given by the following ASCII input file:
 
@@ -150,7 +151,7 @@ The resulting SVG file looks like this:
 
 ![ArrowGlyphsWithFrame](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/ArrowGlyphsWithFrame.png?raw=true)
 
-The usage of polygon shapes looks like this:
+The usage of polygon shapes, which is a big challenge for the Perl/PHP/C implementation, looks like this:
 
 ``` text
                 |
@@ -187,3 +188,9 @@ The library is available under Apache 2.0. For more information see the [License
  [9]: http://www.w3.org/TR/SVG/text.html#TextElement
  [10]: http://www.w3.org/TR/SVG/shapes.html#LineElement
  [11]: http://www.w3.org/TR/SVG/shapes.html#PolygonElement
+ [12]: https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.txt
+ [13]: https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.svg
+ [14]: https://github.com/tpetricek/FSharp.Formatting
+ [15]: https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/EmacsPrintHelp.fsx
+ [16]: http://stackoverflow.com/questions/13808020/include-an-svg-hosted-on-github-in-markdown
+ [17]: https://github.com/imatix/zguide/tree/master/bin/asciitosvg

@@ -89,6 +89,23 @@ let makeTrimmedGrid (ascii: string[]) : TxtGrid =
   let yLength = ascii' |> Array.Parallel.map String.length |> Array.max
   [| for i in [0..ascii'.Length-1] do yield Array.concat [ascii'.[i].ToCharArray(); (fillingBlanks yLength ascii'.[i]) ] |]
 
-let replaceOption letter (option: string) ascii =
-  let replacement = [| for i in [0..option.Length+3] do yield letter |] |> fun x -> new string (x)
-  matchPositions option ascii, regex(sprintf "-\[%s\]-" option).Replace(ascii, replacement)
+let replaceOptionInLine letter (option : string) line =
+  let replacement =
+    [| for i in [ 0..option.Length + 3 ] do
+         yield letter |]
+    |> fun x -> new string(x)
+  (matchPositions (sprintf "-\[%s\]-" option) line) |> List.map (fun i -> i + 1),
+  regex(sprintf "-\[%s\]-" option).Replace(line, replacement)
+
+let replaceOptionInAscii letter (option : string) (ascii : string []) =
+  ascii
+  |> Array.Parallel.mapi (fun row line -> row, line, (replaceOptionInLine letter option line))
+  |> Array.Parallel.map (fun (row, line, (cols, line')) ->
+       if cols.Length = 0 then Seq.empty, line
+       else (cols |> Seq.map (fun col -> row, col)), line')
+  |> fun x ->
+    [| for pair in x do yield (fst pair) |>  Array.ofSeq |], [| for pair in x do yield (snd pair) |]
+
+let makeGrid (ascii: string[]) : TxtGrid =
+  let yLength = ascii |> Array.Parallel.map String.length |> Array.max
+  [| for i in [0..ascii.Length-1] do yield Array.concat [ascii.[i].ToCharArray(); (fillingBlanks yLength ascii.[i]) ] |]

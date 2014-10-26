@@ -100,8 +100,12 @@ module Core =
     Assert.AreEqual (ZeroMQ_Fig1_txt.makeGridResultExpected, ZeroMQ_Fig1_txt.makeGridResult)
 
   [<Test>]
-  let ``TxtFile : replaceOption : TestLogo.txt`` () =
-    Assert.AreEqual (TestLogo_txt.replaceOptionResultExpected, TestLogo_txt.replaceOptionResult)
+  let ``TxtFile : replaceOptionInLine : TestLogo.txt`` () =
+    Assert.AreEqual (TestLogo_txt.replaceOptionInLineExpected, TestLogo_txt.replaceOptionInLineResult)
+
+  [<Test>]
+  let ``TxtFile : replaceOptionInAscii : TestLogo.txt`` () =
+    Assert.True (TestLogo_txt.replaceOptionInAsciiOK)
 
   // #endregion
 

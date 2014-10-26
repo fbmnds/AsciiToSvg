@@ -28,7 +28,7 @@ let (|Matches|_|) pattern input =
 
 let matchPositions pattern input =
   let re = Regex(pattern).Matches(input)
-  [ for x in re -> x.Index-1 ]
+  [ for x in re -> x.Index ]
 
 let toInt str =
    match System.Int32.TryParse(str) with

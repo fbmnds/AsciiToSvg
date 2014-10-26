@@ -86,7 +86,7 @@
     <Compile Include="LineScannerTests.fs" />
     <Compile Include="LineRendererTests.fs" />
     <Compile Include="CoreTests.fs" />
-    <None Include="Script.fsx" />
+    <None Include="EmacsPrintHelp.fsx" />
     <None Include="packages.config" />
     <None Include="App.config" />
     <Content Include="TestTxtFiles\TestLogo.txt" />
@@ -111,6 +111,7 @@
     <None Include="TestSvgFiles\TestMiniBox.svg" />
     <None Include="TestSvgFiles\ZeroMQ_Fig1GlyphsOnly.svg" />
     <None Include="TestSvgFiles\ZeroMQ_Fig1.svg" />
+    <None Include="TestSvgFiles\EmacsPrintHelp.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

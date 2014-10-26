@@ -9,16 +9,6 @@ open AsciiToSvg.TxtFile
 open AsciiToSvg.GlyphScanner
 open AsciiToSvg.TextScanner
 
-type emacsPrintHelp =
-  { grid : TxtGrid;
-    options : SvgOption
-    glyphs : Glyph[]
-    renderedGlyphs : string
-    text : Text[]
-    renderedText : string
-    lines :  Line[] * Line[]
-    renderedLines : string }
-
 
 let emacsPrintHelpGrid =
   @"TestTxtFiles/EmacsPrintHelp.txt"
