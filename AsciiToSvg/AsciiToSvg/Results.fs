@@ -25,6 +25,7 @@ module Results =
         | InvalidCredentials            -> "Invalid credentials"
         | HttpTimeOut                   -> "Http time out"
         // Other error messages
+        | JsonParseError (x,y)                -> toString "Json parse error" x y
         | ReadSecretFileError (x,y)           -> toString "Read secret file error" x y
         | ReadFileError (x,y)                 -> toString "Read file error" x y
         | WriteFileError (x,y)                -> toString "Write file error" x y

@@ -23,6 +23,15 @@ module Core =
 
   // #endregion
 
+    // #region AsciiToSvg.Common.Tests
+
+  [<Test>]
+  let ``Json : parse : TestLogo.txt`` () =
+    Assert.AreEqual (TestLogo_txt.parseFailureResultExpected, TestLogo_txt.parseFailureResult)
+    Assert.AreEqual (TestLogo_txt.parseSuccessResultExpected, TestLogo_txt.parseSuccessResult)
+
+  // #endregion
+
   // #region AsciiToSvg.SvgDocument.Tests
 
   [<Test>]

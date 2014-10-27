@@ -18,40 +18,40 @@
     </filter>
   </defs>
   
-      <line stroke="black" stroke-width="1" x1="121.000" y1="30.000" x2="121.000" y2="44.000" />
-      <line stroke="black" stroke-width="1" x1="121.000" y1="37.000" x2="125.000" y2="37.000" />
+      <line stroke="black" stroke-width="1.000" x1="121.000" y1="30.000" x2="121.000" y2="44.000" />
+      <line stroke="black" stroke-width="1.000" x1="121.000" y1="37.000" x2="125.000" y2="37.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 112.000 135.000 Q 112.000 142.000  116.000 142.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 112.000 135.000 Q 112.000 142.000  116.000 142.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 117.000 67.000 Q 121.000 67.000  121.000 60.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 117.000 67.000 Q 121.000 67.000  121.000 60.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 117.000 7.000 Q 121.000 7.000  121.000 14.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 117.000 7.000 Q 121.000 7.000  121.000 14.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 202.000 14.000 Q 202.000 7.000  206.000 7.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 202.000 14.000 Q 202.000 7.000  206.000 7.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 202.000 90.000 Q 202.000 97.000  206.000 97.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 202.000 90.000 Q 202.000 97.000  206.000 97.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 333.000 7.000 Q 337.000 7.000  337.000 14.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 333.000 7.000 Q 337.000 7.000  337.000 14.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 333.000 97.000 Q 337.000 97.000  337.000 90.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 333.000 97.000 Q 337.000 97.000  337.000 90.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 14.000 Q 4.000 7.000  8.000 7.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 4.000 14.000 Q 4.000 7.000  8.000 7.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 60.000 Q 4.000 67.000  8.000 67.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 4.000 60.000 Q 4.000 67.000  8.000 67.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 67.000 165.000 Q 67.000 172.000  71.000 172.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 67.000 165.000 Q 67.000 172.000  71.000 172.000" />
 
       <polygon fill="black" points="108.000,82.000 116.000,82.000 112.000,75.000 108.000,82.000" />
-      <line stroke="black" stroke-width="1" x1="112.000" y1="82.000" x2="112.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="112.000" y1="82.000" x2="112.000" y2="89.000" />
 
       <polygon fill="black" points="18.000,82.000 26.000,82.000 22.000,75.000 18.000,82.000" />
-      <line stroke="black" stroke-width="1" x1="22.000" y1="82.000" x2="22.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="22.000" y1="82.000" x2="22.000" y2="89.000" />
 
       <polygon fill="black" points="190.000,33.000 190.000,41.000 197.000,37.000 190.000,33.000" />
-      <line stroke="black" stroke-width="1" x1="190.000" y1="37.000" x2="189.000" y2="37.000" />
+      <line stroke="black" stroke-width="1.000" x1="190.000" y1="37.000" x2="189.000" y2="37.000" />
 
       <polygon fill="black" points="63.000,82.000 71.000,82.000 67.000,75.000 63.000,82.000" />
-      <line stroke="black" stroke-width="1" x1="67.000" y1="82.000" x2="67.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="67.000" y1="82.000" x2="67.000" y2="89.000" />
 
 
   </svg>

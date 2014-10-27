@@ -1,5 +1,6 @@
 ﻿module AsciiToSvg.TxtFile
 
+open AsciiToSvg.Json
 
 let TxtOptionRegex = regex @"^\[([^\]]+)\]:?\s+({[^}]+?})"
 let isTxtOption str = (str =~ TxtOptionRegex)
@@ -97,14 +98,26 @@ let replaceOptionInLine letter (option : string) line =
   (matchPositions (sprintf "-\[%s\]-" option) line) |> List.map (fun i -> i + 1),
   regex(sprintf "-\[%s\]-" option).Replace(line, replacement)
 
-let replaceOptionInAscii letter (option : string) (ascii : string []) =
+let replaceOptionInAscii letter (ascii : string []) (option : string) =
   ascii
   |> Array.Parallel.mapi (fun row line -> row, line, (replaceOptionInLine letter option line))
   |> Array.Parallel.map (fun (row, line, (cols, line')) ->
        if cols.Length = 0 then Seq.empty, line
        else (cols |> Seq.map (fun col -> row, col)), line')
-  |> fun x ->
-    [| for pair in x do yield (fst pair) |>  Array.ofSeq |], [| for pair in x do yield (snd pair) |]
+  |> toTupleOfArrays
+
+let parseOption (log: ILogger) (optionKey, optionValue) =
+  optionValue
+  |> parse
+  |> function
+  | Success value -> Some (optionKey, value)
+  | _ as x -> log.Log (sprintf "%A" x) List.empty; None
+
+let parseAllOptions (log: ILogger) (options: (string*string)[]) : SvgOption =
+  options
+  |> Array.Parallel.map (parseOption log)
+  |> Array.choose id
+  |> Map.ofArray
 
 let makeGrid (ascii: string[]) : TxtGrid =
   let yLength = ascii |> Array.Parallel.map String.length |> Array.max

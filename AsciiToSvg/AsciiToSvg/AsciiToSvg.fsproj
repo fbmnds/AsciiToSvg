@@ -54,6 +54,7 @@
     <Compile Include="AsciiToSvg.fs" />
     <Compile Include="Results.fs" />
     <Compile Include="Common.fs" />
+    <Compile Include="Json.fs" />
     <Compile Include="SvgDocument.fs" />
     <Compile Include="TxtFile.fs" />
     <Compile Include="GlyphScanner.fs" />

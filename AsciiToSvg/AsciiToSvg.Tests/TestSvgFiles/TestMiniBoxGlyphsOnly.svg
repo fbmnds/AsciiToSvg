@@ -18,13 +18,13 @@
     </filter>
   </defs>
   
-      <path fill="none" stroke="black" stroke-width="1" d="M 18.000 37.000 Q 22.000 37.000  22.000 30.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 18.000 37.000 Q 22.000 37.000  22.000 30.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 18.000 7.000 Q 22.000 7.000  22.000 14.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 18.000 7.000 Q 22.000 7.000  22.000 14.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 14.000 Q 4.000 7.000  8.000 7.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 4.000 14.000 Q 4.000 7.000  8.000 7.000" />
 
-      <path fill="none" stroke="black" stroke-width="1" d="M 4.000 30.000 Q 4.000 37.000  8.000 37.000" />
+      <path fill="none" stroke="black" stroke-width="1.000" d="M 4.000 30.000 Q 4.000 37.000  8.000 37.000" />
 
 
   </svg>

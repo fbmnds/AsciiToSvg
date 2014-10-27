@@ -5,7 +5,15 @@ type TxtGrid = char[][]
 type GridCoordinates = { col : int; row : int }
 type SvgCoordinates = { colpx : float; rowpx : float }
 
-type SvgOption = Map<string, string>
+type JsonValue =
+    | Number of float
+    | JString of string
+    | Boolean of bool
+    | Array of JsonValue list
+    | JObject of (string * JsonValue) list
+    | Null
+
+type SvgOption = Map<string, JsonValue>
 
 type SvgScale = { colsc : float; rowsc : float }
 
@@ -111,6 +119,7 @@ type AsciiToSvgMessage =
     | InvalidCredentials
     | HttpTimeOut
     // Other error messages
+    | JsonParseError of Error
     | ReadSecretFileError of Error
     | ReadFileError of Error
     | WriteFileError of Error

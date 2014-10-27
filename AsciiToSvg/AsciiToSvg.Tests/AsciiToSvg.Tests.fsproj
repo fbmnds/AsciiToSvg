@@ -112,6 +112,7 @@
     <None Include="TestSvgFiles\ZeroMQ_Fig1GlyphsOnly.svg" />
     <None Include="TestSvgFiles\ZeroMQ_Fig1.svg" />
     <None Include="TestSvgFiles\EmacsPrintHelp.svg" />
+    <None Include="TestSvgFiles\ZeroMQ_Fig1Tabbed.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

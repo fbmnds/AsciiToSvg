@@ -21,10 +21,34 @@ let culture = new CultureInfo("en-US")
 let getOption (options: SvgOption) key defaultValue =
   if options.ContainsKey key then options.Item key else defaultValue
 
+let getFloatOption (options: SvgOption) key (defaultValue:float) =
+  if options.ContainsKey key then
+    options.Item key
+    |> function
+    | Number x -> x
+    | _ -> defaultValue
+  else defaultValue
+
+let getBooleanOption (options: SvgOption) key (defaultValue:bool) =
+  if options.ContainsKey key then
+    options.Item key
+    |> function
+    | Boolean x -> x
+    | _ -> defaultValue
+  else defaultValue
+
+let getStringOption (options: SvgOption) key (defaultValue:string) =
+  if options.ContainsKey key then
+    options.Item key
+    |> function
+    | JString x -> x
+    | _ -> defaultValue
+  else defaultValue
+
 let SvgTemplateOpen (options: SvgOption) =
-  let canvasWidth = getOption options "canvas-width" (CanvasWidth.ToString(culture))
-  let canvasHeight = getOption options "canvas-height" (CanvasHeight.ToString(culture))
-  let fontSize = getOption options "canvas-font-size" (FontSize.ToString(culture))
+  let canvasWidth = (getFloatOption options "canvas-width" CanvasWidth).ToString(culture)
+  let canvasHeight = (getFloatOption options "canvas-height" CanvasHeight).ToString(culture)
+  let fontSize = (getFloatOption options "canvas-font-size" FontSize).ToString(culture)
   "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
   "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"" +
   "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
@@ -65,15 +89,15 @@ let ShiftedCoordGridToSvg scale coldpx rowdpx (gridCoord: GridCoordinates) =
 
 let putTick (options: SvgOption) col1 row1 col2 row2 =
   [|"      <line "
-    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
-    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "stroke=\"%s\" " (getStringOption options "stroke" Stroke)
+    sprintf "stroke-width=\"%.3f\" " (getFloatOption options "stroke-width" StrokeWidth)
     sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" col1 row1 col2 row2 |]
   |> Array.fold (fun r s -> r + s) ""
 
 let putArc (options: SvgOption) col1 row1 col2 row2 col3 row3 =
   [|"      <path fill=\"none\" "
-    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
-    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "stroke=\"%s\" " (getStringOption options "stroke" Stroke)
+    sprintf "stroke-width=\"%.3f\" " (getFloatOption options "stroke-width" StrokeWidth)
     sprintf "d=\"M %.3f %.3f Q %.3f %.3f  %.3f %.3f\" />\n" col1 row1 col2 row2 col3 row3 |]
   |> Array.fold (fun r s -> r + s) ""
 
@@ -81,14 +105,14 @@ let ScalableArrowTemplate (glyph: Glyph) (options: SvgOption) scale ax ay bx by 
   let cols = [|ax; bx; cx; dx; ex|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|ay; by; cy; dy; ey|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
   [|"      <polygon "
-    sprintf "fill=\"%s\" " (getOption options "fill" Fill)
+    sprintf "fill=\"%s\" " (getStringOption options "fill" Fill)
     sprintf "points=\"%.3f,%.3f " cols.[0] rows.[0]
     sprintf "%.3f,%.3f " cols.[1] rows.[1]
     sprintf "%.3f,%.3f " cols.[2] rows.[2]
     sprintf "%.3f,%.3f\" />\n" cols.[0] rows.[0]
     "      <line "
-    sprintf "stroke=\"%s\" " (getOption options "stroke" (Stroke.ToString(culture)))
-    sprintf "stroke-width=\"%s\" " (getOption options "stroke-width" (StrokeWidth.ToString(culture)))
+    sprintf "stroke=\"%s\" " (getStringOption options "stroke" Stroke)
+    sprintf "stroke-width=\"%.3f\" " (getFloatOption options "stroke-width" StrokeWidth)
     sprintf "x1=\"%.3f\" y1=\"%.3f\" x2=\"%.3f\" y2=\"%.3f\" />\n" cols.[3] rows.[3] cols.[4] rows.[4] |]
   |> Array.fold (fun r s -> r + s) ""
 
@@ -131,7 +155,6 @@ let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
 let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
-  // <path d="M 45 75 q 0 -45 45 -45" stroke="blue" stroke-width="5" fill="none" />
   let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
   let mutable set = Set.empty<string>
@@ -166,24 +189,22 @@ let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
 
 let ScalableTextTemplate (text: Text) (options: SvgOption) scale =
   let fontOffsetWidth =
-    FontOffsetWidth.ToString(culture)
-    |> getOption options "canvas-font-offset-width"
-    |> getOption options "font-offset-width"
-    |> toFloat
+    FontOffsetWidth
+    |> getFloatOption options "canvas-font-offset-width"
+    |> getFloatOption options "font-offset-width"
   let fontOffsetHeight =
-    FontOffsetHeight.ToString(culture)
-    |> getOption options "canvas-font-offset-height"
-    |> getOption options "font-offset-height"
-    |> toFloat
+    FontOffsetHeight
+    |> getFloatOption options "canvas-font-offset-height"
+    |> getFloatOption options "font-offset-height"
   let leadingBlanks = text.text.Length - text.text.TrimStart().Length
   let x = ((float)(text.gridCoord.col + leadingBlanks) * GlyphWidth  + fontOffsetWidth)* scale.colsc
   let y = ((float)(text.gridCoord.row) * GlyphHeight + fontOffsetHeight) * scale.rowsc
-  let fontSize = (FontSize * scale.rowsc).ToString(culture)
+  let fontSize = (FontSize * scale.rowsc)
   [|"      <text "
     sprintf "x=\"%.3f\" y=\"%.3f\" " x y
-    sprintf "style=\"fill:%s\" " (getOption options "fill" Fill)
-    sprintf "font-family=\"%s\" " (getOption options "font-family" (getOption options "canvas-font-family" FontFamily))
-    sprintf "font-size=\"%s\">\n" (getOption options "font-size" (getOption options "canvas-font-size" fontSize))
+    sprintf "style=\"fill:%s\" " (getStringOption options "fill" Fill)
+    sprintf "font-family=\"%s\" " (getStringOption options "font-family" (getStringOption options "canvas-font-family" FontFamily))
+    sprintf "font-size=\"%.3f\">\n" (getFloatOption options "font-size" (getFloatOption options "canvas-font-size" fontSize))
     text.text
     "\n      </text>"|]
   |> Array.fold (fun r s -> r + s) ""

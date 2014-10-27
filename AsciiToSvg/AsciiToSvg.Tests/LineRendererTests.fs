@@ -11,9 +11,9 @@ module LineRenderer =
 
   module ArrowGlyph_txt =
 
-    let options =
-      ["canvas-width", ((float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight))]
       |> Map.ofList
 
     let renderedAllLines =
@@ -38,10 +38,11 @@ module LineRenderer =
 
   module ArrowGlyphWithFrame_txt =
 
-    let options =
-      ["canvas-width", ((float)ArrowGlyphWithFrame_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-        "canvas-height", ((float)ArrowGlyphWithFrame_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-        "canvas-font-family", "Courier New"]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ArrowGlyphWithFrame_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ArrowGlyphWithFrame_txt.makeGridResult.Length * GlyphHeight));
+       "canvas-font-family", (JString) "Courier New";
+       "canvas-font-size", (Number 15.0)]
       |> Map.ofList
 
     let renderedAllLines =
@@ -66,10 +67,10 @@ module LineRenderer =
 
   module TestPolygonBox_txt =
 
-    let options =
-      ["canvas-width", ((float)TestPolygonBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-       "canvas-font-family", "Courier New"]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)TestPolygonBox_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)TestPolygonBox_txt.makeGridResult.Length * GlyphHeight));
+       "canvas-font-family", (JString "Courier New")]
       |> Map.ofList
 
     let renderedAllLines =
@@ -94,9 +95,9 @@ module LineRenderer =
 
   module TestMiniBox_txt =
 
-    let options =
-      ["canvas-width", ((float)TestMiniBox_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)TestMiniBox_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)TestMiniBox_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)TestMiniBox_txt.makeGridResult.Length * GlyphHeight))]
       |> Map.ofList
 
     let renderedAllLines =
@@ -120,10 +121,10 @@ module LineRenderer =
 
   module ZeroMQ_Fig1_txt =
 
-    let options =
-      ["canvas-width", ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-       "canvas-font-family", "Courier New"]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight));
+       "canvas-font-family", (JString "Courier New")]
       |> Map.ofList
 
     let renderedAllLines =
@@ -139,7 +140,7 @@ module LineRenderer =
         SvgTemplateClose|]
       |> Array.fold (fun r s -> r + s) ""
       |> fun x -> regex(@"\r\n").Replace(x, "\n")
-    System.IO.File.WriteAllText(@"../../TestSvgFiles/ZeroMQ_Fig1.svg", zeroMQ_Fig1AsSvg)
+
     let zeroMQ_Fig1AsSvgExpected =
       @"../../TestSvgFiles/ZeroMQ_Fig1.svg"
       |> readFileAsText

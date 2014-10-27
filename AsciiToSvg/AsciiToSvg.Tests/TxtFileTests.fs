@@ -2,7 +2,9 @@
 
 module TxtFile =
 
+  open AsciiToSvg
   open AsciiToSvg.Common
+  open AsciiToSvg.Json
   open AsciiToSvg.TxtFile
 
 
@@ -93,8 +95,26 @@ module TxtFile =
          "-----------------------------------------"
          "-----------------------------------------"
          "[Logo]-----------------------------[Logo]"|])
-    let replaceOptionInAsciiResult = replaceOptionInAscii '-' "Logo" input2
+    let replaceOptionInAsciiResult = replaceOptionInAscii '-' input2 "Logo"
     let replaceOptionInAsciiOK = (replaceOptionInAsciiResult = replaceOptionInAsciiExpected)
+
+    let personJString = "{ \"Name\": \"Phil\", \"Phone\": 12345-6789 }"
+    let person = parse personJString
+    let parseFailureResult =
+      match person with
+      | Success _ -> ""
+      | _ as x -> sprintf "%A" x
+    let parseFailureResultExpected =
+      "Failure\n  [JsonParseError\n     (ErrorLabel \"Failed to parse JSON\", Stacktrace \"Unknown token: >-6789 }<\")]"
+
+    let logoJString = "{ \"fill\":\"#88d\",\"a2s:delref\":true }"
+    let logo = parse logoJString
+    let parseSuccessResult =
+      match logo with
+      | Success x -> sprintf "%A" x
+      | _ as x -> ""
+    let parseSuccessResultExpected =
+      "JObject [(\"fill\", JString \"#88d\"); (\"a2s:delref\", Boolean true)]"
 
   module ArrowGlyph_txt =
 

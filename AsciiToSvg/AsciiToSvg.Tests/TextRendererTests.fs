@@ -10,9 +10,9 @@ module TextRenderer =
 
   module ArrowGlyph_txt =
 
-    let options =
-      ["canvas-width", ((float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight).ToString(culture)]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ArrowGlyph_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ArrowGlyph_txt.makeGridResult.Length * GlyphHeight))]
       |> Map.ofList
 
     let renderedText = (TextRenderer.RenderAll Scale options ArrowGlyph_txt.text).[0]
@@ -41,11 +41,11 @@ module TextRenderer =
 
   module ArrowGlyphWithFrame_txt =
 
-    let options =
-      ["canvas-width", ((float)ArrowGlyphWithFrame_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)ArrowGlyphWithFrame_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-       "canvas-font-family", "Courier New";
-       "canvas-font-size", "15.0"]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ArrowGlyphWithFrame_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ArrowGlyphWithFrame_txt.makeGridResult.Length * GlyphHeight));
+       "canvas-font-family", (JString "Courier New");
+       "canvas-font-size", (Number 15.0)]
       |> Map.ofList
 
     let renderedFramedTextTabbed =
@@ -68,11 +68,11 @@ module TextRenderer =
 
   module ZeroMQ_Fig1_txt =
 
-    let options =
-      ["canvas-width", ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth).ToString(culture);
-       "canvas-height", ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight).ToString(culture);
-       "canvas-font-family", "Courier New";
-       "canvas-font-size", "15.0"]
+    let options : SvgOption =
+      ["canvas-width", (Number ((float)ZeroMQ_Fig1_txt.makeGridResult.[0].Length * GlyphWidth));
+       "canvas-height", (Number ((float)ZeroMQ_Fig1_txt.makeGridResult.Length * GlyphHeight));
+       "canvas-font-family", (JString "Courier New");
+       "canvas-font-size", (Number 15.0)]
       |> Map.ofList
 
     let renderedFramedTextTabbed =

@@ -22,6 +22,10 @@ let readFileAsText file =
 let regex s = new Regex(s)
 let (=~) s (re : Regex) = re.IsMatch(s)
 
+let (|Match|_|) pattern input =
+    let re = Regex.Match(input, pattern)
+    if re.Success then Some re.Value else None
+
 let (|Matches|_|) pattern input =
   let re = Regex(pattern).Matches(input)
   Some ( [ for x in re -> x.Index, x.Value ] )
@@ -40,8 +44,11 @@ let toFloat str =
    | (true, dbl) -> dbl
    | _ -> 0.0
 
-let arrayOfTuples (x: 'T[])  =
+let toArrayOfTuples (x: 'T[])  =
   [|for j in [0..(x.Length/2)-1] do yield x.[2*j],x.[2*j+1]|];;
+
+let toTupleOfArrays (x: ('T1*'T2)[]) =
+  [| for pair in x do yield (fst pair) |>  Array.ofSeq |], [| for pair in x do yield (snd pair) |]
 
 let matrixZip (A: 'T1[][]) (B: 'T2[][]) =
   [| for i in [0..A.Length-1] do yield Array.zip A.[i] B.[i] |]

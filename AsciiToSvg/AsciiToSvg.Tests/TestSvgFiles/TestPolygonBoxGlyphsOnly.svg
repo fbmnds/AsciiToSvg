@@ -18,53 +18,53 @@
     </filter>
   </defs>
   
-      <line stroke="black" stroke-width="1" x1="117.000" y1="37.000" x2="125.000" y2="37.000" />
-      <line stroke="black" stroke-width="1" x1="121.000" y1="37.000" x2="121.000" y2="44.000" />
+      <line stroke="black" stroke-width="1.000" x1="117.000" y1="37.000" x2="125.000" y2="37.000" />
+      <line stroke="black" stroke-width="1.000" x1="121.000" y1="37.000" x2="121.000" y2="44.000" />
 
-      <line stroke="black" stroke-width="1" x1="117.000" y1="82.000" x2="125.000" y2="82.000" />
-      <line stroke="black" stroke-width="1" x1="121.000" y1="82.000" x2="121.000" y2="75.000" />
+      <line stroke="black" stroke-width="1.000" x1="117.000" y1="82.000" x2="125.000" y2="82.000" />
+      <line stroke="black" stroke-width="1.000" x1="121.000" y1="82.000" x2="121.000" y2="75.000" />
 
-      <line stroke="black" stroke-width="1" x1="153.000" y1="157.000" x2="161.000" y2="157.000" />
-      <line stroke="black" stroke-width="1" x1="157.000" y1="150.000" x2="157.000" y2="164.000" />
+      <line stroke="black" stroke-width="1.000" x1="153.000" y1="157.000" x2="161.000" y2="157.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="150.000" x2="157.000" y2="164.000" />
 
-      <line stroke="black" stroke-width="1" x1="153.000" y1="82.000" x2="161.000" y2="82.000" />
-      <line stroke="black" stroke-width="1" x1="157.000" y1="82.000" x2="157.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="153.000" y1="82.000" x2="161.000" y2="82.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="82.000" x2="157.000" y2="89.000" />
 
-      <line stroke="black" stroke-width="1" x1="157.000" y1="105.000" x2="157.000" y2="119.000" />
-      <line stroke="black" stroke-width="1" x1="157.000" y1="112.000" x2="161.000" y2="112.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="105.000" x2="157.000" y2="119.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="112.000" x2="161.000" y2="112.000" />
 
-      <line stroke="black" stroke-width="1" x1="157.000" y1="172.000" x2="157.000" y2="165.000" />
-      <line stroke="black" stroke-width="1" x1="157.000" y1="172.000" x2="161.000" y2="172.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="172.000" x2="157.000" y2="165.000" />
+      <line stroke="black" stroke-width="1.000" x1="157.000" y1="172.000" x2="161.000" y2="172.000" />
 
-      <line stroke="black" stroke-width="1" x1="162.000" y1="82.000" x2="170.000" y2="82.000" />
-      <line stroke="black" stroke-width="1" x1="166.000" y1="82.000" x2="166.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="162.000" y1="82.000" x2="170.000" y2="82.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="82.000" x2="166.000" y2="89.000" />
 
-      <line stroke="black" stroke-width="1" x1="166.000" y1="105.000" x2="166.000" y2="119.000" />
-      <line stroke="black" stroke-width="1" x1="166.000" y1="112.000" x2="162.000" y2="112.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="105.000" x2="166.000" y2="119.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="112.000" x2="162.000" y2="112.000" />
 
-      <line stroke="black" stroke-width="1" x1="166.000" y1="150.000" x2="166.000" y2="164.000" />
-      <line stroke="black" stroke-width="1" x1="166.000" y1="157.000" x2="162.000" y2="157.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="150.000" x2="166.000" y2="164.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="157.000" x2="162.000" y2="157.000" />
 
-      <line stroke="black" stroke-width="1" x1="166.000" y1="172.000" x2="162.000" y2="172.000" />
-      <line stroke="black" stroke-width="1" x1="166.000" y1="172.000" x2="166.000" y2="165.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="172.000" x2="162.000" y2="172.000" />
+      <line stroke="black" stroke-width="1.000" x1="166.000" y1="172.000" x2="166.000" y2="165.000" />
 
-      <line stroke="black" stroke-width="1" x1="184.000" y1="37.000" x2="180.000" y2="37.000" />
-      <line stroke="black" stroke-width="1" x1="184.000" y1="37.000" x2="184.000" y2="44.000" />
+      <line stroke="black" stroke-width="1.000" x1="184.000" y1="37.000" x2="180.000" y2="37.000" />
+      <line stroke="black" stroke-width="1.000" x1="184.000" y1="37.000" x2="184.000" y2="44.000" />
 
-      <line stroke="black" stroke-width="1" x1="184.000" y1="82.000" x2="180.000" y2="82.000" />
-      <line stroke="black" stroke-width="1" x1="184.000" y1="82.000" x2="184.000" y2="75.000" />
+      <line stroke="black" stroke-width="1.000" x1="184.000" y1="82.000" x2="180.000" y2="82.000" />
+      <line stroke="black" stroke-width="1.000" x1="184.000" y1="82.000" x2="184.000" y2="75.000" />
 
-      <line stroke="black" stroke-width="1" x1="4.000" y1="157.000" x2="4.000" y2="150.000" />
-      <line stroke="black" stroke-width="1" x1="4.000" y1="157.000" x2="8.000" y2="157.000" />
+      <line stroke="black" stroke-width="1.000" x1="4.000" y1="157.000" x2="4.000" y2="150.000" />
+      <line stroke="black" stroke-width="1.000" x1="4.000" y1="157.000" x2="8.000" y2="157.000" />
 
-      <line stroke="black" stroke-width="1" x1="4.000" y1="75.000" x2="4.000" y2="89.000" />
-      <line stroke="black" stroke-width="1" x1="4.000" y1="82.000" x2="8.000" y2="82.000" />
+      <line stroke="black" stroke-width="1.000" x1="4.000" y1="75.000" x2="4.000" y2="89.000" />
+      <line stroke="black" stroke-width="1.000" x1="4.000" y1="82.000" x2="8.000" y2="82.000" />
 
       <polygon fill="black" points="106.000,33.000 106.000,41.000 99.000,37.000 106.000,33.000" />
-      <line stroke="black" stroke-width="1" x1="106.000" y1="37.000" x2="107.000" y2="37.000" />
+      <line stroke="black" stroke-width="1.000" x1="106.000" y1="37.000" x2="107.000" y2="37.000" />
 
       <polygon fill="black" points="117.000,22.000 125.000,22.000 121.000,29.000 117.000,22.000" />
-      <line stroke="black" stroke-width="1" x1="121.000" y1="22.000" x2="121.000" y2="15.000" />
+      <line stroke="black" stroke-width="1.000" x1="121.000" y1="22.000" x2="121.000" y2="15.000" />
 
 
   </svg>
