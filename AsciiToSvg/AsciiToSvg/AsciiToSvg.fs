@@ -151,17 +151,14 @@ type Result<'TEntity> =
 
 // #region Logging Interface
 
-type LogMessageBaseType =
-    | String of string
-    | Integer of int
-    | Integer64 of int64
-    | Float of float
-
-
-type LogMessage = seq<LogMessageBaseType>
+type LogLevel =
+    | Error
+    | Warning
+    | Info
 
 type ILogger =
     inherit System.IDisposable
-    abstract member Log: string -> LogMessage -> unit
+    abstract member Log: LogLevel -> (Printf.TextWriterFormat<'a -> unit>) -> 'a -> unit
+    abstract member LogLine: LogLevel -> (Printf.TextWriterFormat<'a -> unit>) -> 'a -> unit
 
 //#endregion

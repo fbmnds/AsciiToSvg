@@ -111,7 +111,7 @@ let parseOption (log: ILogger) (optionKey, optionValue) =
   |> parse
   |> function
   | Success value -> Some (optionKey, value)
-  | _ as x -> log.Log (sprintf "%A" x) List.empty; None
+  | _ as x -> log.LogLine LogLevel.Error "%A" x; None
 
 let parseAllOptions (log: ILogger) (options: (string*string)[]) : SvgOption =
   options

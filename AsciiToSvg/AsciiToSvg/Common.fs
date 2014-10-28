@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module AsciiToSvg.Common
 
+
 open System.IO
 open System.Text.RegularExpressions
 
@@ -52,36 +53,3 @@ let toTupleOfArrays (x: ('T1*'T2)[]) =
 
 let matrixZip (A: 'T1[][]) (B: 'T2[][]) =
   [| for i in [0..A.Length-1] do yield Array.zip A.[i] B.[i] |]
-
-// Logging
-
-/// ILogger log-to-console implementation
-type ConsoleLogger() =
-
-    let printBaseType (x: LogMessageBaseType) =
-        match x with
-        | Integer x -> sprintf "%d" x
-        | Integer64 x  -> sprintf "%d" x
-        | Float x -> sprintf "%f" x
-        | String x -> sprintf "%s" x
-
-    let printSeq format parms =
-        let x = parms |> Seq.map printBaseType |> List.ofSeq
-        // standard behavior, i.e. do not consider escaped string format ("\%s")
-        let words = Regex.Split(format, "%s")
-        if words.Length <> x.Length + 1 then
-            printfn "Log message format error:\nformat : %s\nparameter : %A" format parms
-        else
-            x @ [""] |> Seq.zip words |> Seq.map (fun (x,y) -> x+y) |> (String.concat "") |> (printfn "%s")
-
-    interface ILogger with
-        member x.Log format parms = printSeq format parms
-        member x.Dispose() = ()
-
-
-/// ILogger do-not-log implementation
-type PseudoLogger() =
-    interface ILogger with
-        member x.Log format parms = ()
-        member x.Dispose() = ()
-
