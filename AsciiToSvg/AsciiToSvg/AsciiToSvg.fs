@@ -158,7 +158,7 @@ type LogLevel =
 
 type ILogger =
     inherit System.IDisposable
-    abstract member Log: LogLevel -> (Printf.TextWriterFormat<'a -> unit>) -> 'a -> unit
-    abstract member LogLine: LogLevel -> (Printf.TextWriterFormat<'a -> unit>) -> 'a -> unit
+    abstract member Log: LogLevel -> Printf.StringFormat<'a, unit> -> 'a
+    abstract member LogLine: LogLevel -> Printf.StringFormat<'a, unit> -> 'a
 
 //#endregion

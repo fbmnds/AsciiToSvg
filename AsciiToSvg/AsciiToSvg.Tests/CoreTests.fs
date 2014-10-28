@@ -233,6 +233,5 @@ module Core =
     Assert.AreEqual(ZeroMQ_Fig1_txt.zeroMQ_Fig1AsSvgExpected, ZeroMQ_Fig1_txt.zeroMQ_Fig1AsSvg)
 
   // #endregion
+  Log.cprintfn Console.BackgroundColor ConsoleColor.Red "Test run finished at %A" (DateTime.Now.ToLocalTime())
 
-  sprintf "Test run finished at %A" (DateTime.Now.ToLocalTime())
-  |> printfn "%s"
