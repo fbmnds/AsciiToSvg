@@ -119,72 +119,70 @@ let ScalableArrowTemplate (glyph: Glyph) (options: SvgOption) scale ax ay bx by 
 let ArrowTemplate (glyph: Glyph) ax ay bx by cx cy dx dy ex ey =
   ScalableArrowTemplate glyph Map.empty Scale ax ay bx by cx cy dx dy ex ey
 
-let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
+let ScalableCornerPath (glyph: Glyph) (options: SvgOption) scale =
   let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
-  let mutable set = Set.empty<string>
   match glyph.glyphKind with
-  | UpperLeftCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
-  | LowerLeftCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
-  | UpperRightCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
-  | LowerRightCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
-  | UpperLeftAndRightCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[2] rows.[2])
-    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
-  | LowerLeftAndRightCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
-  | UpperAndLowerRightCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[3] rows.[3])
-    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
-  | UpperAndLowerLeftCorner ->
-    set <- set.Add (putTick options cols.[0] rows.[0] cols.[4] rows.[4])
-    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
-  | CrossCorner ->
-    set <- set.Add (putTick options cols.[3] rows.[3] cols.[4] rows.[4])
-    set <- set.Add (putTick options cols.[1] rows.[1] cols.[2] rows.[2])
-  | _ -> ()
+  | UpperLeftCorner -> [|cols.[0]; rows.[0]; cols.[4]; rows.[4]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|]
+  | LowerLeftCorner ->  [|cols.[0]; rows.[0]; cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]
+  | UpperRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|]
+  | LowerRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|]
+  | UpperLeftAndRightCorner -> [|cols.[0]; rows.[0]; cols.[2]; rows.[2]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
+  | LowerLeftAndRightCorner -> [|cols.[0]; rows.[0]; cols.[1]; rows.[1]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
+  | UpperAndLowerRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
+  | UpperAndLowerLeftCorner -> [|cols.[0]; rows.[0]; cols.[4]; rows.[4]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
+  | CrossCorner -> [|cols.[3]; rows.[3]; cols.[4]; rows.[4]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
+  | _ ->
+#if DEBUG
+    Log.logError "Wrong Glyph kind in ScalableCornerPath: %A" glyph 
+#endif
+    [|-1.0; -1.0; -1.0; -1.0; -1.0; -1.0; -1.0; -1.0|]
+
+let ScalableCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
+  let mutable set = Set.empty<string>
+  let path = ScalableCornerPath glyph options scale
+  set <- set.Add (putTick options path.[0] path.[1] path.[2] path.[3])
+  set <- set.Add (putTick options path.[4] path.[5] path.[6] path.[7])
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
-let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
+let ScalableRoundCornerPath (glyph: Glyph) (options: SvgOption) scale = 
   let cols = [|4.0; 4.0;  4.0; 0.0; 8.0|] |> Array.map (fun x -> shiftColCoordGridToSvg scale x glyph.gridCoord)
   let rows = [|7.0; 0.0; 14.0; 7.0; 7.0|] |> Array.map (fun x -> shiftRowCoordGridToSvg scale x glyph.gridCoord)
-  let mutable set = Set.empty<string>
   match glyph.glyphKind with
-  | RoundUpperLeftCorner ->
-    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
-  | RoundLowerLeftCorner ->
-    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
-  | RoundUpperRightCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
-  | RoundLowerRightCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
+  | RoundUpperLeftCorner -> [[|cols.[2]; rows.[2]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]; [||]; [||]; [||]]
+  | RoundLowerLeftCorner -> [[|cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]; [||]; [||]; [||]]
+  | RoundUpperRightCorner -> [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|]; [||]; [||]; [||]]
+  | RoundLowerRightCorner -> [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|]; [||]; [||]; [||]]
   | RoundUpperLeftAndRightCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
-    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
+    [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|];
+     [|cols.[2]; rows.[2]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]; [||]; [||]]
   | RoundLowerLeftAndRightCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
+    [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|];
+     [|cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]; [||]; [||]]
   | RoundUpperAndLowerRightCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
+    [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|];
+     [|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|]; [||]; [||]]
   | RoundUpperAndLowerLeftCorner ->
-    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
-    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
+    [[|cols.[2]; rows.[2]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|];
+     [|cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]; [||]; [||]]
   | RoundCrossCorner ->
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[2] rows.[2])
-    set <- set.Add (putArc options cols.[2] rows.[2] cols.[0] rows.[0] cols.[4] rows.[4])
-    set <- set.Add (putArc options cols.[3] rows.[3] cols.[0] rows.[0] cols.[1] rows.[1])
-    set <- set.Add (putArc options cols.[1] rows.[1] cols.[0] rows.[0] cols.[4] rows.[4])
-  | _ -> ()
+    [[|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|];
+     [|cols.[2]; rows.[2]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|];
+     [|cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|];
+     [|cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]]
+  | _ -> 
+#if DEBUG
+    Log.logError "Wrong Glyph kind in ScalableRoundCornerPath: %A" glyph 
+#endif 
+    [[||]; [||]; [||]; [||]]
+
+let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
+  let arcs = 
+    ScalableRoundCornerPath glyph options scale 
+    |> List.filter (fun x -> x.Length > 0)
+    |> List.map (fun p -> putArc options p.[0] p.[1] p.[2] p.[3] p.[4] p.[5])
+  let mutable set = Set.empty<string>
+  for a in arcs do set <- set.Add a
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
 let ScalableTextTemplate (text: Text) (options: SvgOption) scale =

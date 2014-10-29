@@ -113,6 +113,8 @@
     <None Include="TestSvgFiles\ZeroMQ_Fig1.svg" />
     <None Include="TestSvgFiles\EmacsPrintHelp.svg" />
     <None Include="TestSvgFiles\ZeroMQ_Fig1Tabbed.svg" />
+    <None Include="TestSvgFiles\FSharpLogo.svg" />
+    <None Include="TestSvgFiles\OriginalAsciiToSvgLogo.svg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">

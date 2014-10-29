@@ -89,7 +89,7 @@ module TxtFile =
         "-[Logo]---------------------------[Logo]-"
         "[Logo]-----------------------------[Logo]"|]
     let replaceOptionInAsciiExpected =
-      ([|[||]; [||]; [|(2, 2); (2, 25)|]; [|(3, 1); (3, 34)|]; [||]|],
+      ([|[|(2, 2); (2, 25)|]; [|(3, 1); (3, 34)|]|],
        [|"-----------------------------------------"
          "---[Logo] ---- [Logo]--------------------"
          "-----------------------------------------"
@@ -115,6 +115,10 @@ module TxtFile =
       | _ as x -> ""
     let parseSuccessResultExpected =
       "JObject [(\"fill\", JString \"#88d\"); (\"a2s:delref\", Boolean true)]"
+
+    let parseAllOptionsResult = parseAllOptions Log.consoleLogger (fst splitTxtResult)
+    printfn "%A" parseAllOptionsResult
+
 
   module ArrowGlyph_txt =
 
@@ -219,6 +223,7 @@ module TxtFile =
           '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-';
           '+'|]|]
     let makeGridResult = splitTxtResult |> fun (_, b) -> b |> makeTrimmedGrid
+
 
   module TestPolygonBox_txt =
 

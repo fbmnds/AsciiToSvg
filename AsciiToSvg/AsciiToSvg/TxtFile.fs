@@ -105,6 +105,8 @@ let replaceOptionInAscii letter (ascii : string []) (option : string) =
        if cols.Length = 0 then Seq.empty, line
        else (cols |> Seq.map (fun col -> row, col)), line')
   |> toTupleOfArrays
+  |> fun (x,y) ->
+      x |> Array.filter (fun x' -> x'.Length > 0), y
 
 let parseOption (log: ILogger) (optionKey, optionValue) =
   optionValue
