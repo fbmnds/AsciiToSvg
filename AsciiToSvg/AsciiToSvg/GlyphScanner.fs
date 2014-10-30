@@ -146,7 +146,10 @@ let IsHorizontalGlyph (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
       ({ col = -1; row = 0 }, (Letter [|'-'; '+'; '<'; '.'; '\''|]))|]
     [|({ col = 0; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'; '.'; '\''|]))|]|]
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'; '>'; '.'; '\''|]))|]
+    [|({ col = 0; row = 0 }, (Letter [|'.'; '\''|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
   |> fun x -> x && IsNotCorner txtGrid col row
@@ -251,6 +254,24 @@ let IsRoundCorner (txtGrid: TxtGrid) col row =
   |> Array.reduce (fun x y -> x || y)
 
 let IsNotRoundCorner (txtGrid: TxtGrid) col row = not (IsRoundCorner txtGrid col row)
+
+let IsUpTick (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'\''|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|' '|]))
+      ({ col = 0; row = 1 }, (Letter [|' '|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
+
+let IsDownTick (txtGrid: TxtGrid) col row =
+  [|[|({ col = 0; row = 0 }, (Letter [|'.'|]))
+      ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
+      ({ col = 0; row = -1 }, (Letter [|' '|]))
+      ({ col = 0; row = 1 }, (Letter [|' '|]))|]|]
+  |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
+  |> Array.reduce (fun x y -> x || y)
 
 // #endregion
 
@@ -382,6 +403,9 @@ let IsGlyph (grid: TxtGrid) col row =
     (IsRoundUpperAndLowerRightCorner grid col row)
     (IsRoundUpperAndLowerLeftCorner grid col row)
     (IsRoundCrossCorner grid col row)
+    //
+    (IsUpTick grid col row)
+    (IsDownTick grid col row)
 // #region Not implemented
     // DiamondCorners
     (IsDiamondLeftCorner grid col row)

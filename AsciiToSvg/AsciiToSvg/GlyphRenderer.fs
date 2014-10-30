@@ -33,6 +33,9 @@ let Render scale options glyph =
   | RoundUpperAndLowerRightCorner -> ScalableRoundCornerTemplate glyph options scale
   | RoundUpperAndLowerLeftCorner -> ScalableRoundCornerTemplate glyph options scale
   | RoundCrossCorner -> ScalableRoundCornerTemplate glyph options scale
+  //
+  | UpTick -> ScalableCornerTemplate glyph options scale
+  | DownTick -> ScalableCornerTemplate glyph options scale
   | _ -> ""
 
 let RenderAll scale options (glyphs: Glyph[]) = glyphs |> Array.Parallel.map (Render scale options)

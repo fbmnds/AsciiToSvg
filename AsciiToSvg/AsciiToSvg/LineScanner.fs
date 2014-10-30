@@ -24,7 +24,8 @@ let ScanLineHorizontally (grid : TxtGrid) : Line[] =
     if line1.Length = line2.Length then Array.zip line1 line2
     else
 #if DEBUG
-      printfn "%A" line; printfn "%A" line1; printfn "%A" line2;
+      Log.logError "Scan error in ScanLineHorizontally"
+      Log.logError "%A" line; Log.logError "%A" line1; Log.logError "%A" line2
 #endif
       Array.empty
   let horizLines =
@@ -69,7 +70,8 @@ let ScanLineVertically (grid : TxtGrid)  =
   with
   | _ ->
 #if DEBUG
-      printfn "%A" startPos; printfn "%A" endPos
+      Log.logError "Scan error in ScanLineVertically" 
+      Log.logError "%A" startPos; Log.logError "%A" endPos
 #endif
       [||]
   |> Array.Parallel.mapi (fun col line -> [| for i in [0..line.Length-1] do yield col,(fst line.[i]), (snd line.[i]) |])

@@ -127,8 +127,10 @@ let ScalableCornerPath (glyph: Glyph) (options: SvgOption) scale =
   | LowerLeftCorner ->  [|cols.[0]; rows.[0]; cols.[1]; rows.[1]; cols.[0]; rows.[0]; cols.[4]; rows.[4]|]
   | UpperRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[2]; rows.[2]|]
   | LowerRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[0]; rows.[0]; cols.[1]; rows.[1]|]
-  | UpperLeftAndRightCorner -> [|cols.[0]; rows.[0]; cols.[2]; rows.[2]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
-  | LowerLeftAndRightCorner -> [|cols.[0]; rows.[0]; cols.[1]; rows.[1]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
+  | UpperLeftAndRightCorner 
+  | DownTick -> [|cols.[0]; rows.[0]; cols.[2]; rows.[2]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
+  | LowerLeftAndRightCorner 
+  | UpTick -> [|cols.[0]; rows.[0]; cols.[1]; rows.[1]; cols.[3]; rows.[3]; cols.[4]; rows.[4]|]
   | UpperAndLowerRightCorner -> [|cols.[0]; rows.[0]; cols.[3]; rows.[3]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
   | UpperAndLowerLeftCorner -> [|cols.[0]; rows.[0]; cols.[4]; rows.[4]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
   | CrossCorner -> [|cols.[3]; rows.[3]; cols.[4]; rows.[4]; cols.[1]; rows.[1]; cols.[2]; rows.[2]|]
@@ -182,7 +184,7 @@ let ScalableRoundCornerTemplate (glyph: Glyph) (options: SvgOption) scale =
     |> List.filter (fun x -> x.Length > 0)
     |> List.map (fun p -> putArc options p.[0] p.[1] p.[2] p.[3] p.[4] p.[5])
   let mutable set = Set.empty<string>
-  for a in arcs do set <- set.Add a
+  for arc in arcs do set <- set.Add arc
   set |> Array.ofSeq |> Array.sort |> Array.fold (fun r s -> r + s) ""
 
 let ScalableTextTemplate (text: Text) (options: SvgOption) scale =

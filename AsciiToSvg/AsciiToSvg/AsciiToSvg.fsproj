@@ -60,6 +60,7 @@
     <Compile Include="TxtFile.fs" />
     <Compile Include="GlyphScanner.fs" />
     <Compile Include="GlyphRenderer.fs" />
+    <Compile Include="Topology.fs" />
     <Compile Include="LineScanner.fs" />
     <Compile Include="LineRenderer.fs" />
     <Compile Include="TextScanner.fs" />
