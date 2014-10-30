@@ -86,7 +86,9 @@ module Core =
   [<Test>]
   let ``TxtFile : splitText : ZeroMQ_Fig1_txt``() =
     Assert.True(ZeroMQ_Fig1_txt.splitTxtResultOk)
-
+  [<Test>]
+  let ``TxtFile : splitText : TestBoxes.txt``() =
+    Assert.True(TestBoxes_txt.splitTxtResult = TestBoxes_txt.splitTxtResultExpected)
 
   [<Test>]
   let ``TxtFile : makeFramedGrid : TestLogo.txt`` () =
@@ -107,6 +109,9 @@ module Core =
   [<Test>]
   let ``TxtFile : makeTrimmedGrid : ZeroMQ_Fig1_txt`` () =
     Assert.AreEqual (ZeroMQ_Fig1_txt.makeGridResultExpected, ZeroMQ_Fig1_txt.makeGridResult)
+  [<Test>]
+  let ``TxtFile : makeTrimmedGrid : TestBoxes_txt`` () =
+    Assert.AreEqual (TestBoxes_txt.makeGridExpected, TestBoxes_txt.makeGridResult)
 
   [<Test>]
   let ``TxtFile : replaceOptionInLine : TestLogo.txt`` () =
@@ -115,6 +120,10 @@ module Core =
   [<Test>]
   let ``TxtFile : replaceOptionInAscii : TestLogo.txt`` () =
     Assert.True (TestLogo_txt.replaceOptionInAsciiOK)
+
+  [<Test>]
+  let ``TxtFile : parseAllOptions : TestLogo.TxtFile`` () =
+    Assert.AreEqual (TestLogo_txt.parseAllOptionsExpected, TestLogo_txt.parseAllOptionsResult)
 
   // #endregion
 
@@ -138,6 +147,10 @@ module Core =
   let ``GlyphScanner : ScanGlyphs : ZeroMQ_Fig1_txt``() =
     [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14;|]
     |> fun x -> Assert.AreEqual(ZeroMQ_Fig1_txt.scanGridResultMapped, x)
+  [<Test>]
+  let ``GlyphScanner : ScanGlyphs : TestBoxes_txt``() =
+    [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22; 23; 24; 25; 26; 27|]
+    |> fun x -> Assert.AreEqual(TestBoxes_txt.scanGridResultMapped, x)
 
   // #endregion
 

@@ -3,7 +3,7 @@
 
 open AsciiToSvg.GlyphScanner
 
-let IsUpperLeftCornerKind (glyph: Glyph) = 
+let IsUpperLeftCornerKind (glyph: Glyph) =
   match glyph.glyphKind with
   | UpperLeftCorner
   | UpperLeftAndRightCorner
@@ -81,7 +81,7 @@ let IsNotLeftCornerKind glyph = not (IsLeftCornerKind glyph)
 let IsRightCornerKind glyph = IsUpperRightCornerKind glyph || IsLowerRightCornerKind glyph
 let IsNotRightCornerKind glyph = not (IsRightCornerKind glyph)
 
-let IsHorizontalLineSegmentKind (glyph: Glyph) = 
+let IsHorizontalLineSegmentKind (glyph: Glyph) =
   match glyph.glyphKind with
   | UpperLeftAndRightCorner
   | LowerLeftAndRightCorner
@@ -132,34 +132,36 @@ let findBoxes (horizLines: Line[])
               (lowerRightCorners: Glyph[])
               (lowerLeftCorners: Glyph[]) =
   [|for uLC in upperLeftCorners do
-      for hUL in horizLines do
-        for uRC in upperRightCorners do 
-          for vRL in vertLines do
-            for lRC in lowerRightCorners do
-              for hLL in horizLines do
-                for lLC in lowerLeftCorners do
-                  for vLL in vertLines do
-                    if uLC.gridCoord.IsLeftOf hUL.gridCoordStart &&
-                       uLC.gridCoord.IsLeftOf hUL.gridCoordEnd &&
-                       uLC.gridCoord.IsAboveOf vLL.gridCoordStart &&
-                       uLC.gridCoord.IsAboveOf vLL.gridCoordEnd &&
-                       //
-                       uRC.gridCoord.IsRightOf hUL.gridCoordStart &&
-                       uRC.gridCoord.IsRightOf hUL.gridCoordEnd &&
-                       uRC.gridCoord.IsAboveOf vRL.gridCoordStart &&
-                       uRC.gridCoord.IsAboveOf vRL.gridCoordEnd &&
-                       //
-                       lRC.gridCoord.IsBelowOf  vRL.gridCoordStart &&
-                       lRC.gridCoord.IsBelowOf  vRL.gridCoordEnd &&
-                       lRC.gridCoord.IsRightOf hLL.gridCoordStart &&
-                       lRC.gridCoord.IsRightOf hLL.gridCoordEnd &&
-                       //
-                       lLC.gridCoord.IsLeftOf hLL.gridCoordStart &&
-                       lLC.gridCoord.IsLeftOf hLL.gridCoordEnd &&
-                       lLC.gridCoord.IsBelowOf vLL.gridCoordStart &&
-                       lLC.gridCoord.IsBelowOf vLL.gridCoordEnd
+      for uRC in upperRightCorners do 
+        if uLC.gridCoord.IsHorizontalLeftOf uRC.gridCoord then
+          for hUL' in horizLines do
+            let hUL = flipLine hUL'
+            if uLC.gridCoord.IsLeftOf hUL.gridCoordStart &&
+               uRC.gridCoord.IsRightOf hUL.gridCoordEnd 
+            then
+              for lRC in lowerRightCorners do
+                if lRC.gridCoord.IsVerticalBelowOf uRC.gridCoord then  
+                  for vRL' in vertLines do
+                    let vRL = flipLine vRL'
+                    if uRC.gridCoord.IsAboveOf vRL.gridCoordStart &&
+                       lRC.gridCoord.IsBelowOf vRL.gridCoordEnd
                     then
-                      yield uLC, hUL, uRC, vRL, lRC, hLL, lLC, vLL|]
+                      for lLC in lowerLeftCorners do
+                        if lLC.gridCoord.IsHorizontalLeftOf lRC.gridCoord &&
+                           lLC.gridCoord.IsVerticalBelowOf lRC.gridCoord
+                        then
+                          for hLL' in horizLines do
+                            let hLL = flipLine hLL'
+                            if lLC.gridCoord.IsLeftOf hLL.gridCoordStart &&
+                               lRC.gridCoord.IsRightOf hLL.gridCoordEnd
+                            then
+                              for vLL' in vertLines do
+                                let vLL = flipLine vLL'
+                                if 
+                                   uLC.gridCoord.IsAboveOf vLL.gridCoordStart &&
+                                   lLC.gridCoord.IsBelowOf vLL.gridCoordEnd
+                                then
+                                  yield uLC, hUL, uRC, vRL, lRC, hLL, lLC, vLL|]
 
 let findMiniBoxes (upperLeftCorners: Glyph[])
                   (upperRightCorners: Glyph[])
@@ -167,14 +169,14 @@ let findMiniBoxes (upperLeftCorners: Glyph[])
                   (lowerLeftCorners: Glyph[]) =
   [|for uLC in upperLeftCorners do
       for uRC in upperRightCorners do 
-        for lRC in lowerRightCorners do
-          for lLC in lowerLeftCorners do
-            if uLC.gridCoord.IsLeftOf uRC.gridCoord &&
-               uRC.gridCoord.IsAboveOf lRC.gridCoord &&
-               lRC.gridCoord.IsRightOf lLC.gridCoord &&
-               lLC.gridCoord.IsBelowOf uLC.gridCoord
-            then
-              yield uLC, uRC, lRC, lLC|]
+        if uLC.gridCoord.IsLeftOf uRC.gridCoord then
+          for lRC in lowerRightCorners do
+            if uRC.gridCoord.IsAboveOf lRC.gridCoord then
+              for lLC in lowerLeftCorners do
+                if lRC.gridCoord.IsRightOf lLC.gridCoord &&
+                   lLC.gridCoord.IsBelowOf uLC.gridCoord
+                then
+                  yield uLC, uRC, lRC, lLC|]
 
 let findHorizontalPathBetween (corner1: Glyph) (corner2: Glyph) (glyphs: Glyph[]) (lines: Line[]) =
   let leftCorner, rightCorner = if corner1 <= corner2 then corner1, corner2 else corner2, corner1

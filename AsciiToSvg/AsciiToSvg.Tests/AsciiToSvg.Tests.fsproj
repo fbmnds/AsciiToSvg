@@ -98,6 +98,7 @@
     <Content Include="TestTxtFiles\ArrowGlyphsWithFrame.txt" />
     <Content Include="TestTxtFiles\ZeroMQ_Fig1.txt" />
     <Content Include="TestTxtFiles\EmacsPrintHelp.txt" />
+    <Content Include="TestTxtFiles\TestBoxes.txt" />
     <None Include="TestSvgFiles\ArrowGlyphs.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsFramedTabbed.svg" />
     <None Include="TestSvgFiles\ArrowGlyphsWithoutText.svg" />
