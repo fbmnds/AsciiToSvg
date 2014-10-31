@@ -270,20 +270,18 @@ let IsNotRoundCorner (txtGrid: TxtGrid) col row = not (IsRoundCorner txtGrid col
 let IsUpTick (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'\''|]))
       ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 0; row = -1 }, (Letter [|' '|]))
-      ({ col = 0; row = 1 }, (Letter [|' '|]))|]|]
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
+  |> fun x -> x && (IsNotRoundCorner txtGrid col row)
 
 let IsDownTick (txtGrid: TxtGrid) col row =
   [|[|({ col = 0; row = 0 }, (Letter [|'.'|]))
       ({ col = -1; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))
-      ({ col = 0; row = -1 }, (Letter [|' '|]))
-      ({ col = 0; row = 1 }, (Letter [|' '|]))|]|]
+      ({ col = 1; row = 0 }, (Letter [|'-'; '+'|]))|]|]
   |> Array.Parallel.map (fun pattern -> IsGlyphByPattern pattern txtGrid col row)
   |> Array.reduce (fun x y -> x || y)
+  |> fun x -> x && (IsNotRoundCorner txtGrid col row)
 
 // #endregion
 
@@ -337,6 +335,9 @@ let ScanGlyphs (grid : TxtGrid) : Glyph[] =
     if (IsLowerLeftCorner grid i j) then glyphProperty LowerLeftCorner else
     if (IsUpperRightCorner grid i j) then glyphProperty UpperRightCorner else
     if (IsLowerRightCorner grid i j) then glyphProperty LowerRightCorner else
+    // Ticks
+    if (IsUpTick grid i j) then glyphProperty UpTick else
+    if (IsDownTick grid i j) then glyphProperty DownTick else
     // RoundCorners
     if (IsRoundCrossCorner grid i j) then glyphProperty RoundCrossCorner else
     if (IsRoundUpperLeftAndRightCorner grid i j) then glyphProperty RoundUpperLeftAndRightCorner else

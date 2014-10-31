@@ -1,8 +1,6 @@
 ﻿module AsciiToSvg.Topology
 
 
-open AsciiToSvg.GlyphScanner
-
 let IsUpperLeftCornerKind (glyph: Glyph) =
   match glyph.glyphKind with
   | UpperLeftCorner
@@ -109,8 +107,8 @@ let IsVerticalLineSegmentKind (glyph: Glyph) =
   | LargeCrossCorner -> true
   | _ -> false
 
-let flipLine (line: Line) = 
-  if line.gridCoordStart <= line.gridCoordEnd then line 
+let flipLine (line: Line) =
+  if line.gridCoordStart <= line.gridCoordEnd then line
   else
     { orientation = line.orientation
       gridCoordStart = line.gridCoordEnd
@@ -125,22 +123,23 @@ let findBoxCorners (glyphs: Glyph[]) =
   let lowerLeftCorners = glyphs |> Array.filter IsLowerLeftCornerKind
   [|upperLeftCorners; upperRightCorners; lowerRightCorners; lowerLeftCorners|]
 
-let findBoxes (horizLines: Line[]) 
-              (vertLines: Line[]) 
+// only finds those boxes which edges do not span across corners
+let FindBoxes (horizLines: Line[])
+              (vertLines: Line[])
               (upperLeftCorners: Glyph[])
               (upperRightCorners: Glyph[])
               (lowerRightCorners: Glyph[])
               (lowerLeftCorners: Glyph[]) =
   [|for uLC in upperLeftCorners do
-      for uRC in upperRightCorners do 
+      for uRC in upperRightCorners do
         if uLC.gridCoord.IsHorizontalLeftOf uRC.gridCoord then
           for hUL' in horizLines do
             let hUL = flipLine hUL'
             if uLC.gridCoord.IsLeftOf hUL.gridCoordStart &&
-               uRC.gridCoord.IsRightOf hUL.gridCoordEnd 
+               uRC.gridCoord.IsRightOf hUL.gridCoordEnd
             then
               for lRC in lowerRightCorners do
-                if lRC.gridCoord.IsVerticalBelowOf uRC.gridCoord then  
+                if lRC.gridCoord.IsVerticalBelowOf uRC.gridCoord then
                   for vRL' in vertLines do
                     let vRL = flipLine vRL'
                     if uRC.gridCoord.IsAboveOf vRL.gridCoordStart &&
@@ -148,7 +147,7 @@ let findBoxes (horizLines: Line[])
                     then
                       for lLC in lowerLeftCorners do
                         if lLC.gridCoord.IsHorizontalLeftOf lRC.gridCoord &&
-                           lLC.gridCoord.IsVerticalBelowOf lRC.gridCoord
+                           lLC.gridCoord.IsVerticalBelowOf uLC.gridCoord
                         then
                           for hLL' in horizLines do
                             let hLL = flipLine hLL'
@@ -157,18 +156,19 @@ let findBoxes (horizLines: Line[])
                             then
                               for vLL' in vertLines do
                                 let vLL = flipLine vLL'
-                                if 
+                                if
                                    uLC.gridCoord.IsAboveOf vLL.gridCoordStart &&
                                    lLC.gridCoord.IsBelowOf vLL.gridCoordEnd
                                 then
                                   yield uLC, hUL, uRC, vRL, lRC, hLL, lLC, vLL|]
 
-let findMiniBoxes (upperLeftCorners: Glyph[])
+// finds boxes that consist only of corner glyphs
+let FindMiniBoxes (upperLeftCorners: Glyph[])
                   (upperRightCorners: Glyph[])
                   (lowerRightCorners: Glyph[])
                   (lowerLeftCorners: Glyph[]) =
   [|for uLC in upperLeftCorners do
-      for uRC in upperRightCorners do 
+      for uRC in upperRightCorners do
         if uLC.gridCoord.IsLeftOf uRC.gridCoord then
           for lRC in lowerRightCorners do
             if uRC.gridCoord.IsAboveOf lRC.gridCoord then
@@ -183,24 +183,27 @@ let findHorizontalPathBetween (corner1: Glyph) (corner2: Glyph) (glyphs: Glyph[]
   if not (leftCorner.gridCoord.IsHorizontalLeftOf rightCorner.gridCoord) then [||], [||] else
   if leftCorner.gridCoord.IsLeftOf rightCorner.gridCoord then [|leftCorner; rightCorner|], [||]
   else
-    let linesInBetween = 
-      lines 
-      |> Array.filter (fun line -> 
-        line.orientation = Horizontal && 
+    let linesInBetween =
+      lines
+      |> Array.map flipLine
+      |> Array.filter (fun line ->
+        line.orientation = Horizontal &&
         line.gridCoordStart.IsHorizontalRightOf leftCorner.gridCoord &&
         line.gridCoordEnd.IsHorizontalRightOf leftCorner.gridCoord &&
         line.gridCoordStart.IsHorizontalLeftOf rightCorner.gridCoord &&
-        line.gridCoordEnd.IsHorizontalLeftOf rightCorner.gridCoord) 
+        line.gridCoordEnd.IsHorizontalLeftOf rightCorner.gridCoord)
       |> Array.sortWith (fun x y -> compare x.gridCoordStart y.gridCoordStart)
     let glyphsInBetween =
       glyphs
       |> Array.filter (fun glyph ->
         glyph.gridCoord.IsHorizontalRightOf leftCorner.gridCoord &&
         glyph.gridCoord.IsHorizontalLeftOf rightCorner.gridCoord &&
+        glyph.glyphKind <> UpTick &&
+        glyph.glyphKind <> DownTick &&
         IsHorizontalLineSegmentKind glyph)
       |> Array.sortWith (fun x y -> compare x.gridCoord y.gridCoord)
     let coveredCoords =
-      [|for l in linesInBetween do yield [|for c in [l.gridCoordStart.col .. l.gridCoordEnd.col] do yield c|]|] 
+      [|for l in linesInBetween do yield [|for c in [l.gridCoordStart.col .. l.gridCoordEnd.col] do yield c|]|]
       |> Array.concat
       |> fun x -> (Array.concat [[|for g in glyphsInBetween do yield g.gridCoord.col|]; x])
       |> Array.sort
@@ -214,7 +217,8 @@ let findVerticalPathBetween (corner1: Glyph) (corner2: Glyph) (glyphs: Glyph[]) 
   if upperCorner.gridCoord.IsAboveOf lowerCorner.gridCoord then [|upperCorner; lowerCorner|], [||]
   else
     let linesInBetween = 
-      lines 
+      lines
+      |> Array.map flipLine
       |> Array.filter (fun line -> 
         line.orientation = Vertical && 
         line.gridCoordStart.IsVerticalBelowOf upperCorner.gridCoord &&
@@ -230,7 +234,7 @@ let findVerticalPathBetween (corner1: Glyph) (corner2: Glyph) (glyphs: Glyph[]) 
         IsVerticalLineSegmentKind glyph)
       |> Array.sortWith (fun x y -> compare x.gridCoord y.gridCoord)
     let coveredCoords =
-      [|for l in linesInBetween do yield [|for c in [l.gridCoordStart.col .. l.gridCoordEnd.col] do yield c|]|] 
+      [|for l in linesInBetween do yield [|for c in [l.gridCoordStart.row .. l.gridCoordEnd.row] do yield c|]|] 
       |> Array.concat
       |> fun x -> (Array.concat [[|for g in glyphsInBetween do yield g.gridCoord.row|]; x])
       |> Array.sort
@@ -238,27 +242,29 @@ let findVerticalPathBetween (corner1: Glyph) (corner2: Glyph) (glyphs: Glyph[]) 
       Array.concat [[|upperCorner|]; glyphsInBetween; [|lowerCorner|]], linesInBetween
     else [||], [||]
 
-let findPathBoxes (horizLines: Line[]) 
-                  (vertLines: Line[]) 
-                  (glyphs: Glyph[])
-                  (upperLeftCorners: Glyph[])
-                  (upperRightCorners: Glyph[])
-                  (lowerRightCorners: Glyph[])
-                  (lowerLeftCorners: Glyph[]) =
+let FindPathBoxes (allLines: Line[] * Line[]) (glyphs: Glyph[]) =
+  let horizLines = fst allLines
+  let vertLines = snd allLines
+  let corners = findBoxCorners glyphs
+  let upperLeftCorners = corners.[0]
+  let upperRightCorners = corners.[1]
+  let lowerRightCorners = corners.[2]
+  let lowerLeftCorners = corners.[3]
   [|for uLC in upperLeftCorners do
       for uRC in upperRightCorners do
-        let hUP = findHorizontalPathBetween uLC uRC glyphs horizLines
-        if (fst hUP).Length > 0 then
-          for lRC in lowerRightCorners do
-            if lRC.gridCoord.IsVerticalBelowOf uRC.gridCoord then
-              let vRP = findVerticalPathBetween uRC lRC glyphs vertLines
-              if (fst vRP).Length > 0 then
-                for lLC in lowerLeftCorners do
-                  if lLC.gridCoord.IsVerticalBelowOf uLC.gridCoord &&
-                     lLC.gridCoord.IsHorizontalLeftOf lRC.gridCoord
-                  then
-                    let hLP = findHorizontalPathBetween lLC lRC glyphs horizLines
-                    if (fst hLP).Length > 0 then
-                      let vLP = findVerticalPathBetween lLC lRC glyphs vertLines
-                      if (fst vLP).Length > 0 then
-                        yield uLC, hUP, uRC, vRP, lRC, hLP, lLC, vLP|]
+        if uLC.gridCoord.IsHorizontalLeftOf uRC.gridCoord then
+          let hUP = findHorizontalPathBetween uLC uRC glyphs horizLines
+          if (fst hUP).Length > 0 then
+            for lRC in lowerRightCorners do
+              if lRC.gridCoord.IsVerticalBelowOf uRC.gridCoord then
+                let vRP = findVerticalPathBetween uRC lRC glyphs vertLines
+                if (fst vRP).Length > 0 then
+                  for lLC in lowerLeftCorners do
+                    if lLC.gridCoord.IsVerticalBelowOf uLC.gridCoord &&
+                       lLC.gridCoord.IsHorizontalLeftOf lRC.gridCoord
+                    then
+                      let hLP = findHorizontalPathBetween lLC lRC glyphs horizLines
+                      if (fst hLP).Length > 0 then
+                        let vLP = findVerticalPathBetween uLC lLC glyphs vertLines
+                        if (fst vLP).Length > 0 then
+                          yield hUP, vRP, hLP, vLP|]

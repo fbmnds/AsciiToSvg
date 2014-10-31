@@ -22,6 +22,7 @@ let readFileAsText file =
 
 let regex s = new Regex(s)
 let (=~) s (re : Regex) = re.IsMatch(s)
+let replaceAll pattern (substitute: string) target = (regex pattern).Replace(target, substitute)
 
 let (|Match|_|) pattern input =
     let re = Regex.Match(input, pattern)

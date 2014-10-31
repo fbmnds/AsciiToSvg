@@ -101,20 +101,20 @@ module GlyphScanner =
 
     let scanGridResultExpected =
       [|{glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
-        {glyphKind = RoundUpperRightCorner; gridCoord = {col = 13; row = 0;}; glyphOptions = Map.empty };
-        {glyphKind = RoundUpperLeftCorner; gridCoord = {col = 22; row = 0;}; glyphOptions = Map.empty };
-        {glyphKind = RoundUpperRightCorner; gridCoord = {col = 37; row = 0;}; glyphOptions = Map.empty };
-        {glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 13; row = 2;}; glyphOptions = Map.empty };
-        {glyphKind = ArrowLeftToRight; gridCoord = {col = 21; row = 2;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 4;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerRightCorner; gridCoord = {col = 13; row = 4;}; glyphOptions = Map.empty };
-        {glyphKind = ArrowUp; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty };
-        {glyphKind = ArrowUp; gridCoord = {col = 7; row = 5;}; glyphOptions = Map.empty };
-        {glyphKind = ArrowUp; gridCoord = {col = 12; row = 5;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 22; row = 6;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerRightCorner; gridCoord = {col = 37; row = 6;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 12; row = 9;}; glyphOptions = Map.empty };
-        {glyphKind = RoundLowerLeftCorner; gridCoord = {col = 7; row = 11;}; glyphOptions = Map.empty }|]
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 13; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 22; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 37; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 13; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowLeftToRight; gridCoord = {col = 21; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 13; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowUp; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowUp; gridCoord = {col = 7; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowUp; gridCoord = {col = 12; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 22; row = 6;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 37; row = 6;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 12; row = 9;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 7; row = 11;}; glyphOptions = Map.empty }|]
     let scanGridResult = ZeroMQ_Fig1_txt.makeGridResult |> ScanGlyphs
 
     let scanGridResultMapped =
@@ -125,34 +125,36 @@ module GlyphScanner =
   module TestBoxes_txt =
 
     let scanGridResultExpected =
-      [|{ glyphKind = ArrowLeftToRight; gridCoord = {col = 13; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = ArrowLeftToRight; gridCoord = {col = 21; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = ArrowRightToLeft; gridCoord = {col = 13; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = ArrowRightToLeft; gridCoord = {col = 21; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = LowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = LowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 8;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 26; row = 8;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty};
-        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 8; row = 5;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 26; row = 0;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty};
-        { glyphKind = UpperLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = UpperRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty};
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty};|]
+      [|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 26; row = 0;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = DownTick; gridCoord = {col = 6; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = UpperLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowLeftToRight; gridCoord = {col = 13; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowRightToLeft; gridCoord = {col = 21; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = UpperRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowRightToLeft; gridCoord = {col = 13; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = LowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = LowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = ArrowLeftToRight; gridCoord = {col = 21; row = 4;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = UpTick; gridCoord = {col = 6; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 8; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 8;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 26; row = 8;}; glyphOptions = Map.empty }|]
     let scanGridResult = TestBoxes_txt.makeGridResult |> ScanGlyphs
 
     let scanGridResultMapped =

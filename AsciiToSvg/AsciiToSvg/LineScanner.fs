@@ -70,7 +70,7 @@ let ScanLineVertically (grid : TxtGrid)  =
   with
   | _ ->
 #if DEBUG
-      Log.logError "Scan error in ScanLineVertically" 
+      Log.logError "Scan error in ScanLineVertically"
       Log.logError "%A" startPos; Log.logError "%A" endPos
 #endif
       [||]

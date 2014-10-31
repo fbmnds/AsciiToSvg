@@ -85,8 +85,10 @@
     <Compile Include="TextRendererTests.fs" />
     <Compile Include="LineScannerTests.fs" />
     <Compile Include="LineRendererTests.fs" />
+    <Compile Include="TopologyTests.fs" />
     <Compile Include="CoreTests.fs" />
     <None Include="EmacsPrintHelp.fsx" />
+    <None Include="TidyUp.fsx" />
     <None Include="packages.config" />
     <None Include="App.config" />
     <Content Include="TestTxtFiles\TestLogo.txt" />

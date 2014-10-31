@@ -56,3 +56,13 @@ module TextScanner =
         { text = "Illegal radioisotopes from"; gridCoord = {col = 1; row = 13;}; glyphOptions = Map.empty };
         { text = "secret Soviet atomic city"; gridCoord = {col = 1; row = 14;}; glyphOptions = Map.empty };
         { text = "source: https://raw.githubusercontent.com/imatix/zguide/master/images/fig1.txt"; gridCoord = {col = 1; row = 16;}; glyphOptions = Map.empty }|]
+
+  module TestBoxes_txt =
+
+    let textTabbedResult = TestBoxes_txt.makeGridResult |> ScanTabbedText
+
+    let textTabbedExpected =
+      [|{ text = "ascii"; gridCoord = {col = 3; row = 6;}; glyphOptions = Map.empty };
+        { text = "2"; gridCoord = {col = 13; row = 6;}; glyphOptions = Map.empty };
+        { text = "svg"; gridCoord = {col = 20; row = 6;}; glyphOptions = Map.empty };
+        { text = "https://9vx.org/~dho/a2s/"; gridCoord = {col = 1; row = 9;}; glyphOptions = Map.empty }|]
