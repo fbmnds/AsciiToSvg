@@ -148,36 +148,42 @@ module TopologyTests =
           [|{ orientation = Horizontal; gridCoordStart = {col = 11; row = 2;}; gridCoordEnd = {col = 15; row = 2;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 16; row = 3;}; gridCoordEnd = {col = 16; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty }|], 
+          [|{ orientation = Vertical; gridCoordStart = {col = 16; row = 3;}; gridCoordEnd = {col = 16; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 11; row = 5;}; gridCoordEnd = {col = 15; row = 5;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 10; row = 4;}; gridCoordEnd = {col = 10; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
+            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty }|], 
+          [|{ orientation = Vertical; gridCoordStart = {col = 10; row = 4;}; gridCoordEnd = {col = 10; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
         // Inner 's' box
         (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 19; row = 2;}; gridCoordEnd = {col = 23; row = 2;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 24; row = 4;}; gridCoordEnd = {col = 24; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty }|],
+          [|{ orientation = Vertical; gridCoordStart = {col = 24; row = 4;}; gridCoordEnd = {col = 24; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 19; row = 5;}; gridCoordEnd = {col = 23; row = 5;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 18; row = 3;}; gridCoordEnd = {col = 18; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
+            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty }|], 
+          [|{ orientation = Vertical; gridCoordStart = {col = 18; row = 3;}; gridCoordEnd = {col = 18; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
         // Inner box in inner 'a' box
         (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty };
             { glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 5; row = 3;}; gridCoordEnd = {col = 5; row = 3;}; linechars = [|'-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty }|], [||]),
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty }|], 
+          [||]),
          ([|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 5; row = 4;}; gridCoordEnd = {col = 5; row = 4;}; linechars = [|'-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty };
-            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty }|], [||]))|]
+            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty }|], 
+          [||]))|]
 
     let findPathBoxesOK = findPathBoxesExpected = findPathBoxesResult

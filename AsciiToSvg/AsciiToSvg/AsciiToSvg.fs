@@ -28,9 +28,12 @@ type GridCoordinates =
         else 1
       | _ -> invalidArg "yobj" "cannot compare values of different types"
 
+type SvgScale = { colsc : float; rowsc : float }
+
 [<CustomEquality; CustomComparison>]
 type SvgCoordinates =
   { colpx : float; rowpx : float }
+  member x.Scaled scale = { colpx = x.colpx * scale.colsc; rowpx = x.rowpx * scale.rowsc }
   override x.Equals(yobj) =
     match yobj with
     | :? SvgCoordinates as y -> x.colpx = y.colpx && x.rowpx = y.rowpx
@@ -55,8 +58,6 @@ type JsonValue =
     | Null
 
 type SvgOption = Map<string, JsonValue>
-
-type SvgScale = { colsc : float; rowsc : float }
 
 type GlyphKind =
   | ArrowUp
@@ -86,6 +87,11 @@ type GlyphKind =
   | RoundUpperAndLowerLeftCorner
   | RoundCrossCorner
   //
+  | UpTick
+  | DownTick
+  //
+// #region Not implemented
+  //
   | DiamondLeftCorner
   | DiamondRightCorner
   | DiamondUpperCorner
@@ -108,11 +114,10 @@ type GlyphKind =
   | LargeUpperAndLowerLeftCorner
   | LargeCrossCorner
   //
-  | UpTick
-  | DownTick
-  //
   | Ellipse
   | Circle
+  //
+// #endregion
   //
   | Empty
 
