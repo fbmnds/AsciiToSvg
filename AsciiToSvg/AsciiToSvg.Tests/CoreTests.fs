@@ -290,6 +290,10 @@ module Core =
   let ``Topology : findVerticalPathBetween : TestBoxes_txt`` () =
     Assert.True(TestBoxes_txt.vLL1OK)
 
+  [<Test; Category "AsciiToSvg.Topology">]
+  let ``Topology : FindPathBoxes : TestBoxes_txt`` () =
+    Assert.True(TestBoxes_txt.findPathBoxesOK)
+
   // #endregion
 
   Log.logInfo "Test run finished at %A" (DateTime.Now.ToLocalTime())

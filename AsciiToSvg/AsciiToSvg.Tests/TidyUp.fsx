@@ -34,8 +34,14 @@ let tidyUpGlyphs file =
   | Success text -> text
   | _ -> ""
   |> replaceAll @"map \[\];" "Map.empty "
+  // bring all attributes on one line
+  |> replaceAll @";\s*[\r]?\n\s+" "; "
+  // separate glyph records
   |> replaceAll @"}; {\s*glyphKind" "};\n        { glyphKind"
-  |> replaceAll @";\s*[\r]?\n" " \n"
+  |> replaceAll @"}, {\s*glyphKind" "},\n        { glyphKind"
+  |> replaceAll @"^\s*{\s*glyphKind" "         { glyphKind"
+  // trim blanks
+  |> replaceAll @"\s*$" Environment.NewLine
   |> fun x -> File.WriteAllText(@"AsciiToSvg.Tests\" + file, x)
 
 tidyUpGlyphs "GlyphScannerTests.fs"

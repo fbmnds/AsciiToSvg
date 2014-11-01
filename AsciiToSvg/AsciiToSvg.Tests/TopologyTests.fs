@@ -16,31 +16,34 @@ module TopologyTests =
     let upperRightCorners = glyphs |> Array.filter IsUpperRightCornerKind 
     let lowerRightCorners = glyphs |> Array.filter IsLowerRightCornerKind 
     let lowerLeftCorners = glyphs |> Array.filter IsLowerLeftCornerKind 
-
     let upperLeftCornersExpected = 
       [|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty } 
-        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty } 
-        { glyphKind = UpperLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty }|] 
+        { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty }
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty }
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty }|] 
     let upperRightCornersExpected = 
       [|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 26; row = 0;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty } 
         { glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty } 
-        { glyphKind = UpperRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty }|] 
+        { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty }
+        { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty }|] 
     let lowerRightCornersExpected = 
-      [|{ glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty } 
-        { glyphKind = LowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty } 
+      [|{ glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty }
+        { glyphKind = RoundLowerRightCorner; gridCoord = {col = 6; row = 4;}; glyphOptions = Map.empty } 
+        { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerRightCorner; gridCoord = {col = 8; row = 5;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerRightCorner; gridCoord = {col = 26; row = 8;}; glyphOptions = Map.empty }|] 
     let lowerLeftCornersExpected = 
-      [|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty } 
-        { glyphKind = LowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty } 
+      [|{ glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty }
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty }
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty }
         { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty } 
         { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty } 
@@ -113,7 +116,8 @@ module TopologyTests =
 
     let findPathBoxesResult = FindPathBoxes TestBoxes_txt.allLines glyphs
     let findPathBoxesExpected =
-      [|(([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
+      [|// Outer box
+        (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
             { glyphKind = RoundUpperRightCorner; gridCoord = {col = 26; row = 0;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 1; row = 0;}; gridCoordEnd = {col = 25; row = 0;}; linechars = [|'-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 26; row = 0;}; glyphOptions = Map.empty };
@@ -125,7 +129,8 @@ module TopologyTests =
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 0; row = 0;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 8;}; glyphOptions = Map.empty }|],
           [|{ orientation = Vertical; gridCoordStart = {col = 0; row = 1;}; gridCoordEnd = {col = 0; row = 7;}; linechars = [|'|'; '|'; '|'; '|'; '|'; '|'; '|'|]; lineOptions = Map.empty }|])); 
-        (([|{glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty };
+        // Inner 'a' box
+        (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 3; row = 2;}; gridCoordEnd = {col = 7; row = 2;}; linechars = [|'-'; '-'; '-'; '.'; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty };
@@ -136,7 +141,34 @@ module TopologyTests =
           [|{ orientation = Horizontal; gridCoordStart = {col = 3; row = 5;}; gridCoordEnd = {col = 7; row = 5;}; linechars = [|'-'; '-'; '-'; '\''; '-'|]; lineOptions = Map.empty }|]),
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 2; row = 5;}; glyphOptions = Map.empty }|],
-          [|{ orientation = Vertical; gridCoordStart = {col = 2; row = 3;}; gridCoordEnd = {col = 2; row = 4;}; linechars = [|'|'; '|'|]; lineOptions = Map.empty }|])); 
+          [|{ orientation = Vertical; gridCoordStart = {col = 2; row = 3;}; gridCoordEnd = {col = 2; row = 4;}; linechars = [|'|'; '|'|]; lineOptions = Map.empty }|]));
+        // Inner '2' box
+        (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty }|],
+          [|{ orientation = Horizontal; gridCoordStart = {col = 11; row = 2;}; gridCoordEnd = {col = 15; row = 2;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 16; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 16; row = 4;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 16; row = 3;}; gridCoordEnd = {col = 16; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 16; row = 5;}; glyphOptions = Map.empty }|],
+          [|{ orientation = Horizontal; gridCoordStart = {col = 11; row = 5;}; gridCoordEnd = {col = 15; row = 5;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 10; row = 4;}; gridCoordEnd = {col = 10; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
+        // Inner 's' box
+        (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty }|],
+          [|{ orientation = Horizontal; gridCoordStart = {col = 19; row = 2;}; gridCoordEnd = {col = 23; row = 2;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundUpperRightCorner; gridCoord = {col = 24; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = UpperAndLowerRightCorner; gridCoord = {col = 24; row = 3;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 24; row = 4;}; gridCoordEnd = {col = 24; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerRightCorner; gridCoord = {col = 24; row = 5;}; glyphOptions = Map.empty }|],
+          [|{ orientation = Horizontal; gridCoordStart = {col = 19; row = 5;}; gridCoordEnd = {col = 23; row = 5;}; linechars = [|'-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }|]),
+         ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 18; row = 2;}; glyphOptions = Map.empty };
+            { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 18; row = 4;}; glyphOptions = Map.empty };
+            { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 18; row = 5;}; glyphOptions = Map.empty }|], [|{orientation = Vertical; gridCoordStart = {col = 18; row = 3;}; gridCoordEnd = {col = 18; row = 3;}; linechars = [|'|'|]; lineOptions = Map.empty }|]));
+        // Inner box in inner 'a' box
         (([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty };
             { glyphKind = RoundUpperRightCorner; gridCoord = {col = 6; row = 3;}; glyphOptions = Map.empty }|],
           [|{ orientation = Horizontal; gridCoordStart = {col = 5; row = 3;}; gridCoordEnd = {col = 5; row = 3;}; linechars = [|'-'|]; lineOptions = Map.empty }|]),
@@ -148,3 +180,4 @@ module TopologyTests =
          ([|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 4; row = 3;}; glyphOptions = Map.empty };
             { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 4; row = 4;}; glyphOptions = Map.empty }|], [||]))|]
 
+    let findPathBoxesOK = findPathBoxesExpected = findPathBoxesResult
