@@ -56,8 +56,8 @@
     <Compile Include="Common.fs" />
     <Compile Include="Log.fs" />
     <Compile Include="Json.fs" />
-    <Compile Include="SvgPath.fs" />
     <Compile Include="SvgDocument.fs" />
+    <Compile Include="SvgPath.fs" />
     <Compile Include="TxtFile.fs" />
     <Compile Include="GlyphScanner.fs" />
     <Compile Include="GlyphRenderer.fs" />

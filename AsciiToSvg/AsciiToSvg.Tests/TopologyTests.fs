@@ -4,7 +4,8 @@
 module TopologyTests = 
 
   open AsciiToSvg 
-  open AsciiToSvg.Topology 
+  open AsciiToSvg.Topology
+  open AsciiToSvg.Topology.Operators
   open AsciiToSvg.Tests.GlyphScanner 
   open AsciiToSvg.Tests.LineScanner 
 
@@ -71,7 +72,8 @@ module TopologyTests =
          { glyphKind = RoundLowerRightCorner; gridCoord = {col = 26; row = 8;}; glyphOptions = Map.empty }, 
          { orientation = Horizontal; gridCoordStart = {col = 1; row = 8;}; gridCoordEnd = {col = 25; row = 8;}; linechars = [|'-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'; '-'|]; lineOptions = Map.empty }, 
          { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 0; row = 8;}; glyphOptions = Map.empty }, 
-         { orientation = Vertical; gridCoordStart = {col = 0; row = 1;}; gridCoordEnd = {col = 0; row = 7;}; linechars = [|'|'; '|'; '|'; '|'; '|'; '|'; '|'|]; lineOptions = Map.empty }); ({ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty }, 
+         { orientation = Vertical; gridCoordStart = {col = 0; row = 1;}; gridCoordEnd = {col = 0; row = 7;}; linechars = [|'|'; '|'; '|'; '|'; '|'; '|'; '|'|]; lineOptions = Map.empty }); 
+        ({ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 2; row = 2;}; glyphOptions = Map.empty }, 
          { orientation = Horizontal; gridCoordStart = {col = 3; row = 2;}; gridCoordEnd = {col = 7; row = 2;}; linechars = [|'-'; '-'; '-'; '.'; '-'|]; lineOptions = Map.empty }, 
          { glyphKind = RoundUpperRightCorner; gridCoord = {col = 8; row = 2;}; glyphOptions = Map.empty }, 
          { orientation = Vertical; gridCoordStart = {col = 8; row = 3;}; gridCoordEnd = {col = 8; row = 4;}; linechars = [|'|'; '|'|]; lineOptions = Map.empty }, 
@@ -113,6 +115,16 @@ module TopologyTests =
         { glyphKind = RoundLowerRightCorner; gridCoord = {col = 8; row = 5;}; glyphOptions = Map.empty }|],
       [|{ orientation = Vertical; gridCoordStart = {col = 8; row = 3;}; gridCoordEnd = {col = 8; row = 4;}; linechars = [|'|'; '|'|]; lineOptions = Map.empty }|]
     let vLL1OK = vLL1 = vLL1Expected
+
+    let uLC3 = { glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty }
+    let lLC3 = { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty } 
+    let vLL2 = findVerticalPathBetween uLC3 lLC3 glyphs vertLines
+    let vLL2Expected =
+      [|{ glyphKind = RoundUpperLeftCorner; gridCoord = {col = 10; row = 2;}; glyphOptions = Map.empty };
+        { glyphKind = UpperAndLowerLeftCorner; gridCoord = {col = 10; row = 3;}; glyphOptions = Map.empty };
+        { glyphKind = RoundLowerLeftCorner; gridCoord = {col = 10; row = 5;}; glyphOptions = Map.empty }|], 
+      [|{ orientation = Vertical; gridCoordStart = {col = 10; row = 4;}; gridCoordEnd = {col = 10; row = 4;}; linechars = [|'|'|]; lineOptions = Map.empty }|]
+    let vLL2OK = vLL2 = vLL2Expected
 
     let findPathBoxesResult = FindPathBoxes TestBoxes_txt.allLines glyphs
     let findPathBoxesExpected =
@@ -187,3 +199,4 @@ module TopologyTests =
           [||]))|]
 
     let findPathBoxesOK = findPathBoxesExpected = findPathBoxesResult
+

@@ -8,9 +8,9 @@ let FontOffsetWidth = 0.0
 let FontOffsetHeight = 11.0
 let FontFamily = "Consolas"
 let GlyphWidth = 9.0
+let GlyphHeight = 15.0
 let GlyphWidthHalf = GlyphWidth / 2.0
 let GlyphHeightHalf = GlyphHeight / 2.0
-let GlyphHeight = 15.0
 let CanvasWidth = 720.0   //  80 glyphs per line
 let CanvasHeight = 675.0  // 45 lines
 let Scale = { colsc = 1.0; rowsc = 1.0 }

@@ -1,7 +1,7 @@
 ﻿module AsciiToSvg.SvgPath
 
 
-open SvgDocument
+open AsciiToSvg.SvgDocument
 
 type Data =
   | Ma of floats

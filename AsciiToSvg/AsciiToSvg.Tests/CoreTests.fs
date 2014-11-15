@@ -289,6 +289,7 @@ module Core =
   [<Test; Category "AsciiToSvg.Topology">]
   let ``Topology : findVerticalPathBetween : TestBoxes_txt`` () =
     Assert.True(TestBoxes_txt.vLL1OK)
+    Assert.True(TestBoxes_txt.vLL2OK)
 
   [<Test; Category "AsciiToSvg.Topology">]
   let ``Topology : FindPathBoxes : TestBoxes_txt`` () =
