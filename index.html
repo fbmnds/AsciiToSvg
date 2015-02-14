@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Asciitosvg : A library for converting ASCII text files into SVG graphics">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Asciitosvg</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/fbmnds/AsciiToSvg">View on GitHub</a>
+
+          <h1 id="project_title">Asciitosvg</h1>
+          <h2 id="project_tagline">A library for converting ASCII text files into SVG graphics</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/fbmnds/AsciiToSvg/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/fbmnds/AsciiToSvg/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="asciitosvg" class="anchor" href="#asciitosvg" aria-hidden="true"><span class="octicon octicon-link"></span></a>AsciiToSvg</h1>
+
+<p>A library for converting ASCII text files into SVG graphics</p>
+
+<h2>
+<a id="what-is-it" class="anchor" href="#what-is-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is it?</h2>
+
+<p>AsciiToSvg is a library intended to support authoring arbitrary content in plain text format. 
+The inspiration of the approach was influenced by the workflow description 
+of the project documentation process in the <a href="http://zguide.zeromq.org/page:all#Removing-Friction">ZeroMQ Guide</a>.</p>
+
+<p>The ZeroMQ project team  is using an  <a href="https://github.com/imatix/zguide/tree/master/bin/asciitosvg">interesting tool set</a> to convert plain ASCII text input 
+into SVG vector graphics consisting of a Perl wrapper script for a PHP port of a C Parser/Lexer based package. 
+Interestingly, the sourcecode comments contain a hint, that parts of this software is current use of the SQlite project, but I did not check this.</p>
+
+<p>AsciiToSvg is a F# implementation that serves the same purpose as this Perl/PHP/C tool.
+It is potentially a nifty enhancement for the <a href="https://github.com/tpetricek/FSharp.Formatting">FSharp.Formatting</a> tool.</p>
+
+<h2>
+<a id="why-another-implementation" class="anchor" href="#why-another-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why another implementation?</h2>
+
+<p>The existing implementation comes with nice examples, especially the logo:</p>
+
+<p><img src="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/OriginalAsciiToSvgLogo.png?raw=true" alt="OriginalAsciiToSvgLogo"></p>
+
+<p>The current version of the the F# implementation does not yet support color and shading options but this is work in progress.</p>
+
+<p>While the existing tool serves serious doumentation purposes, it failed to render the first example that I tried.
+The tool actually bailed out with an Out-of-Memory exception on this input:</p>
+
+<pre lang="text"><code>printing.el version 6.9.3    ps-print.el version 7.3.5
+
+
+Menu Layout
+-----------
+
+The `printing' menu (Tools/Printing or File/Print) has the following layout:
+
+       +-----------------------------+
+A   0  |   Printing Interface        |
+       +-----------------------------+       +-A---------+     +-B------+
+I   1  |   PostScript Preview       &gt;|-------|Directory &gt;|-----|1-up    |
+    2  |   PostScript Print         &gt;|---- A |Buffer    &gt;|-- B |2-up    |
+    3  |   PostScript Printer: name &gt;|---- C |Region    &gt;|-- B |4-up    |
+       +-----------------------------+       |Mode      &gt;|-- B |Other...|
+II  4  |   Printify                 &gt;|-----\ |File      &gt;|--\  +--------+
+    5  |   Print                    &gt;|---\ | |Despool... |  |
+    6  |   Text Printer: name       &gt;|-\ | | +-----------+  |
+       +-----------------------------+ | | | +---------+   +------------+
+III 7  |[ ]Landscape                 | | | \-|Directory|   | No Prep... | Ia
+    8  |[ ]Print Header              | | |   |Buffer   |   +------------+ Ib
+    9  |[ ]Print Header Frame        | | |   |Region   |   |   name    &gt;|- C
+    10 |[ ]Line Number               | | |   +---------+   +------------+
+    11 |[ ]Zebra Stripes             | | |   +---------+   |   1-up...  | Ic
+    12 |[ ]Duplex                    | | \---|Directory|   |   2-up...  |
+    13 |[ ]Tumble                    | \--\  |Buffer   |   |   4-up...  |
+    14 |[ ]Upside-Down               |    |  |Region   |   |   Other... |
+    15 |   Print All Pages          &gt;|--\ |  |Mode     |   +------------+
+       +-----------------------------+  | |  +---------+   |[ ]Landscape| Id
+IV  16 |[ ]Spool Buffer              |  | |  +-C-------+   |[ ]Duplex   | Ie
+    17 |[ ]Print with faces          |  | \--|( )name A|   |[ ]Tumble   | If
+    18 |[ ]Print via Ghostscript     |  |    |( )name B|   +------------+
+       +-----------------------------+  |    |...      |
+V   19 |[ ]Auto Region               |  |    |(*)name  |
+    20 |[ ]Auto Mode                 |  |    |...      |
+    21 |[ ]Menu Lock                 |  |    +---------+   +--------------+
+       +-----------------------------+  \------------------|(*)All Pages  |
+VI  22 |   Customize                &gt;|--- D  +-D------+    |( )Even Pages |
+    23 |   Show Settings            &gt;|-------|printing|    |( )Odd Pages  |
+    24 |   Help                      |       |ps-print|    |( )Even Sheets|
+       +-----------------------------+       |lpr     |    |( )Odd Sheets |
+                                             +--------+    +--------------+
+
+</code></pre>
+
+<p>I seriously doubt that this can be fixed the Perl/PHP/C code base with reasonable effort.
+The F# implementation however produces an acceptable outcome on this example:</p>
+
+<p><img src="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/EmacsPrintHelp.png?raw=true" alt="EmacsPrintHelp"></p>
+
+<h2>
+<a id="how-does-it-work" class="anchor" href="#how-does-it-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work?</h2>
+
+<p>AsciiToSvg is conceptionally different from the forementioned implementation. 
+A good entry point for examining the differences is the 
+<a href="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg/GlyphScanner.fs">pattern identification</a> in combination with the <a href="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg/LineScanner.fs">line identification</a> in F#
+in contrast to the <a href="https://github.com/imatix/zguide/blob/master/bin/asciitosvg/ASCIIToSVG.php#L1323">multi-step parsing</a> with its <a href="https://github.com/imatix/zguide/blob/master/bin/asciitosvg/ASCIIToSVG.php#L1926">'generic, recursive line walker'</a> 
+that needs to be supported by a <a href="https://github.com/imatix/zguide/blob/master/bin/asciitosvg/ASCIIToSVG.php#L2043">follow wall algorithm</a>.</p>
+
+<p>AsciiToSvg is based on the notion of 'glyphs', i.e. symbols consisting of ASCII letter combinations, that are 
+interpreted and rendered as SVG graphic elements like <a href="http://www.w3.org/TR/SVG/text.html#TextElement">'text'</a>, 
+<a href="http://www.w3.org/TR/SVG/shapes.html#LineElement">'line'</a> and <a href="http://www.w3.org/TR/SVG/shapes.html#PolygonElement">'polygon'</a>.</p>
+
+<p>The concept includes the possibility to annotate SVG options to the ASCII input text for the rendering process. 
+It resembles the idea as applied for generating the logo (<a href="https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.txt">input</a>, 
+<a href="https://github.com/imatix/zguide/blob/master/bin/asciitosvg/logo.svg">svg</a>).</p>
+
+<p>The steps to generate a SVG graphic with the new F# tool are:</p>
+
+<ul>
+<li>read the ASCII text file into memory and separate the picture part from the options part</li>
+<li>make a trimmed grid, i.e. remove trailing spces and blank lines (important for proper scaling of the graphic)</li>
+<li>set consistent SVG options (scaling, text font)</li>
+<li>scan the ASCII input</li>
+<li>render the glyphs</li>
+<li>scan the text, use tabbed text scan option for proper positioning</li>
+<li>render the text</li>
+<li>scan the lines</li>
+<li>render the lines</li>
+<li>produce the SVG graphic</li>
+</ul>
+
+<p>The <a href="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/EmacsPrintHelp.fsx"><code>EmacsPrintHelp.fsx</code></a> script file demonstrates how to put everything together. </p>
+
+<h2>
+<a id="why-using-asciitosvg-instead-of-graphiz-inkscape-" class="anchor" href="#why-using-asciitosvg-instead-of-graphiz-inkscape-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why using AsciiToSvg instead of Graphiz, InkScape, ...?</h2>
+
+<p>It applies the same rationale why one would like to use Markdown instead of Microsoft Word, TeX/LaTeX, and alike.
+It boils down to trading ease in workflow using automation capabilities versus feature richness and UI experience of the alternatives.</p>
+
+<p>It also depends on your own personal attitude towards the outdated 70-ish retro look of ASCII graphics and the support of your editor of choice to draw them.
+The library should therefore play well with Emacs/Org-Mode and Vim, but will provide significantly less fun in Visual Studio or Xcode.</p>
+
+<h2>
+<a id="what-are-the-caveats" class="anchor" href="#what-are-the-caveats" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are the caveats?</h2>
+
+<p>The library does not contain an abstration for SVG documents. For a feature set on par with the Perl/PHP/C implementation, this is also not necessary.</p>
+
+<p>As mentioned above, the library does not yet provide the option mechanism that the original tool uses for annotating color and shading information.</p>
+
+<p>Github does not support SVG redering in markup text for security reasons. There are some work arounds by using 3rd party websites mentioned on <a href="http://stackoverflow.com/questions/13808020/include-an-svg-hosted-on-github-in-markdown">SO</a>. 
+This enforces however the need for another backend in order to convert the SVG format, for example into PNG, which compromises the ease of processing.</p>
+
+<p>Drawing slanted lines and circle/ellipses is a challenge fo ASCII based graphics because of the limited resolution and the disproportion of width and height of ASCII characters. 
+Hence, the F# logo is for example not a good candidate for this tool. It should however be fairly easy to inject arbitrary SVG shapes 
+via some include directive into the forementioned option mechanism.</p>
+
+<p>The sourcecode is undocumented and documentation other than this Readme file is an open issue that will be eventually closed. 
+The ZeroMQ Guide provides a <a href="https://github.com/imatix/zguide/tree/master/bin/asciitosvg">guideline</a> on ASCII graphics that applies here as well to a some greater extent.</p>
+
+<h2>
+<a id="are-there-further-examples" class="anchor" href="#are-there-further-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Are there further examples?</h2>
+
+<p>For regression testing, the library comes with some examples that cover the current feature set. It is however not a fancy gallery.</p>
+
+<p>A basic example is given by the following ASCII input file:</p>
+
+<pre><code>[lang=text]
++---------+-----------+------------------+------------------+
+| ArrowUp | ArrowDown | ArrowLeftToRight | ArrowRightToLeft |
++---------+-----------+------------------+------------------+
+|  ^   ^  |    |   +  |        -&gt;        |        &lt;-        |
+|  |   +  |    v   v  |        +&gt;        |        &lt;+        |
++---------+-----------+------------------+------------------+ 
+</code></pre>
+
+<p>The resulting SVG file looks like this:</p>
+
+<p><img src="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/ArrowGlyphsWithFrame.png?raw=true" alt="ArrowGlyphsWithFrame"></p>
+
+<p>The usage of polygon shapes, which is a big challenge for the Perl/PHP/C implementation, looks like this:</p>
+
+<pre lang="text"><code>                |
+                v
+             -&lt;-+------+
+                |      |
+   +            |      |
+   +------------+---++-+
+   |                ||
+   |                ++
+   |                ||
+   |                ||
+   +----------------++
+                    ++
+</code></pre>
+
+<p>This input renders to:</p>
+
+<p><img src="https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/TestPolygonBox.png?raw=true" alt="TestPolygonBox"></p>
+
+<h2>
+<a id="library-license" class="anchor" href="#library-license" aria-hidden="true"><span class="octicon octicon-link"></span></a>Library license</h2>
+
+<p>The library is available under Apache 2.0. For more information see the <a href="https://github.com/fbmnds/a2svg/blob/master/LICENSE">License file</a> in the GitHub repository</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Asciitosvg maintained by <a href="https://github.com/fbmnds">fbmnds</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
