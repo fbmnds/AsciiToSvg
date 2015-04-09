@@ -13,8 +13,9 @@ The ZeroMQ project team  is using an  [interesting tool set][3] to convert plain
 into SVG vector graphics consisting of a Perl wrapper script for a PHP port of a C Parser/Lexer based package. 
 Interestingly, the sourcecode comments contain a hint, that parts of this software is current use of the SQlite project, but I did not check this.
 
-AsciiToSvg is a F# implementation that serves the same purpose as this Perl/PHP/C tool.
-It is potentially a nifty enhancement for the [FSharp.Formatting][14] tool.
+Devon H. O'Dell, the author of the Perl/PHP tool, pointed me to the [official site][18] here on Github, as the ZeroMQ fork is outdated and does not conttain the latest bug fixes. 
+
+AsciiToSvg is a F# implementation that serves the same purpose as this Perl/PHP tool.
 
 ## Why another implementation?
 
@@ -73,7 +74,6 @@ VI  22 |   Customize                >|--- D  +-D------+    |( )Even Pages |
 
 ```
 
-I seriously doubt that this can be fixed the Perl/PHP/C code base with reasonable effort.
 The F# implementation however produces an acceptable outcome on this example:
 
 ![EmacsPrintHelp](https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/TestPngFiles/EmacsPrintHelp.png?raw=true)
@@ -194,3 +194,4 @@ The library is available under Apache 2.0. For more information see the [License
  [15]: https://github.com/fbmnds/AsciiToSvg/blob/master/AsciiToSvg/AsciiToSvg.Tests/EmacsPrintHelp.fsx
  [16]: http://stackoverflow.com/questions/13808020/include-an-svg-hosted-on-github-in-markdown
  [17]: https://github.com/imatix/zguide/tree/master/bin/asciitosvg
+ [18]: https://github.com/dhobsd/asciitosvg
