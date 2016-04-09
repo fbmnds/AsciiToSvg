@@ -22,7 +22,10 @@ let options =
   "canvas-height", ((float)emacsPrintHelpGrid.Length * GlyphHeight).ToString(culture);
   "canvas-font-family", "Courier New";
   "canvas-font-size", "15.0"]
-  |> Map.ofList
+  //|> Map.ofList
+  |> Seq.ofList
+  |> Seq.map (fun (x,y) -> x, JsonValue.JString y)
+  |> fun x -> SvgOption x
 
 let emacsPrintHelpGlyphs = emacsPrintHelpGrid |> ScanGlyphs
 

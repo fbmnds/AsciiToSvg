@@ -69,12 +69,12 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  -->
+ 
   <Target Name="AfterBuild">
     <MSBuild.ExtensionPack.FileSystem.File TaskAction="Replace" RegexPattern="&lt;dependentAssembly&gt;([\s]+.)&lt;assemblyIdentity name=&quot;FSharp\.Core&quot; publicKeyToken=&quot;b03f5f7f11d50a3a&quot; culture=&quot;neutral&quot; \/&gt;([\s\S]+?)&lt;\/dependentAssembly&gt;" RegexOptionList="IgnoreCase|Singleline" Replacement="&lt;dependentAssembly&gt;&#xD;&#xA;        &lt;assemblyIdentity name=&quot;FSharp.Core&quot; publicKeyToken=&quot;b03f5f7f11d50a3a&quot; culture=&quot;neutral&quot; /&gt;&#xD;&#xA;        &lt;bindingRedirect oldVersion=&quot;0.0.0.0-$(TargetFSharpCoreVersion)&quot; newVersion=&quot;$(TargetFSharpCoreVersion)&quot;/&gt;&#xD;&#xA;      &lt;/dependentAssembly&gt;" Files="$(TargetPath).config" />
   </Target>
+   -->
   <ItemGroup>
-    <Compile Include="FsCheckAddin.fs" />
     <Compile Include="NUnitRunner.fs" />
     <Compile Include="AsciiToSvgScaffolding.Tests.fs" />
     <Compile Include="SvgDocumentTests.fs" />
@@ -118,55 +118,39 @@
     <None Include="TestSvgFiles\ZeroMQ_Fig1Tabbed.svg" />
     <None Include="TestSvgFiles\FSharpLogo.svg" />
     <None Include="TestSvgFiles\OriginalAsciiToSvgLogo.svg" />
+    <None Include="Scripts\load-references-debug.fsx" />
+    <None Include="Scripts\load-project-debug.fsx" />
+    <None Include="Scripts\load-references-release.fsx" />
+    <None Include="Scripts\load-project-release.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">
-      <HintPath>..\packages\FsCheck.1.0.0\lib\net45\FsCheck.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\AsciiToSvg\AsciiToSvg\packages\FsCheck.1.0.0\lib\net45\FsCheck.dll</HintPath>
     </Reference>
     <Reference Include="FsCheck.NUnit">
-      <HintPath>..\packages\FsCheck.Nunit.1.0.0\lib\net45\FsCheck.NUnit.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\AsciiToSvg\AsciiToSvg\packages\FsCheck.Nunit.1.0.0\lib\net45\FsCheck.NUnit.dll</HintPath>
     </Reference>
-    <Reference Include="FsCheck.NUnit.Addin">
-      <HintPath>..\packages\FsCheck.Nunit.1.0.0\lib\net45\FsCheck.NUnit.Addin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FsUnit.NUnit">
-      <HintPath>..\packages\FsUnit.1.3.0.1\Lib\Net40\FsUnit.NUnit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="FsCheck.NUnit.Addin" />
+    <Reference Include="FsUnit.NUnit" />
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.core">
-      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\AsciiToSvg\AsciiToSvg\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.core.interfaces">
-      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.interfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="nunit.core" />
+    <Reference Include="nunit.core.interfaces" />
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\AsciiToSvg\AsciiToSvg\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.util">
-      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="NUnit.VisualStudio.TestAdapter">
-      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="nunit.framework" />
+    <Reference Include="nunit.util" />
+    <Reference Include="NUnit.VisualStudio.TestAdapter" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="Unquote">
-      <HintPath>..\packages\Unquote.2.2.2\lib\net40\Unquote.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Unquote" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AsciiToSvg\AsciiToSvg.fsproj">
