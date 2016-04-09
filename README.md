@@ -1,7 +1,7 @@
 AsciiToSvg
 ==========
 
-[![Build status](https://ci.appveyor.com/api/projects/status/xmecy603qc0peo1c)](https://ci.appveyor.com/project/fbmnds/asciitosvg)
+[![Build status](https://ci.appveyor.com/api/projects/status/xmecy603qc0peo1c?svg=true)](https://ci.appveyor.com/project/fbmnds/asciitosvg)
 
 A library for converting ASCII text files into SVG graphics
 
